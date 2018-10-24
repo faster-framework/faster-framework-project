@@ -10,8 +10,40 @@
     </parent>
     <artifactId>spring-boot-starter-parent</artifactId>
     <packaging>pom</packaging>
+    <properties>
+        <jsonwebtoken-jjwt.version>0.9.0</jsonwebtoken-jjwt.version>
+        <projectlombok-lombok.version>1.16.20</projectlombok-lombok.version>
+        <fastjson.version>1.2.47</fastjson.version>
+        <druid-spring-boot-starter.version>1.1.10</druid-spring-boot-starter.version>
+        <mybatis-plus-boot-starter.version>3.0.3</mybatis-plus-boot-starter.version>
+        <mybatis-typehandlers-jsr310.version>1.0.2</mybatis-typehandlers-jsr310.version>
+        <patchca.version>0.0.1</patchca.version>
+        <shiro-spring.version>1.4.0</shiro-spring.version>
+        <aliyun-java-sdk-core.version>3.7.1</aliyun-java-sdk-core.version>
+        <aliyun-java-sdk-dysmsapi.version>1.1.0</aliyun-java-sdk-dysmsapi.version>
+    </properties>
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>cn.org.faster</groupId>
+                <artifactId>faster-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.org.faster</groupId>
+                <artifactId>faster-admin</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.org.faster</groupId>
+                <artifactId>faster-redis</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.org.faster</groupId>
+                <artifactId>faster-sms</artifactId>
+                <version>${project.version}</version>
+            </dependency>
             <dependency>
                 <groupId>cn.org.faster</groupId>
                 <artifactId>spring-boot-starter-core</artifactId>
@@ -19,58 +51,68 @@
             </dependency>
             <dependency>
                 <groupId>cn.org.faster</groupId>
-                <artifactId>faster-core</artifactId>
+                <artifactId>spring-boot-starter-admin</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.org.faster</groupId>
+                <artifactId>spring-boot-starter-redis</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.org.faster</groupId>
+                <artifactId>spring-boot-starter-sms</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.jsonwebtoken</groupId>
                 <artifactId>jjwt</artifactId>
-                <version>0.9.0</version>
+                <version>${jsonwebtoken-jjwt.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
-                <version>1.16.20</version>
+                <version>${projectlombok-lombok.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.alibaba</groupId>
                 <artifactId>fastjson</artifactId>
-                <version>1.2.47</version>
+                <version>${fastjson.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.alibaba</groupId>
                 <artifactId>druid-spring-boot-starter</artifactId>
-                <version>1.1.10</version>
+                <version>${druid-spring-boot-starter.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus-boot-starter</artifactId>
-                <version>3.0.3</version>
+                <version>${mybatis-plus-boot-starter.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.mybatis</groupId>
                 <artifactId>mybatis-typehandlers-jsr310</artifactId>
-                <version>1.0.2</version>
+                <version>${mybatis-typehandlers-jsr310.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.github.bingoohuang</groupId>
                 <artifactId>patchca</artifactId>
-                <version>0.0.1</version>
+                <version>${patchca.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.shiro</groupId>
                 <artifactId>shiro-spring</artifactId>
-                <version>1.4.0</version>
+                <version>${shiro-spring.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.aliyun</groupId>
                 <artifactId>aliyun-java-sdk-core</artifactId>
-                <version>3.7.1</version>
+                <version>${aliyun-java-sdk-core.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.aliyun</groupId>
                 <artifactId>aliyun-java-sdk-dysmsapi</artifactId>
-                <version>1.1.0</version>
+                <version>${aliyun-java-sdk-dysmsapi.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
