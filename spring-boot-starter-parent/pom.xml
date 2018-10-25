@@ -31,6 +31,16 @@
             </dependency>
             <dependency>
                 <groupId>cn.org.faster</groupId>
+                <artifactId>faster-web</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.org.faster</groupId>
+                <artifactId>faster-mybatis</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.org.faster</groupId>
                 <artifactId>faster-admin</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -46,12 +56,17 @@
             </dependency>
             <dependency>
                 <groupId>cn.org.faster</groupId>
-                <artifactId>spring-boot-starter-core</artifactId>
+                <artifactId>spring-boot-starter-web</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>cn.org.faster</groupId>
                 <artifactId>spring-boot-starter-admin</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.org.faster</groupId>
+                <artifactId>spring-boot-starter-mybatis</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
@@ -136,7 +151,7 @@
                                 <parent>expand</parent>
                                 <name>keep</name>
                                 <description>keep</description>
-                                <url>expand</url>
+                                <url>keep</url>
                                 <properties>keep</properties>
                                 <pluginManagement>keep</pluginManagement>
                                 <dependencyManagement>keep</dependencyManagement>
@@ -149,6 +164,18 @@
                         <phase>clean</phase>
                         <goals>
                             <goal>clean</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
                         </goals>
                     </execution>
                 </executions>

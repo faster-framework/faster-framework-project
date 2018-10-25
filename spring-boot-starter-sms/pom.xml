@@ -9,8 +9,13 @@
         <relativePath>../spring-boot-starter-parent</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <packaging>jar</packaging>
+    
     <artifactId>spring-boot-starter-sms</artifactId>
-
+    <dependencies>
+        <dependency>
+            <groupId>cn.org.faster</groupId>
+            <artifactId>faster-sms</artifactId>
+        </dependency>
+    </dependencies>
 
 </project>

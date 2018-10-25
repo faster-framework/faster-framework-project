@@ -9,12 +9,17 @@
         <relativePath>../spring-boot-starter-parent</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <packaging>jar</packaging>
+
     <artifactId>spring-boot-starter-admin</artifactId>
     <dependencies>
         <dependency>
             <groupId>cn.org.faster</groupId>
             <artifactId>faster-admin</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>cn.org.faster</groupId>
+            <artifactId>faster-web</artifactId>
+            <optional>true</optional>
         </dependency>
     </dependencies>
 

@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-cn.org.faster.framework.admin.spring.boot.autoconfigure.AdminAutoConfiguration
+cn.org.faster.framework.admin.spring.boot.autoconfigure.AdminScanConfiguration

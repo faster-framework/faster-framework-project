@@ -9,8 +9,21 @@
         <relativePath>../spring-boot-starter-parent</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <packaging>jar</packaging>
-    <artifactId>faster-sms</artifactId>
 
+    <artifactId>faster-sms</artifactId>
+    <dependencies>
+        <dependency>
+            <groupId>cn.org.faster</groupId>
+            <artifactId>faster-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.aliyun</groupId>
+            <artifactId>aliyun-java-sdk-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.aliyun</groupId>
+            <artifactId>aliyun-java-sdk-dysmsapi</artifactId>
+        </dependency>
+    </dependencies>
 
 </project>

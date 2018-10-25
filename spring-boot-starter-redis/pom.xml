@@ -9,8 +9,13 @@
         <relativePath>../spring-boot-starter-parent</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <packaging>jar</packaging>
-    <artifactId>spring-boot-starter-redis</artifactId>
 
+    <artifactId>spring-boot-starter-redis</artifactId>
+    <dependencies>
+        <dependency>
+            <groupId>cn.org.faster</groupId>
+            <artifactId>faster-redis</artifactId>
+        </dependency>
+    </dependencies>
 
 </project>

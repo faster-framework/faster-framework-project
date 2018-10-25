@@ -14,14 +14,17 @@
     <version>${revision}</version>
     <modules>
         <module>faster-core</module>
-        <module>spring-boot-starter-core</module>
-        <module>spring-boot-starter-parent</module>
+        <module>faster-web</module>
         <module>faster-admin</module>
         <module>faster-redis</module>
         <module>faster-sms</module>
+        <module>spring-boot-starter-parent</module>
+        <module>spring-boot-starter-web</module>
         <module>spring-boot-starter-admin</module>
         <module>spring-boot-starter-sms</module>
         <module>spring-boot-starter-redis</module>
+        <module>spring-boot-starter-mybatis</module>
+        <module>faster-mybatis</module>
     </modules>
     <packaging>pom</packaging>
     <properties>

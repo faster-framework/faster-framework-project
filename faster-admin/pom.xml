@@ -9,14 +9,23 @@
         <relativePath>../spring-boot-starter-parent</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <packaging>jar</packaging>
+
     <artifactId>faster-admin</artifactId>
 
     <dependencies>
         <dependency>
             <groupId>cn.org.faster</groupId>
-            <artifactId>spring-boot-starter-core</artifactId>
-            <scope>provided</scope>
+            <artifactId>faster-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>cn.org.faster</groupId>
+            <artifactId>faster-web</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>cn.org.faster</groupId>
+            <artifactId>faster-mybatis</artifactId>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>org.apache.shiro</groupId>

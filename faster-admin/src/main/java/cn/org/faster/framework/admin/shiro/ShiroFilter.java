@@ -1,7 +1,7 @@
 package cn.org.faster.framework.admin.shiro;
 
-import cn.org.faster.framework.core.exception.model.BasisErrorCode;
-import cn.org.faster.framework.core.exception.model.ResultError;
+import cn.org.faster.framework.web.exception.model.BasisErrorCode;
+import cn.org.faster.framework.web.exception.model.ResultError;
 import com.alibaba.fastjson.JSON;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationToken;

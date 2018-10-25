@@ -1,6 +1,6 @@
 package cn.org.faster.framework.admin.auth.error;
 
-import cn.org.faster.framework.core.exception.model.ErrorCode;
+import cn.org.faster.framework.web.exception.model.ErrorCode;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
