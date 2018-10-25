@@ -19,7 +19,7 @@
     </modules>
     <packaging>pom</packaging>
     <properties>
-        <revision>1.1-SNAPSHOT</revision>
+        <revision>1.0-SNAPSHOT</revision>
     </properties>
     <repositories>
         <repository>

@@ -27,7 +27,7 @@ public class RequestContextBeanFactoryPostProcessor implements BeanFactoryPostPr
         }
         @Override
         public String toString() {
-            return "Project Request Context";
+            return WebContextFacade.getRequestContext().toString();
         }
     }
 
