@@ -4,8 +4,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
+        <groupId>org.springframework.boot</groupId>
         <version>2.0.5.RELEASE</version>
     </parent>
     <groupId>cn.org.faster</groupId>
@@ -19,7 +19,7 @@
     </modules>
     <packaging>pom</packaging>
     <properties>
-        <revision>1.0-SNAPSHOT</revision>
+        <revision>1.1-SNAPSHOT</revision>
     </properties>
     <repositories>
         <repository>
