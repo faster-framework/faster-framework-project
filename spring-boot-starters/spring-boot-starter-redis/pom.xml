@@ -4,22 +4,16 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <groupId>cn.org.faster</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
+        <artifactId>spring-boot-starters</artifactId>
         <version>${revision}</version>
-        <relativePath>../spring-boot-starter-parent</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>spring-boot-starter-admin</artifactId>
+    <artifactId>spring-boot-starter-redis</artifactId>
     <dependencies>
         <dependency>
             <groupId>cn.org.faster</groupId>
-            <artifactId>faster-admin</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>cn.org.faster</groupId>
-            <artifactId>faster-web</artifactId>
-            <optional>true</optional>
+            <artifactId>faster-redis</artifactId>
         </dependency>
     </dependencies>
 

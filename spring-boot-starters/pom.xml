@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <groupId>cn.org.faster</groupId>
+        <artifactId>faster-framework-parent</artifactId>
+        <version>${revision}</version>
+        <relativePath>../faster-framework-parent</relativePath>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>spring-boot-starters</artifactId>
+    <packaging>pom</packaging>
+    <modules>
+        <module>spring-boot-starter-web</module>
+        <module>spring-boot-starter-admin</module>
+        <module>spring-boot-starter-sms</module>
+        <module>spring-boot-starter-redis</module>
+        <module>spring-boot-starter-mybatis</module>
+    </modules>
+
+</project>

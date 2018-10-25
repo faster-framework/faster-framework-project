@@ -4,26 +4,22 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <groupId>cn.org.faster</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
+        <artifactId>faster-framework</artifactId>
         <version>${revision}</version>
-        <relativePath>../spring-boot-starter-parent</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
+    <artifactId>faster-redis</artifactId>
 
-    <artifactId>faster-sms</artifactId>
     <dependencies>
         <dependency>
             <groupId>cn.org.faster</groupId>
             <artifactId>faster-core</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.aliyun</groupId>
-            <artifactId>aliyun-java-sdk-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.aliyun</groupId>
-            <artifactId>aliyun-java-sdk-dysmsapi</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
         </dependency>
     </dependencies>
+
 
 </project>
