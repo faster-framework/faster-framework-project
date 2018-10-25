@@ -21,6 +21,18 @@
     <properties>
         <revision>1.0-SNAPSHOT</revision>
     </properties>
+    <scm>
+        <url>https://github.com/faster-framework/faster-framework-project</url>
+        <connection>https://github.com/faster-framework/faster-framework-project</connection>
+        <developerConnection>https://github.com/faster-framework/faster-framework-project</developerConnection>
+    </scm>
+    <developers>
+        <developer>
+            <name>Bowen Zhang</name>
+            <email>515445681@qq.com</email>
+            <url>https://github.com/faster-framework</url>
+        </developer>
+    </developers>
     <repositories>
         <repository>
             <id>central</id>
@@ -41,5 +53,57 @@
             <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
         </pluginRepository>
     </pluginRepositories>
+    <distributionManagement>
+        <snapshotRepository>
+            <id>oss-faster</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>oss-faster</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+    </distributionManagement>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>1.6</version>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>
