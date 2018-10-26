@@ -11,6 +11,7 @@
     <packaging>pom</packaging>
     <artifactId>faster-framework-parent</artifactId>
     <properties>
+        <skipTests>true</skipTests>
         <jsonwebtoken-jjwt.version>0.9.0</jsonwebtoken-jjwt.version>
         <projectlombok-lombok.version>1.16.20</projectlombok-lombok.version>
         <fastjson.version>1.2.47</fastjson.version>
@@ -131,55 +132,4 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-    <build>
-        <plugins>
-            <plugin>
-                <!--此插件用于install/deploy时继承父类version-->
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>flatten-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>flatten</id>
-                        <phase>process-resources</phase>
-                        <goals>
-                            <goal>flatten</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>target</outputDirectory>
-                            <updatePomFile>true</updatePomFile>
-                            <pomElements>
-                                <parent>expand</parent>
-                                <name>keep</name>
-                                <description>keep</description>
-                                <url>keep</url>
-                                <properties>keep</properties>
-                                <pluginManagement>keep</pluginManagement>
-                                <dependencyManagement>keep</dependencyManagement>
-                                <build>keep</build>
-                            </pomElements>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>flatten-clean</id>
-                        <phase>clean</phase>
-                        <goals>
-                            <goal>clean</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-source-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>attach-sources</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
 </project>

@@ -21,6 +21,7 @@
     <properties>
         <revision>1.0-SNAPSHOT</revision>
     </properties>
+    <url>https://github.com/faster-framework/faster-framework-project/#</url>
     <scm>
         <url>https://github.com/faster-framework/faster-framework-project</url>
         <connection>https://github.com/faster-framework/faster-framework-project</connection>
@@ -79,18 +80,6 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>attach-javadocs</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-gpg-plugin</artifactId>
                 <version>1.6</version>
                 <executions>
@@ -99,6 +88,41 @@
                         <phase>verify</phase>
                         <goals>
                             <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <!--此插件用于install/deploy时继承父类version-->
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>flatten-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>flatten</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>flatten</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>target</outputDirectory>
+                            <updatePomFile>true</updatePomFile>
+                            <pomElements>
+                                <parent>expand</parent>
+                                <name>keep</name>
+                                <description>keep</description>
+                                <url>keep</url>
+                                <properties>keep</properties>
+                                <pluginManagement>keep</pluginManagement>
+                                <dependencyManagement>keep</dependencyManagement>
+                                <build>keep</build>
+                            </pomElements>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>flatten-clean</id>
+                        <phase>clean</phase>
+                        <goals>
+                            <goal>clean</goal>
                         </goals>
                     </execution>
                 </executions>
