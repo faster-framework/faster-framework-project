@@ -25,31 +25,11 @@
     </scm>
     <developers>
         <developer>
-            <name>Bowen Zhang</name>
+            <name>张博文</name>
             <email>515445681@qq.com</email>
             <url>https://github.com/faster-framework</url>
         </developer>
     </developers>
-    <repositories>
-        <repository>
-            <id>ali</id>
-            <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
-        </repository>
-        <repository>
-            <id>central</id>
-            <url>https://repo.maven.apache.org/maven2</url>
-        </repository>
-    </repositories>
-    <pluginRepositories>
-        <pluginRepository>
-            <id>central</id>
-            <url>https://repo.maven.apache.org/maven2</url>
-        </pluginRepository>
-        <pluginRepository>
-            <id>ali</id>
-            <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
-        </pluginRepository>
-    </pluginRepositories>
     <distributionManagement>
         <snapshotRepository>
             <id>oss-faster</id>
