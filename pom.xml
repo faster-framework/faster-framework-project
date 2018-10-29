@@ -247,10 +247,6 @@
                     <include>**/*.xml</include>
                 </includes>
             </resource>
-            <!--指定资源的位置-->
-            <resource>
-                <directory>src/main/resources</directory>
-            </resource>
         </resources>
     </build>
 

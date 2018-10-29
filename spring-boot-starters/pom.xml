@@ -8,9 +8,9 @@
         <version>${revision}</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-
-    <artifactId>spring-boot-starters</artifactId>
     <packaging>pom</packaging>
+    <artifactId>spring-boot-starters</artifactId>
+
     <modules>
         <module>spring-boot-starter-web</module>
         <module>spring-boot-starter-admin</module>
