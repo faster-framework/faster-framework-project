@@ -41,7 +41,7 @@
         </repository>
     </distributionManagement>
     <properties>
-        <revision>1.0.0.RELEASE</revision>
+        <revision>1.0.SNAPSHOT</revision>
         <skipTests>true</skipTests>
         <jsonwebtoken-jjwt.version>0.9.0</jsonwebtoken-jjwt.version>
         <projectlombok-lombok.version>1.16.20</projectlombok-lombok.version>
