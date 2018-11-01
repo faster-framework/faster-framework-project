@@ -4,7 +4,7 @@ Faster-Framework是一款基于Spring Boot，并整合多个三方开源组件�
 
 其主要意图在于节省开发时间，提高开发效率，使开发人员专注业务编写。
 
-项目地址：[faster-framework-project](https://github.com/faster-framework/faster-framework-project)
+[文档地址](https://faster-framework.github.io/faster-framework-guide/)
 
 本教程主要结构如下：
 
