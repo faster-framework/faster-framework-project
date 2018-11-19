@@ -1,4 +1,4 @@
-package cn.org.faster.framework.web.web.version;
+package cn.org.faster.framework.web.version;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

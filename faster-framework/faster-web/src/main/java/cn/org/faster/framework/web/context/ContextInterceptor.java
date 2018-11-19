@@ -1,8 +1,8 @@
-package cn.org.faster.framework.web.web.inteceptor;
+package cn.org.faster.framework.web.context;
 
+import cn.org.faster.framework.web.context.model.RequestContext;
+import cn.org.faster.framework.web.context.model.WebContextFacade;
 import cn.org.faster.framework.web.utils.NetworkUtil;
-import cn.org.faster.framework.web.web.context.RequestContext;
-import cn.org.faster.framework.web.web.context.WebContextFacade;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;

@@ -1,4 +1,4 @@
-package cn.org.faster.framework.web.web.service;
+package cn.org.faster.framework.web.jwt.service;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;

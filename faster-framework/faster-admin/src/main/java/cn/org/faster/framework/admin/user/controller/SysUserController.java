@@ -9,7 +9,7 @@ import cn.org.faster.framework.admin.user.service.SysUserService;
 import cn.org.faster.framework.admin.userRole.entity.SysUserRole;
 import cn.org.faster.framework.admin.userRole.service.SysUserRoleService;
 import cn.org.faster.framework.web.exception.model.ErrorResponseEntity;
-import cn.org.faster.framework.web.web.request.ListWrapper;
+import cn.org.faster.framework.web.model.ListWrapper;
 import lombok.AllArgsConstructor;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.BeanUtils;

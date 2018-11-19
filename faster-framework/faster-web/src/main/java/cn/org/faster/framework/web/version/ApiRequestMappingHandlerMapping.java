@@ -1,4 +1,4 @@
-package cn.org.faster.framework.web.web.version;
+package cn.org.faster.framework.web.version;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.condition.RequestCondition;

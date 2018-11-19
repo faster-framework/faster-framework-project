@@ -1,4 +1,4 @@
-package cn.org.faster.framework.web.web.context;
+package cn.org.faster.framework.web.context.model;
 
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;

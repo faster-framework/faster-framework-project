@@ -1,7 +1,7 @@
-package cn.org.faster.framework.web.web.processor;
+package cn.org.faster.framework.web.context.processor;
 
-import cn.org.faster.framework.web.web.context.RequestContext;
-import cn.org.faster.framework.web.web.context.WebContextFacade;
+import cn.org.faster.framework.web.context.model.RequestContext;
+import cn.org.faster.framework.web.context.model.WebContextFacade;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;

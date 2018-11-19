@@ -8,7 +8,7 @@ import cn.org.faster.framework.admin.rolePermission.entity.SysRolePermission;
 import cn.org.faster.framework.admin.rolePermission.error.RolePermissionError;
 import cn.org.faster.framework.admin.rolePermission.service.SysRolePermissionService;
 import cn.org.faster.framework.web.exception.model.ErrorResponseEntity;
-import cn.org.faster.framework.web.web.request.ListWrapper;
+import cn.org.faster.framework.web.model.ListWrapper;
 import lombok.AllArgsConstructor;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.BeanUtils;

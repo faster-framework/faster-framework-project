@@ -1,6 +1,6 @@
 package cn.org.faster.framework.web.exception.model;
 
-import cn.org.faster.framework.web.web.context.WebContextFacade;
+import cn.org.faster.framework.web.context.model.WebContextFacade;
 import org.springframework.http.HttpStatus;
 
 /**

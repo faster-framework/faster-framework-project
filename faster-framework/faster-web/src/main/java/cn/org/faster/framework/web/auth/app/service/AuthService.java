@@ -1,7 +1,7 @@
-package cn.org.faster.framework.web.auth;
+package cn.org.faster.framework.web.auth.app.service;
 
 import cn.org.faster.framework.core.cache.context.CacheFacade;
-import cn.org.faster.framework.web.web.service.JwtService;
+import cn.org.faster.framework.web.jwt.service.JwtService;
 import io.jsonwebtoken.Claims;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;

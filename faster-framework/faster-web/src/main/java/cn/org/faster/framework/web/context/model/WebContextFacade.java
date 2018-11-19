@@ -1,4 +1,4 @@
-package cn.org.faster.framework.web.web.context;
+package cn.org.faster.framework.web.context.model;
 
 /**
  * 获取web请求声明周期的全局变量

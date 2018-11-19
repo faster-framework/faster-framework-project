@@ -1,4 +1,4 @@
-package cn.org.faster.framework.web.web.inteceptor;
+package cn.org.faster.framework.web.context;
 
 import cn.org.faster.framework.web.utils.NetworkUtil;
 import lombok.extern.slf4j.Slf4j;

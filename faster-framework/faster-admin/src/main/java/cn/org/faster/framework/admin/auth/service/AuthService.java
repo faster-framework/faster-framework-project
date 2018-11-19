@@ -8,7 +8,7 @@ import cn.org.faster.framework.admin.user.service.SysUserService;
 import cn.org.faster.framework.core.utils.Utils;
 import cn.org.faster.framework.web.captcha.service.ICaptchaService;
 import cn.org.faster.framework.web.exception.model.ErrorResponseEntity;
-import cn.org.faster.framework.web.web.service.JwtService;
+import cn.org.faster.framework.web.jwt.service.JwtService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationToken;

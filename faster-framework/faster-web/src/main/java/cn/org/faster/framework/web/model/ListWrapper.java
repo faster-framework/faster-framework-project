@@ -1,4 +1,4 @@
-package cn.org.faster.framework.web.web.request;
+package cn.org.faster.framework.web.model;
 
 import lombok.Data;
 

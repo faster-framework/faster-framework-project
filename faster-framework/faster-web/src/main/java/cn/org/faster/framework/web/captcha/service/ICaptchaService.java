@@ -2,7 +2,7 @@ package cn.org.faster.framework.web.captcha.service;
 
 import cn.org.faster.framework.core.utils.Utils;
 import cn.org.faster.framework.web.captcha.bean.CaptchaBean;
-import cn.org.faster.framework.web.web.service.JwtService;
+import cn.org.faster.framework.web.jwt.service.JwtService;
 import com.github.bingoohuang.patchca.custom.ConfigurableCaptchaService;
 import com.github.bingoohuang.patchca.service.Captcha;
 import io.jsonwebtoken.Claims;
