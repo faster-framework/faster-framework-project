@@ -22,9 +22,19 @@ public abstract class ISmsCaptchaService {
     }
 
     /**
-     * 发送短信验证码
+     * 发送短信验证码，不需要前缀
      *
      * @param phone 手机号
+     * @return true/false
+     */
+    public boolean send(String phone) {
+        return send(phone, "");
+    }
+
+    /**
+     * 发送短信验证码
+     *
+     * @param phone  手机号
      * @param prefix 前缀
      * @return true/false
      */
@@ -43,13 +53,23 @@ public abstract class ISmsCaptchaService {
         return success;
     }
 
+    /**
+     * 验证短信验证码，不需要前缀
+     *
+     * @param phone 手机号
+     * @param code  短信验证码
+     * @return true/false
+     */
+    public boolean valid(String phone, String code) {
+        return valid(phone, code);
+    }
 
     /**
      * 验证短信验证码
      *
-     * @param phone 手机号
-     * @param code  短信验证码
-     * @param prefix  前缀
+     * @param phone  手机号
+     * @param code   短信验证码
+     * @param prefix 前缀
      * @return true/false
      */
     public boolean valid(String phone, String code, String prefix) {
@@ -67,36 +87,30 @@ public abstract class ISmsCaptchaService {
     }
 
     /**
-     * @return 短信验证码
-     */
-    protected String generateCode() {
-        return Utils.generateSmsCode();
-    }
-
-    /**
-     * 验证是否存在验证码
-     *
-     * @param phone 手机号
-     * @param code  短信验证码
-     * @return true or false
-     */
-    public boolean exist(String phone, String code) {
-        if (StringUtils.isEmpty(phone) || StringUtils.isEmpty(code)) {
-            return false;
-        }
-        if (debug) {
-            return true;
-        }
-        return code.equals(CacheFacade.get(phone));
-    }
-
-    /**
-     * 通过手机号删除短信验证码
+     * 通过手机号和前缀删除短信验证码,不需要前缀
      *
      * @param phone 手机号
      */
     public void remove(String phone) {
-        CacheFacade.delete(phone);
+        this.remove(phone, "");
+    }
+
+    /**
+     * 通过手机号和前缀删除短信验证码
+     *
+     * @param phone  手机号
+     * @param prefix 前缀
+     */
+    public void remove(String phone, String prefix) {
+        CacheFacade.delete(SMS_CAPTCHA_PREFIX + prefix + phone);
+    }
+
+
+    /**
+     * @return 短信验证码
+     */
+    protected String generateCode() {
+        return Utils.generateSmsCode();
     }
 
     /**
