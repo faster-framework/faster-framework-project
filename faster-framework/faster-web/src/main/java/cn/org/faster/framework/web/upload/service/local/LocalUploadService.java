@@ -99,7 +99,7 @@ public class LocalUploadService extends IUploadService {
         String fileName = getFileName(uploadRequest);
         File file = new File(fileDir, fileName);
         //验证父目录是否存在
-        if (parentDirValid(file)) {
+        if (!parentDirValid(file)) {
             return new UploadSuccess();
         }
         try (FileOutputStream fileOutputStream = new FileOutputStream(file)) {
@@ -115,7 +115,7 @@ public class LocalUploadService extends IUploadService {
         String fileName = getFileName(uploadRequest);
         File file = new File(fileDir, fileName);
         //验证父目录是否存在
-        if (parentDirValid(file)) {
+        if (!parentDirValid(file)) {
             return new UploadSuccess();
         }
         try (FileOutputStream fileOutputStream = new FileOutputStream(file)) {
