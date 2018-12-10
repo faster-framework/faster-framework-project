@@ -2,14 +2,14 @@ package cn.org.faster.framework.web.spring.boot.autoconfigure.web;
 
 import cn.org.faster.framework.core.utils.time.LocalDateFormatter;
 import cn.org.faster.framework.core.utils.time.LocalDatetimeFormatter;
+import cn.org.faster.framework.web.context.ContextInterceptor;
+import cn.org.faster.framework.web.context.LogInterceptor;
+import cn.org.faster.framework.web.context.model.SpringAppContextFacade;
+import cn.org.faster.framework.web.context.processor.RequestContextBeanFactoryPostProcessor;
 import cn.org.faster.framework.web.exception.GlobalExceptionHandler;
+import cn.org.faster.framework.web.jwt.service.JwtService;
 import cn.org.faster.framework.web.spring.boot.autoconfigure.ProjectProperties;
-import cn.org.faster.framework.web.web.context.SpringAppContextFacade;
-import cn.org.faster.framework.web.web.inteceptor.ContextInterceptor;
-import cn.org.faster.framework.web.web.inteceptor.LogInterceptor;
-import cn.org.faster.framework.web.web.processor.RequestContextBeanFactoryPostProcessor;
-import cn.org.faster.framework.web.web.service.JwtService;
-import cn.org.faster.framework.web.web.version.ApiRequestMappingHandlerMapping;
+import cn.org.faster.framework.web.version.ApiRequestMappingHandlerMapping;
 import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,6 +19,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -36,6 +37,7 @@ import java.time.LocalDateTime;
 @Configuration
 @Import({GlobalExceptionHandler.class})
 @EnableConfigurationProperties({ProjectProperties.class})
+@EnableScheduling
 public class WebAutoConfiguration implements WebMvcConfigurer, WebMvcRegistrations {
     @Value("${spring.profiles.active}")
     private String env;

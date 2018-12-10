@@ -29,15 +29,15 @@ public class AuthService {
     /**
      * 生成token,使用项目配置秘钥，存入缓存
      *
-     * @param audience  接收者
+     * @param audience  观众
      * @param expSecond 过期时间(秒)
      * @return String
      */
-    public String createToken(Object audience, long expSecond) {
+    public String createToken(String audience, long expSecond) {
         String token = jwtService.createToken(audience, expSecond);
         //如果不允许多端登录，设置token到缓存中
         if (!multipartTerminal) {
-            CacheFacade.set(AUTH_TOKEN_PREFIX + audience.toString(), token, expSecond);
+            CacheFacade.set(AUTH_TOKEN_PREFIX + audience, token, expSecond);
         }
         return token;
     }

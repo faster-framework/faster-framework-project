@@ -22,8 +22,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 
 /**
  * @author zhangbowen
@@ -58,7 +58,7 @@ public class AuthService {
         if (!existUser.getPassword().equals(Utils.md5(loginReq.getPassword()))) {
             return ErrorResponseEntity.error(AuthError.PASSWORD_ERROR, HttpStatus.NOT_FOUND);
         }
-        String token = jwtService.createToken(existUser.getId(), 0);
+        String token = jwtService.createToken(existUser.getId().toString(), 0);
         Subject subject = SecurityUtils.getSubject();
         subject.login(new AuthenticationToken() {
             @Override
@@ -98,6 +98,6 @@ public class AuthService {
             SecurityUtils.getSubject().isPermitted("permissions");
             authorizationInfo = cache.get(SecurityUtils.getSubject().getPrincipals());
         }
-        return authorizationInfo == null ? new ArrayList<>() : authorizationInfo.getStringPermissions();
+        return authorizationInfo == null ? Collections.emptyList() : authorizationInfo.getStringPermissions();
     }
 }

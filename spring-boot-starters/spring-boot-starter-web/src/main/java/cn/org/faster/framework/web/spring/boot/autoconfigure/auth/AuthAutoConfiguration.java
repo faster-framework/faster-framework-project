@@ -1,7 +1,7 @@
 package cn.org.faster.framework.web.spring.boot.autoconfigure.auth;
 
-import cn.org.faster.framework.web.auth.AuthService;
 import cn.org.faster.framework.web.auth.app.interceptor.AppAuthInterceptor;
+import cn.org.faster.framework.web.auth.app.service.AuthService;
 import cn.org.faster.framework.web.spring.boot.autoconfigure.ProjectProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;

@@ -1,7 +1,7 @@
 package cn.org.faster.framework.mybatis.entity;
 
 import cn.org.faster.framework.core.utils.sequence.Sequence;
-import cn.org.faster.framework.web.web.context.WebContextFacade;
+import cn.org.faster.framework.web.context.model.WebContextFacade;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.core.metadata.IPage;

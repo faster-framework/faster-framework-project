@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -66,7 +67,7 @@ public class SysUserRoleService extends ServiceImpl<SysUserRoleMapper, SysUserRo
         this.deleteByUserId(userId);
         //清空缓存
         authorizingRealm.getAuthorizationCache().clear();
-        if (list.isEmpty()) {
+        if (CollectionUtils.isEmpty(list)) {
             return;
         }
         list.forEach(item -> {

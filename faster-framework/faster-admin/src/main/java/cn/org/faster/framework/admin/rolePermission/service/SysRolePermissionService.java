@@ -9,8 +9,10 @@ import lombok.AllArgsConstructor;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -29,6 +31,9 @@ public class SysRolePermissionService extends ServiceImpl<SysRolePermissionMappe
      * @return 权限列表
      */
     public List<SysRolePermission> selectByRoleIdList(List<Long> roleIdList) {
+        if (CollectionUtils.isEmpty(roleIdList)) {
+            return Collections.emptyList();
+        }
         return super.baseMapper.selectList(new QueryWrapper<SysRolePermission>()
                 .select("distinct(permission_id) as permissionId")
                 .in("role_id", roleIdList)
@@ -50,6 +55,9 @@ public class SysRolePermissionService extends ServiceImpl<SysRolePermissionMappe
      * @param permissionIdList 角色id列表
      */
     public void deleteByPermissionIdList(List<Long> permissionIdList) {
+        if (CollectionUtils.isEmpty(permissionIdList)) {
+            return;
+        }
         super.baseMapper.delete(new LambdaQueryWrapper<SysRolePermission>().in(SysRolePermission::getPermissionId, permissionIdList));
     }
 
@@ -64,7 +72,7 @@ public class SysRolePermissionService extends ServiceImpl<SysRolePermissionMappe
         this.deleteByRoleId(roleId);
         //清空缓存
         authorizingRealm.getAuthorizationCache().clear();
-        if (list == null || list.isEmpty()) {
+        if (CollectionUtils.isEmpty(list)) {
             return;
         }
         list.forEach(item -> {

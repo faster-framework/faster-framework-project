@@ -16,8 +16,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -104,7 +106,7 @@ public class SysPermissionService extends ServiceImpl<SysPermissionMapper, SysPe
      * @return true or false
      */
     private boolean existCode(String code) {
-        return super.baseMapper.selectOne(new LambdaQueryWrapper<SysPermission>().eq(SysPermission::getCode, code)) != null;
+        return this.getOne(new LambdaQueryWrapper<SysPermission>().eq(SysPermission::getCode, code)) != null;
     }
 
     /**
@@ -155,6 +157,9 @@ public class SysPermissionService extends ServiceImpl<SysPermissionMapper, SysPe
      * @return 权限列表
      */
     public List<SysPermission> selectByIdList(List<Long> idList) {
+        if (CollectionUtils.isEmpty(idList)) {
+            return Collections.emptyList();
+        }
         return super.baseMapper.selectBatchIds(idList);
     }
 
