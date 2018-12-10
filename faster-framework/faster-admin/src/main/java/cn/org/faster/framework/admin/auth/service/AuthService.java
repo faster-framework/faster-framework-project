@@ -7,7 +7,7 @@ import cn.org.faster.framework.admin.user.entity.SysUser;
 import cn.org.faster.framework.admin.user.service.SysUserService;
 import cn.org.faster.framework.core.utils.Utils;
 import cn.org.faster.framework.web.captcha.service.ICaptchaService;
-import cn.org.faster.framework.web.exception.model.ErrorResponseEntity;
+import cn.org.faster.framework.web.exception.model.ResponseErrorEntity;
 import cn.org.faster.framework.web.jwt.service.JwtService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import org.apache.shiro.SecurityUtils;
@@ -49,14 +49,14 @@ public class AuthService {
     public ResponseEntity login(LoginReq loginReq) {
         //验证图形验证码是否正确
         if (!captchaService.valid(loginReq.getCaptcha(), loginReq.getCaptchaToken())) {
-            return ErrorResponseEntity.error(AuthError.CAPTCHA_ERROR, HttpStatus.NOT_FOUND);
+            return ResponseErrorEntity.error(AuthError.CAPTCHA_ERROR, HttpStatus.NOT_FOUND);
         }
         SysUser existUser = sysUserService.getOne(new LambdaQueryWrapper<SysUser>().eq(SysUser::getAccount, loginReq.getAccount()));
         if (existUser == null) {
-            return ErrorResponseEntity.error(AuthError.USER_NOT_EXIST, HttpStatus.NOT_FOUND);
+            return ResponseErrorEntity.error(AuthError.USER_NOT_EXIST, HttpStatus.NOT_FOUND);
         }
         if (!existUser.getPassword().equals(Utils.md5(loginReq.getPassword()))) {
-            return ErrorResponseEntity.error(AuthError.PASSWORD_ERROR, HttpStatus.NOT_FOUND);
+            return ResponseErrorEntity.error(AuthError.PASSWORD_ERROR, HttpStatus.NOT_FOUND);
         }
         String token = jwtService.createToken(existUser.getId().toString(), 0);
         Subject subject = SecurityUtils.getSubject();

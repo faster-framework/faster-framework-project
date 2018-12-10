@@ -8,6 +8,7 @@ public enum BasisErrorCode implements ErrorCode {
     VALIDATION_FAILED(1001, "参数异常"),
     TOKEN_INVALID(1002, "登录状态过期"),
     SMS_SEND_ERROR(1003, "短信发送失败"),
+    PROCESS_ERROR(1004, "处理失败"),
     ;
 
     private int value;

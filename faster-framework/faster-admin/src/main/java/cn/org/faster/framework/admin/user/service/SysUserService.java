@@ -7,7 +7,7 @@ import cn.org.faster.framework.admin.user.model.SysUserChangePwdReq;
 import cn.org.faster.framework.admin.userRole.service.SysUserRoleService;
 import cn.org.faster.framework.core.utils.Utils;
 import cn.org.faster.framework.mybatis.entity.BaseEntity;
-import cn.org.faster.framework.web.exception.model.ErrorResponseEntity;
+import cn.org.faster.framework.web.exception.model.ResponseErrorEntity;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -57,7 +57,7 @@ public class SysUserService extends ServiceImpl<SysUserMapper, SysUser> {
         //判断当前用户是否存在
         SysUser exist = super.baseMapper.selectOne(new LambdaQueryWrapper<SysUser>().eq(SysUser::getAccount,sysUser.getAccount()));
         if (exist != null) {
-            return ErrorResponseEntity.error(UserError.USER_EXIST, HttpStatus.BAD_REQUEST);
+            return ResponseErrorEntity.error(UserError.USER_EXIST, HttpStatus.BAD_REQUEST);
         }
         sysUser.setPassword(Utils.md5(sysUser.getPassword()));
         sysUser.preInsert();
@@ -98,10 +98,10 @@ public class SysUserService extends ServiceImpl<SysUserMapper, SysUser> {
     public ResponseEntity changePwd(SysUserChangePwdReq sysUserChangePwdReq, Long userId) {
         SysUser existUser = super.baseMapper.selectById(userId);
         if (existUser == null) {
-            return ErrorResponseEntity.error(UserError.USER_NOT_EXIST, HttpStatus.NOT_FOUND);
+            return ResponseErrorEntity.error(UserError.USER_NOT_EXIST, HttpStatus.NOT_FOUND);
         }
         if (!existUser.getPassword().equals(Utils.md5(sysUserChangePwdReq.getOldPwd()))) {
-            return ErrorResponseEntity.error(UserError.OLD_PASSWORD_ERROR, HttpStatus.BAD_REQUEST);
+            return ResponseErrorEntity.error(UserError.OLD_PASSWORD_ERROR, HttpStatus.BAD_REQUEST);
         }
         SysUser update = new SysUser();
         update.setPassword(Utils.md5(sysUserChangePwdReq.getPassword()));

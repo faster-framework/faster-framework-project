@@ -1,8 +1,8 @@
 package cn.org.faster.framework.web.exception;
 
 import cn.org.faster.framework.web.exception.model.BasisErrorCode;
-import cn.org.faster.framework.web.exception.model.ErrorResponseEntity;
-import cn.org.faster.framework.web.exception.model.ResultError;
+import cn.org.faster.framework.web.exception.model.ResponseErrorEntity;
+import cn.org.faster.framework.web.utils.ResponseBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
@@ -22,25 +22,29 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     public Object handleException(MethodArgumentNotValidException exception) {
         FieldError fieldError = exception.getBindingResult().getFieldError();
-        ResultError resultMsg = new ResultError(BasisErrorCode.VALIDATION_FAILED.getValue(), fieldError.getField() + fieldError.getDefaultMessage());
-        return ErrorResponseEntity.error(resultMsg, HttpStatus.BAD_REQUEST);
+        if (fieldError == null) {
+            return ResponseBuilder.badParam();
+        }
+        return ResponseBuilder.badParam(fieldError.getField() + fieldError.getDefaultMessage());
     }
 
     @ExceptionHandler(BindException.class)
     public Object handleException(BindException exception) {
         FieldError fieldError = exception.getBindingResult().getFieldError();
-        ResultError resultMsg = new ResultError(BasisErrorCode.VALIDATION_FAILED.getValue(), fieldError.getField() + fieldError.getDefaultMessage());
-        return ErrorResponseEntity.error(resultMsg, HttpStatus.BAD_REQUEST);
+        if (fieldError == null) {
+            return ResponseBuilder.badParam();
+        }
+        return ResponseBuilder.badParam(fieldError.getField() + fieldError.getDefaultMessage());
     }
 
     @ExceptionHandler(TokenValidException.class)
     public Object handleException(TokenValidException exception) {
-        return ErrorResponseEntity.error(exception.getErrorCode(), HttpStatus.UNAUTHORIZED);
+        return ResponseErrorEntity.error(exception.getErrorCode(), HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(SQLException.class)
     public Object handleException(SQLException exception) {
         exception.printStackTrace();
-        return ErrorResponseEntity.error(BasisErrorCode.SERVER_ERROR, HttpStatus.INTERNAL_SERVER_ERROR);
+        return ResponseErrorEntity.error(BasisErrorCode.SERVER_ERROR, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

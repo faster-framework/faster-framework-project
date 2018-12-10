@@ -164,4 +164,16 @@ public class Utils {
         }
         return "";
     }
+
+    /**
+     * 安全返回数组某个下标的元素
+     *
+     * @param array 数组
+     * @param index 下标
+     * @param <T>   泛型
+     * @return 某个元素
+     */
+    public static <T> T safeElement(T[] array, int index) {
+        return array == null ? null : array.length - 1 < index ? null : array[index];
+    }
 }

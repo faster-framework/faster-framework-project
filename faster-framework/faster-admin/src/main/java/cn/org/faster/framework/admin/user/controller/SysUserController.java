@@ -8,7 +8,7 @@ import cn.org.faster.framework.admin.user.model.SysUserUpdateReq;
 import cn.org.faster.framework.admin.user.service.SysUserService;
 import cn.org.faster.framework.admin.userRole.entity.SysUserRole;
 import cn.org.faster.framework.admin.userRole.service.SysUserRoleService;
-import cn.org.faster.framework.web.exception.model.ErrorResponseEntity;
+import cn.org.faster.framework.web.exception.model.ResponseErrorEntity;
 import cn.org.faster.framework.web.model.ListWrapper;
 import lombok.AllArgsConstructor;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -89,7 +89,7 @@ public class SysUserController {
     @RequiresPermissions("users:delete")
     public ResponseEntity delete(@PathVariable Long userId) {
         if (userId == 0L) {
-            return ErrorResponseEntity.error(UserError.ADMIN_CANNOT_DELETE, HttpStatus.BAD_REQUEST);
+            return ResponseErrorEntity.error(UserError.ADMIN_CANNOT_DELETE, HttpStatus.BAD_REQUEST);
         }
         sysUserService.delete(userId);
         return new ResponseEntity(HttpStatus.CREATED);

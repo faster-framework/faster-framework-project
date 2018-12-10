@@ -3,7 +3,7 @@ package cn.org.faster.framework.admin.spring.boot.autoconfigure;
 import cn.org.faster.framework.admin.auth.error.AuthError;
 import cn.org.faster.framework.admin.shiro.ShiroFilter;
 import cn.org.faster.framework.admin.shiro.cache.ShiroCacheManager;
-import cn.org.faster.framework.web.exception.model.ErrorResponseEntity;
+import cn.org.faster.framework.web.exception.model.ResponseErrorEntity;
 import cn.org.faster.framework.web.exception.model.ResultError;
 import org.apache.shiro.authz.AuthorizationException;
 import org.apache.shiro.cache.CacheManager;
@@ -104,7 +104,7 @@ public class ShiroConfiguration {
         @ExceptionHandler(value = AuthorizationException.class)
         public Object handleException(AuthorizationException exception) {
             ResultError resultMsg = new ResultError(AuthError.NOT_HAVE_PERMISSION.getValue(), AuthError.NOT_HAVE_PERMISSION.getDescription() + "：" + exception.getMessage());
-            return ErrorResponseEntity.error(resultMsg, HttpStatus.BAD_REQUEST);
+            return ResponseErrorEntity.error(resultMsg, HttpStatus.BAD_REQUEST);
         }
     }
 }

@@ -7,7 +7,7 @@ import cn.org.faster.framework.admin.role.service.SysRoleService;
 import cn.org.faster.framework.admin.rolePermission.entity.SysRolePermission;
 import cn.org.faster.framework.admin.rolePermission.error.RolePermissionError;
 import cn.org.faster.framework.admin.rolePermission.service.SysRolePermissionService;
-import cn.org.faster.framework.web.exception.model.ErrorResponseEntity;
+import cn.org.faster.framework.web.exception.model.ResponseErrorEntity;
 import cn.org.faster.framework.web.model.ListWrapper;
 import lombok.AllArgsConstructor;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -94,7 +94,7 @@ public class SysRoleController {
     public ResponseEntity delete(@PathVariable Long roleId) {
         //超级管理员不可删除
         if (roleId == 0L) {
-            return ErrorResponseEntity.error(RoleError.ADMIN_CANNOT_DELETE, HttpStatus.BAD_REQUEST);
+            return ResponseErrorEntity.error(RoleError.ADMIN_CANNOT_DELETE, HttpStatus.BAD_REQUEST);
         }
         sysRoleService.delete(roleId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -111,7 +111,7 @@ public class SysRoleController {
     @RequiresPermissions("roles:permissions:choose")
     public ResponseEntity choosePermissions(@Validated @RequestBody ListWrapper<SysRolePermission> list, @PathVariable Long roleId) {
         if (roleId == 0L) {
-            return ErrorResponseEntity.error(RolePermissionError.CANNOT_CHOOSE_ADMIN_PERMISSION, HttpStatus.BAD_REQUEST);
+            return ResponseErrorEntity.error(RolePermissionError.CANNOT_CHOOSE_ADMIN_PERMISSION, HttpStatus.BAD_REQUEST);
         }
         sysRolePermissionService.batchChoose(list.getList(), roleId);
         return new ResponseEntity(HttpStatus.CREATED);

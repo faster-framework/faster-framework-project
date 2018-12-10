@@ -1,7 +1,7 @@
 package cn.org.faster.framework.web.upload.controller;
 
 import cn.org.faster.framework.web.exception.model.BasisErrorCode;
-import cn.org.faster.framework.web.exception.model.ErrorResponseEntity;
+import cn.org.faster.framework.web.exception.model.ResponseErrorEntity;
 import cn.org.faster.framework.web.upload.model.UploadRequest;
 import cn.org.faster.framework.web.upload.service.IUploadService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +49,7 @@ public abstract class AbstractUploadController {
         try {
             return ResponseEntity.ok(uploadService.upload(uploadFile, uploadRequest, token));
         } catch (IOException e) {
-            return ErrorResponseEntity.error(BasisErrorCode.SERVER_ERROR, HttpStatus.INTERNAL_SERVER_ERROR);
+            return ResponseErrorEntity.error(BasisErrorCode.SERVER_ERROR, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

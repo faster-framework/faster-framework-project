@@ -7,7 +7,7 @@ import cn.org.faster.framework.admin.rolePermission.service.SysRolePermissionSer
 import cn.org.faster.framework.core.entity.TreeNode;
 import cn.org.faster.framework.core.utils.tree.TreeUtils;
 import cn.org.faster.framework.mybatis.entity.BaseEntity;
-import cn.org.faster.framework.web.exception.model.ErrorResponseEntity;
+import cn.org.faster.framework.web.exception.model.ResponseErrorEntity;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.AllArgsConstructor;
@@ -68,11 +68,11 @@ public class SysPermissionService extends ServiceImpl<SysPermissionMapper, SysPe
     public ResponseEntity add(SysPermission sysPermission) {
         boolean existParentId = completeParentIds(sysPermission);
         if (!existParentId) {
-            return ErrorResponseEntity.error(SysPermissionError.PERMISSION_PARENT_NOT_EXIST, HttpStatus.BAD_REQUEST);
+            return ResponseErrorEntity.error(SysPermissionError.PERMISSION_PARENT_NOT_EXIST, HttpStatus.BAD_REQUEST);
         }
         if (!StringUtils.isEmpty(sysPermission.getCode())) {
             if (existCode(sysPermission.getCode())) {
-                return ErrorResponseEntity.error(SysPermissionError.PERMISSION_CODE_EXIST, HttpStatus.BAD_REQUEST);
+                return ResponseErrorEntity.error(SysPermissionError.PERMISSION_CODE_EXIST, HttpStatus.BAD_REQUEST);
             }
         }
         sysPermission.preInsert();
@@ -122,7 +122,7 @@ public class SysPermissionService extends ServiceImpl<SysPermissionMapper, SysPe
             if (oldPermission != null) {
                 //如果旧的code跟要更改的code一致，说明不需要修改。如果不一致，并且数据库已经存在要更改的code，返回错误
                 if (!sysPermission.getCode().equals(oldPermission.getCode()) && existCode(sysPermission.getCode())) {
-                    return ErrorResponseEntity.error(SysPermissionError.PERMISSION_CODE_EXIST, HttpStatus.BAD_REQUEST);
+                    return ResponseErrorEntity.error(SysPermissionError.PERMISSION_CODE_EXIST, HttpStatus.BAD_REQUEST);
                 }
             }
         }
