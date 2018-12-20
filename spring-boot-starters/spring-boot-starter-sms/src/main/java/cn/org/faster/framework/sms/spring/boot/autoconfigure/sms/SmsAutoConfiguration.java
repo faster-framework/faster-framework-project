@@ -25,7 +25,6 @@ public class SmsAutoConfiguration {
      */
     @Bean
     @ConditionalOnProperty(prefix = "faster.sms", name = "mode", havingValue = "ali", matchIfMissing = true)
-    @ConditionalOnMissingBean(ISmsService.class)
     public ISmsService aliSmsCode(SmsProperties smsProperties) {
         return new AliSmsService(smsProperties.getAli().getAccessKeyId(), smsProperties.getAli().getAccessKeySecret());
     }

@@ -22,7 +22,6 @@ public class CacheAutoConfiguration {
     /**
      * @return 本地缓存
      */
-    @ConditionalOnMissingBean(ICacheService.class)
     @ConditionalOnProperty(prefix = "faster.cache", name = "mode", havingValue = "local", matchIfMissing = true)
     @Bean
     public ICacheService localCacheService() {

@@ -45,7 +45,7 @@ public class SmsProperties {
     }
 
     @Data
-    @ConfigurationProperties(prefix = "faster.sms.captcha")
+    @ConfigurationProperties(prefix = "captcha")
     public static class SmsCaptchaProperties {
         /**
          * 超时时间（秒），默认15分钟

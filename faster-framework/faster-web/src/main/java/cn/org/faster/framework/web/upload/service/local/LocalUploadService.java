@@ -7,6 +7,7 @@ import cn.org.faster.framework.web.upload.model.UploadRequest;
 import cn.org.faster.framework.web.upload.model.UploadSuccess;
 import cn.org.faster.framework.web.upload.model.UploadToken;
 import cn.org.faster.framework.web.upload.service.IUploadService;
+import org.springframework.util.StreamUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -103,7 +104,7 @@ public class LocalUploadService extends IUploadService {
             return new UploadSuccess();
         }
         try (FileOutputStream fileOutputStream = new FileOutputStream(file)) {
-            fileOutputStream.write(Utils.inputStreamToByteArray(uploadStream));
+            fileOutputStream.write(StreamUtils.copyToByteArray(uploadStream));
         }
         return uploadSuccess(fileName);
     }

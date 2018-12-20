@@ -24,7 +24,7 @@ public class UploadProperties {
     private LocalUploadProperties local = new LocalUploadProperties();
 
 
-    @ConfigurationProperties(prefix = "faster.upload.local")
+    @ConfigurationProperties(prefix = "local")
     @Data
     public static class LocalUploadProperties {
         /**

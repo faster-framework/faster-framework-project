@@ -3,6 +3,7 @@ package cn.org.faster.framework.web.exception;
 import cn.org.faster.framework.web.exception.model.BasisErrorCode;
 import cn.org.faster.framework.web.exception.model.ResponseErrorEntity;
 import cn.org.faster.framework.web.utils.ResponseBuilder;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
@@ -18,6 +19,7 @@ import java.sql.SQLException;
  */
 @ControllerAdvice
 @ResponseBody
+@Configuration
 public class GlobalExceptionHandler {
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     public Object handleException(MethodArgumentNotValidException exception) {

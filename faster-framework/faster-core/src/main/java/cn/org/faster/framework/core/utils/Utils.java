@@ -115,23 +115,6 @@ public class Utils {
     }
 
     /**
-     * inputstream 转 byte[]数组
-     *
-     * @param input 输入流
-     * @return byt[]数组
-     * @throws IOException 异常
-     */
-    public static byte[] inputStreamToByteArray(InputStream input) throws IOException {
-        ByteArrayOutputStream output = new ByteArrayOutputStream();
-        byte[] buffer = new byte[4096];
-        int n = 0;
-        while (-1 != (n = input.read(buffer))) {
-            output.write(buffer, 0, n);
-        }
-        return output.toByteArray();
-    }
-
-    /**
      * 获取文件名后缀，携带小数点
      *
      * @param fileName 文件名称

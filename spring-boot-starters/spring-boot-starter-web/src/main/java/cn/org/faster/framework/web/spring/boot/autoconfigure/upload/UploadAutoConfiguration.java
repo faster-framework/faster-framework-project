@@ -19,7 +19,6 @@ public class UploadAutoConfiguration {
     @Configuration
     @ConditionalOnProperty(prefix = "faster.upload", name = "mode", havingValue = "local", matchIfMissing = true)
     @EnableConfigurationProperties({ProjectProperties.class, UploadProperties.LocalUploadProperties.class})
-    @ConditionalOnMissingBean(IUploadService.class)
     public static class LocalUploadConfiguration {
 
         @Bean
