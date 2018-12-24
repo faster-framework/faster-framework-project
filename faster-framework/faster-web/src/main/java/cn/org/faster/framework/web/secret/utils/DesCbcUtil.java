@@ -1,4 +1,4 @@
-package cn.org.faster.framework.web.spring.boot.autoconfigure.secret.utils;
+package cn.org.faster.framework.web.secret.utils;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.Base64Utils;

@@ -1,8 +1,8 @@
 package cn.org.faster.framework.web.spring.boot.autoconfigure.secret.advice;
 
-import cn.org.faster.framework.web.spring.boot.autoconfigure.secret.model.SecretHttpMessage;
-import cn.org.faster.framework.web.spring.boot.autoconfigure.secret.properties.SecretProperties;
-import cn.org.faster.framework.web.spring.boot.autoconfigure.secret.utils.DesCbcUtil;
+import cn.org.faster.framework.web.secret.model.SecretHttpMessage;
+import cn.org.faster.framework.web.secret.properties.SecretProperties;
+import cn.org.faster.framework.web.secret.utils.DesCbcUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -19,7 +19,6 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestBodyAdviceAd
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 import java.nio.charset.Charset;
 
@@ -31,7 +30,7 @@ import java.nio.charset.Charset;
  */
 @Slf4j
 @ControllerAdvice
-@ConditionalOnProperty(prefix = "secret", name = "enabled", havingValue = "true")
+@ConditionalOnProperty(prefix = "faster.secret", name = "enabled", havingValue = "true")
 @EnableConfigurationProperties({SecretProperties.class})
 @Order(1)
 public class SecretRequestAdvice extends RequestBodyAdviceAdapter {
@@ -49,8 +48,12 @@ public class SecretRequestAdvice extends RequestBodyAdviceAdapter {
         if (!secretProperties.isScanAnnotation()) {
             return true;
         }
-        Annotation annotationClass = methodParameter.getMethodAnnotation(secretProperties.getAnnotationClass());
-        return annotationClass != null;
+        //判断class是否存在注解
+        if (methodParameter.getContainingClass().getAnnotation(secretProperties.getAnnotationClass()) != null) {
+            return true;
+        }
+        //判断方法是否存在注解
+        return methodParameter.getMethodAnnotation(secretProperties.getAnnotationClass()) != null;
     }
 
 

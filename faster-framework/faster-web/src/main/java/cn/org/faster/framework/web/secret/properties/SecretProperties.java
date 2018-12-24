@@ -1,6 +1,6 @@
-package cn.org.faster.framework.web.spring.boot.autoconfigure.secret.properties;
+package cn.org.faster.framework.web.secret.properties;
 
-import cn.org.faster.framework.web.spring.boot.autoconfigure.secret.annotation.SecretBody;
+import cn.org.faster.framework.web.secret.annotation.SecretBody;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
@@ -12,7 +12,7 @@ import java.lang.annotation.Annotation;
  * @author zhangbowen
  * @since 2018/12/13
  */
-@ConfigurationProperties(prefix = "secret")
+@ConfigurationProperties(prefix = "faster.secret")
 @Data
 public class SecretProperties {
     /**

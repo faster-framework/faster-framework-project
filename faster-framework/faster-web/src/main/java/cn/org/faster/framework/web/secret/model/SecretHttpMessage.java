@@ -1,4 +1,4 @@
-package cn.org.faster.framework.web.spring.boot.autoconfigure.secret.model;
+package cn.org.faster.framework.web.secret.model;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
