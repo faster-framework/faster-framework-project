@@ -18,7 +18,7 @@ public class SecretProperties {
     /**
      * 是否开启
      */
-    private boolean enabled = false;
+    private boolean enabled;
     /**
      * 是否扫描注解
      */
@@ -31,10 +31,10 @@ public class SecretProperties {
     /**
      * 3des 密钥长度不得小于24
      */
-    private String desSecretKey = "24ac25e04d9d8e2da25549dc94ecf357";
+    private String desSecretKey = "b2c17b46e2b1415392aab5a82869856c";
     /**
      * 3des IV向量必须为8位
      */
-    private String desIv = "01234567";
+    private String desIv = "61960842";
 
 }

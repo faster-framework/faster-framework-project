@@ -31,7 +31,7 @@ import java.nio.charset.Charset;
  */
 @Slf4j
 @ControllerAdvice
-@ConditionalOnProperty(prefix = "secret", name = "enabled", havingValue = "true", matchIfMissing = true)
+@ConditionalOnProperty(prefix = "secret", name = "enabled", havingValue = "true")
 @EnableConfigurationProperties({SecretProperties.class})
 @Order(1)
 public class SecretRequestAdvice extends RequestBodyAdviceAdapter {
