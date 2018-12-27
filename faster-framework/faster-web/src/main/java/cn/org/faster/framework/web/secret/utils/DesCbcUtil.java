@@ -18,9 +18,10 @@ public class DesCbcUtil {
     private final static String encoding = "UTF-8";
 
     /**
-     * 3DES加密
      *
      * @param plainText 普通文本
+     * @param secretKey 密钥
+     * @param iv 向量
      * @return 加密后的文本，失败返回null
      */
     public static String encode(String plainText, String secretKey, String iv) {
@@ -41,9 +42,10 @@ public class DesCbcUtil {
     }
 
     /**
-     * 3DES解密
-     *
+     *  3DES解密
      * @param encryptText 加密文本
+     * @param secretKey 密钥
+     * @param iv 向量
      * @return 解密后明文，失败返回null
      */
     public static String decode(String encryptText, String secretKey, String iv) {
