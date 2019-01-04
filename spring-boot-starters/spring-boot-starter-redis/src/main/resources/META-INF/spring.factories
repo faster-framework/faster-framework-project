@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-cn.org.faster.framework.redis.spring.boot.autoconfigure.redis.RedisAutoConfiguration
+cn.org.faster.framework.redis.spring.boot.autoconfigure.RedisAutoConfiguration

@@ -1,0 +1,17 @@
+spring:
+  kafka:
+    consumer:
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      auto-offset-reset: earliest
+      properties:
+        spring:
+          json:
+            trusted:
+              packages: "*"
+#      max-poll-records: 20 #listener.type=batch时生效，默认500，可根据实际需要设定
+    producer:
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      #transaction-id-prefix: xx #设置后开启事务，必须增加@Transcational注解。此处并不是设置事务的id，而是设置事务前缀，spring-kafka的事务针对单实例，即每次创建producer都会初始化一个事务
+#    listener:
+#      concurrency: 8 #在监听器容器中运行的线程数，建议与kafka分区数量一致
+#      type: batch #批量模式，兼容单消费，默认为single

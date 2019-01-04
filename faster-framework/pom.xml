@@ -18,5 +18,6 @@
         <module>faster-redis</module>
         <module>faster-sms</module>
         <module>faster-mybatis</module>
+        <module>faster-kafka</module>
     </modules>
 </project>

@@ -1,4 +1,4 @@
-package cn.org.faster.framework.web.spring.boot.autoconfigure.web;
+package cn.org.faster.framework.web.spring.boot.autoconfigure;
 
 import cn.org.faster.framework.core.utils.time.LocalDateFormatter;
 import cn.org.faster.framework.core.utils.time.LocalDatetimeFormatter;
@@ -8,7 +8,6 @@ import cn.org.faster.framework.web.context.model.SpringAppContextFacade;
 import cn.org.faster.framework.web.context.processor.RequestContextBeanFactoryPostProcessor;
 import cn.org.faster.framework.web.exception.GlobalExceptionHandler;
 import cn.org.faster.framework.web.jwt.service.JwtService;
-import cn.org.faster.framework.web.spring.boot.autoconfigure.ProjectProperties;
 import cn.org.faster.framework.web.version.ApiRequestMappingHandlerMapping;
 import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.module.SimpleModule;

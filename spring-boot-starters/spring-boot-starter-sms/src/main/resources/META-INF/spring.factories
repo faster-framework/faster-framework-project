@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-cn.org.faster.framework.sms.spring.boot.autoconfigure.sms.SmsAutoConfiguration
+cn.org.faster.framework.sms.spring.boot.autoconfigure.SmsAutoConfiguration

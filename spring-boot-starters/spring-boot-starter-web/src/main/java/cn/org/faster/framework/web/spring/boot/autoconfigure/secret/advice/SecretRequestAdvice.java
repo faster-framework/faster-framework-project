@@ -1,8 +1,8 @@
 package cn.org.faster.framework.web.spring.boot.autoconfigure.secret.advice;
 
 import cn.org.faster.framework.web.secret.model.SecretHttpMessage;
-import cn.org.faster.framework.web.secret.properties.SecretProperties;
 import cn.org.faster.framework.web.secret.utils.DesCbcUtil;
+import cn.org.faster.framework.web.spring.boot.autoconfigure.secret.properties.SecretProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;

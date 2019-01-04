@@ -49,6 +49,7 @@ public class ResponseBuilder {
     /**
      * other success
      *
+     * @param httpStatus 状态码
      * @param body 内容
      * @param <T>  泛型
      * @return ResponseEntity
@@ -73,7 +74,7 @@ public class ResponseBuilder {
      * @param message 提示信息
      * @return ResponseEntity
      */
-    public static ResponseEntity<ResultError> badParam(String... message) {
+    public static ResponseEntity<ResultError> badArgument(String... message) {
         return ResponseErrorEntity.error(new ResultError(BasisErrorCode.VALIDATION_FAILED.getValue(), Utils.safeElement(message, 0)), HttpStatus.BAD_REQUEST);
     }
 

@@ -18,6 +18,7 @@
         <module>spring-boot-starter-redis</module>
         <module>spring-boot-starter-mybatis</module>
         <module>spring-boot-starter-parent</module>
+        <module>spring-boot-starter-kafka</module>
     </modules>
 
 </project>

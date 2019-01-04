@@ -1,4 +1,4 @@
-package cn.org.faster.framework.redis.spring.boot.autoconfigure.redis;
+package cn.org.faster.framework.redis.spring.boot.autoconfigure;
 
 import cn.org.faster.framework.redis.annotation.RedisListener;
 import cn.org.faster.framework.redis.annotation.RedisListenerScan;

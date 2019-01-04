@@ -1,4 +1,4 @@
-package cn.org.faster.framework.web.secret.properties;
+package cn.org.faster.framework.web.spring.boot.autoconfigure.secret.properties;
 
 import cn.org.faster.framework.web.secret.annotation.SecretBody;
 import lombok.Data;
