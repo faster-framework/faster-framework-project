@@ -5,6 +5,8 @@ import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import java.lang.annotation.Annotation;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 加密消息检验配置
@@ -19,14 +21,21 @@ public class SecretProperties {
      * 是否开启
      */
     private boolean enabled;
+
     /**
-     * 是否扫描注解
+     * 开启注解扫描，开启后只有存在@SecretBody注解的才可被扫描。
      */
     private boolean scanAnnotation;
+
     /**
-     * 扫描自定义注解
+     * 扫描的包，逗号分隔
      */
-    private Class<? extends Annotation> annotationClass = SecretBody.class;
+    private List<String> scanPackages = new ArrayList<>();
+
+    /**
+     * 排除扫描的包，逗号分隔
+     */
+    private List<String> excludePackages = new ArrayList<>();
 
     /**
      * 3des 密钥长度不得小于24

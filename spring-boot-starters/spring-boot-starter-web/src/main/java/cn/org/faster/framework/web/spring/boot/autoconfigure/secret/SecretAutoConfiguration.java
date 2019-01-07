@@ -1,6 +1,7 @@
 package cn.org.faster.framework.web.spring.boot.autoconfigure.secret;
 
 import cn.org.faster.framework.web.spring.boot.autoconfigure.secret.advice.SecretRequestAdvice;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
@@ -12,5 +13,6 @@ import org.springframework.context.annotation.Import;
  */
 @Configuration
 @Import({SecretRequestAdvice.class})
+@ConditionalOnProperty(prefix = "faster.secret", name = "enabled", havingValue = "true")
 public class SecretAutoConfiguration {
 }
