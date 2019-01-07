@@ -1,12 +1,12 @@
 package cn.org.faster.framework.web.exception;
 
+import cn.org.faster.framework.core.utils.error.BindingResultErrorUtils;
 import cn.org.faster.framework.web.exception.model.BasisErrorCode;
 import cn.org.faster.framework.web.exception.model.ResponseErrorEntity;
 import cn.org.faster.framework.web.utils.ResponseBuilder;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindException;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -23,20 +23,12 @@ import java.sql.SQLException;
 public class GlobalExceptionHandler {
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     public Object handleException(MethodArgumentNotValidException exception) {
-        FieldError fieldError = exception.getBindingResult().getFieldError();
-        if (fieldError == null) {
-            return ResponseBuilder.badParam();
-        }
-        return ResponseBuilder.badParam(fieldError.getField() + fieldError.getDefaultMessage());
+        return ResponseBuilder.badArgument(BindingResultErrorUtils.resolveErrorMessage(exception.getBindingResult()));
     }
 
     @ExceptionHandler(BindException.class)
     public Object handleException(BindException exception) {
-        FieldError fieldError = exception.getBindingResult().getFieldError();
-        if (fieldError == null) {
-            return ResponseBuilder.badParam();
-        }
-        return ResponseBuilder.badParam(fieldError.getField() + fieldError.getDefaultMessage());
+        return ResponseBuilder.badArgument(BindingResultErrorUtils.resolveErrorMessage(exception.getBindingResult()));
     }
 
     @ExceptionHandler(TokenValidException.class)

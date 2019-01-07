@@ -1,4 +1,4 @@
-package cn.org.faster.framework.sms.spring.boot.autoconfigure.sms;
+package cn.org.faster.framework.sms.spring.boot.autoconfigure;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -32,7 +32,7 @@ public class SmsProperties {
     private SmsCaptchaProperties captcha = new SmsCaptchaProperties();
 
     @Data
-    @ConfigurationProperties(prefix = "ali")
+    @ConfigurationProperties(prefix = "faster.sms.ali")
     public static class AliProperties {
         /**
          * 阿里key
@@ -45,7 +45,7 @@ public class SmsProperties {
     }
 
     @Data
-    @ConfigurationProperties(prefix = "captcha")
+    @ConfigurationProperties(prefix = "faster.sms.captcha")
     public static class SmsCaptchaProperties {
         /**
          * 超时时间（秒），默认15分钟

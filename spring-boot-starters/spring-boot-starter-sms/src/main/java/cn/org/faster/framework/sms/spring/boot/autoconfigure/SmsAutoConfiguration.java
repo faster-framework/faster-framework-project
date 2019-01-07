@@ -1,4 +1,4 @@
-package cn.org.faster.framework.sms.spring.boot.autoconfigure.sms;
+package cn.org.faster.framework.sms.spring.boot.autoconfigure;
 
 import cn.org.faster.framework.sms.modules.sms.service.ISmsService;
 import cn.org.faster.framework.sms.modules.sms.service.ali.AliSmsService;
