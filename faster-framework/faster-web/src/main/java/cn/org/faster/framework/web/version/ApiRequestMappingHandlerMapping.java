@@ -1,5 +1,6 @@
 package cn.org.faster.framework.web.version;
 
+import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.condition.RequestCondition;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
@@ -9,10 +10,14 @@ import java.lang.reflect.Method;
 /**
  * @author zhangbowen
  */
+@AllArgsConstructor
 public class ApiRequestMappingHandlerMapping extends RequestMappingHandlerMapping {
+    //最小版本
+    private int minimumVersion;
     private static final String VERSION_FLAG = "{version}";
 
-    private static RequestCondition<ApiVersionCondition> createCondition(Class<?> clazz) {
+
+    private RequestCondition<ApiVersionCondition> createCondition(Class<?> clazz) {
         RequestMapping classRequestMapping = clazz.getAnnotation(RequestMapping.class);
         if (classRequestMapping == null) {
             return null;
@@ -26,7 +31,7 @@ public class ApiRequestMappingHandlerMapping extends RequestMappingHandlerMappin
             return null;
         }
         ApiVersion apiVersion = clazz.getAnnotation(ApiVersion.class);
-        return apiVersion == null ? new ApiVersionCondition(1) : new ApiVersionCondition(apiVersion.value());
+        return new ApiVersionCondition(ApiVersionState.build(apiVersion, minimumVersion));
     }
 
     @Override

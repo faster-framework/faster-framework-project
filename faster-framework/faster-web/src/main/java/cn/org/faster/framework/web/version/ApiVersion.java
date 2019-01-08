@@ -15,4 +15,10 @@ public @interface ApiVersion {
      * @return 版本号
      */
     int value() default 1;
+
+    /**
+     *
+     * @return 是否废弃
+     */
+    boolean discard() default false;
 }

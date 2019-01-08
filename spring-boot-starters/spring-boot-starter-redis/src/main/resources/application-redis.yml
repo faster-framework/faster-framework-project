@@ -3,7 +3,27 @@ spring:
     database: 0
     lettuce:
       pool:
-        max-wait: 1000ms
+        max-wait: 10000ms
+        max-active: 10
+        max-idle: 2
+        min-idle: 2
+---
+spring:
+  profiles: test
+  redis:
+    database: 0
+    lettuce:
+      pool:
+        max-active: 20
+        max-idle: 10
+        min-idle: 10
+---
+spring:
+  profiles: prod
+  redis:
+    database: 0
+    lettuce:
+      pool:
         max-active: 50
         max-idle: 20
         min-idle: 20

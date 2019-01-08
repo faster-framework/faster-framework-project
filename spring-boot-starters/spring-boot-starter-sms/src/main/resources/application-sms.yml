@@ -1,0 +1,9 @@
+faster:
+  sms:
+    debug: true
+---
+spring:
+  profiles: prod
+faster:
+  sms:
+    debug: false

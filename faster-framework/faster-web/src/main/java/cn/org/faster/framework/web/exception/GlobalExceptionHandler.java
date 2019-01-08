@@ -3,7 +3,9 @@ package cn.org.faster.framework.web.exception;
 import cn.org.faster.framework.core.utils.error.BindingResultErrorUtils;
 import cn.org.faster.framework.web.exception.model.BasisErrorCode;
 import cn.org.faster.framework.web.exception.model.ResponseErrorEntity;
+import cn.org.faster.framework.web.exception.model.ResultError;
 import cn.org.faster.framework.web.utils.ResponseBuilder;
+import cn.org.faster.framework.web.version.ApiVersionDiscardException;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindException;
@@ -21,6 +23,7 @@ import java.sql.SQLException;
 @ResponseBody
 @Configuration
 public class GlobalExceptionHandler {
+
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     public Object handleException(MethodArgumentNotValidException exception) {
         return ResponseBuilder.badArgument(BindingResultErrorUtils.resolveErrorMessage(exception.getBindingResult()));
@@ -40,5 +43,11 @@ public class GlobalExceptionHandler {
     public Object handleException(SQLException exception) {
         exception.printStackTrace();
         return ResponseErrorEntity.error(BasisErrorCode.SERVER_ERROR, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(value = ApiVersionDiscardException.class)
+    public Object handleException(ApiVersionDiscardException exception) {
+        ResultError resultMsg = new ResultError(BasisErrorCode.DISCARD_ERROR.getValue(), exception.getMessage());
+        return ResponseErrorEntity.error(resultMsg, HttpStatus.BAD_REQUEST);
     }
 }

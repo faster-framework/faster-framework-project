@@ -8,9 +8,11 @@ import cn.org.faster.framework.web.context.model.SpringAppContextFacade;
 import cn.org.faster.framework.web.context.processor.RequestContextBeanFactoryPostProcessor;
 import cn.org.faster.framework.web.exception.GlobalExceptionHandler;
 import cn.org.faster.framework.web.jwt.service.JwtService;
+import cn.org.faster.framework.web.spring.boot.autoconfigure.version.VersionProperties;
 import cn.org.faster.framework.web.version.ApiRequestMappingHandlerMapping;
 import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.web.servlet.WebMvcRegistrations;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -35,11 +37,13 @@ import java.time.LocalDateTime;
  */
 @Configuration
 @Import({GlobalExceptionHandler.class})
-@EnableConfigurationProperties({ProjectProperties.class})
+@EnableConfigurationProperties({ProjectProperties.class, VersionProperties.class})
 @EnableScheduling
 public class WebAutoConfiguration implements WebMvcConfigurer, WebMvcRegistrations {
     @Value("${spring.profiles.active}")
     private String env;
+    @Autowired
+    private VersionProperties versionProperties;
 
     @Bean
     public JwtService jwtService(ProjectProperties projectProperties) {
@@ -52,7 +56,7 @@ public class WebAutoConfiguration implements WebMvcConfigurer, WebMvcRegistratio
 
     @Override
     public RequestMappingHandlerMapping getRequestMappingHandlerMapping() {
-        return new ApiRequestMappingHandlerMapping();
+        return new ApiRequestMappingHandlerMapping(versionProperties.getMinimumVersion());
     }
 
     @Override

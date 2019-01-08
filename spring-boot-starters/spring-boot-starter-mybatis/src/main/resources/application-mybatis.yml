@@ -1,10 +1,10 @@
 spring:
   datasource:
       druid:
-        driver-class-name: com.mysql.jdbc.Driver
-        maxActive: 100
-        initialSize: 50
-        minIdle: 10
+        maxActive: 10
+        initialSize: 2
+        minIdle: 2
+        driver-class-name: com.mysql.cj.jdbc.Driver
         timeBetweenEvictionRunsMillis: 60000
         minEvictableIdleTimeMillis: 300000
         validationQuery: select 'x'
@@ -22,3 +22,20 @@ spring:
 
 mybatis-plus:
   mapper-locations: classpath*:**/mapper/xml/*Mapper.xml
+
+---
+spring:
+  profiles: test
+  datasource:
+    druid:
+      maxActive: 20
+      initialSize: 10
+      minIdle: 10
+---
+spring:
+  profiles: prod
+  datasource:
+    druid:
+      maxActive: 50
+      initialSize: 20
+      minIdle: 20
