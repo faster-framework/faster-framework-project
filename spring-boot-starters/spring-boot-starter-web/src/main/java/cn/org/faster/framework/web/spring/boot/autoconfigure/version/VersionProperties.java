@@ -14,4 +14,9 @@ public class VersionProperties {
      * 最小版本号，小于该版本号返回版本过时。
      */
     private int minimumVersion;
+
+    /**
+     * 开启通过包名解析版本号，包名中存在v1、v2时解析。
+     */
+    private boolean parsePackageVersion = true;
 }

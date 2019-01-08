@@ -56,7 +56,7 @@ public class WebAutoConfiguration implements WebMvcConfigurer, WebMvcRegistratio
 
     @Override
     public RequestMappingHandlerMapping getRequestMappingHandlerMapping() {
-        return new ApiRequestMappingHandlerMapping(versionProperties.getMinimumVersion());
+        return new ApiRequestMappingHandlerMapping(versionProperties.getMinimumVersion(), versionProperties.isParsePackageVersion());
     }
 
     @Override

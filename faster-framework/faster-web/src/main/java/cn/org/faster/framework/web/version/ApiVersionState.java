@@ -17,24 +17,44 @@ public class ApiVersionState {
      */
     private boolean discard;
 
-    /**
-     * 创建
-     *
-     * @param apiVersion
-     * @param minimumVersion
-     * @return
-     */
-    public static ApiVersionState build(ApiVersion apiVersion, int minimumVersion) {
-        ApiVersionState apiVersionState = new ApiVersionState();
-        if (apiVersion == null) {
-            apiVersionState.setVersion(1);
-        } else {
-            apiVersionState.setVersion(apiVersion.value());
-            apiVersionState.setDiscard(apiVersion.discard());
+    public static class ApiVersionStateBuilder {
+        //注解版本
+        private ApiVersion apiVersion;
+        //包版本
+        private Integer packageVersion;
+        //最小支持的版本
+        private int minimumVersion;
+
+        public ApiVersionStateBuilder apiVersion(ApiVersion apiVersion) {
+            this.apiVersion = apiVersion;
+            return this;
         }
-        if (apiVersionState.getVersion() < minimumVersion) {
-            apiVersionState.setDiscard(true);
+
+        public ApiVersionStateBuilder packageVersion(Integer packageVersion) {
+            this.packageVersion = packageVersion;
+            return this;
         }
-        return apiVersionState;
+
+        public ApiVersionStateBuilder minimumVersion(int minimumVersion) {
+            this.minimumVersion = minimumVersion;
+            return this;
+        }
+
+        public ApiVersionState build() {
+            ApiVersionState apiVersionState = new ApiVersionState();
+            if (apiVersion == null) {
+                apiVersionState.setVersion(1);
+            } else {
+                apiVersionState.setVersion(apiVersion.value());
+                apiVersionState.setDiscard(apiVersion.discard());
+            }
+            if (this.packageVersion != null) {
+                apiVersionState.setVersion(this.packageVersion);
+            }
+            if (apiVersionState.getVersion() < minimumVersion) {
+                apiVersionState.setDiscard(true);
+            }
+            return apiVersionState;
+        }
     }
 }
