@@ -8,17 +8,21 @@ import java.lang.annotation.Target;
 /**
  * @author zhangbowen
  */
-@Target({ElementType.TYPE})
+@Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ApiVersion {
     /**
      * @return 版本号
      */
-    int value() default 1;
+    int value() default 0;
 
     /**
-     *
      * @return 是否废弃
      */
     boolean discard() default false;
+
+    /**
+     * @return 是否覆盖废弃
+     */
+    boolean overrideDiscard() default false;
 }

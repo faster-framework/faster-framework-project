@@ -11,6 +11,10 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @Data
 public class VersionProperties {
     /**
+     * 是否开启版本控制
+     */
+    private boolean enabled = true;
+    /**
      * 最小版本号，小于该版本号返回版本过时。
      */
     private int minimumVersion;
