@@ -25,21 +25,12 @@ mybatis-plus:
 
 ---
 spring:
-  profiles: local,dev
-mybatis-plus:
-  configuration:
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
----
-spring:
   profiles: test
   datasource:
     druid:
       maxActive: 20
       initialSize: 10
       minIdle: 10
-mybatis-plus:
-  configuration:
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 ---
 spring:
   profiles: prod
