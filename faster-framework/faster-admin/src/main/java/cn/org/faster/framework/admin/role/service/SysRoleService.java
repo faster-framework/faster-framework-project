@@ -6,12 +6,13 @@ import cn.org.faster.framework.admin.role.entity.SysRole;
 import cn.org.faster.framework.admin.role.mapper.SysRoleMapper;
 import cn.org.faster.framework.admin.rolePermission.entity.SysRolePermission;
 import cn.org.faster.framework.admin.rolePermission.service.SysRolePermissionService;
+import cn.org.faster.framework.admin.shiro.ShiroRealm;
 import cn.org.faster.framework.admin.userRole.service.SysUserRoleService;
+import cn.org.faster.framework.web.context.model.SpringAppContextFacade;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.AllArgsConstructor;
-import org.apache.shiro.realm.AuthorizingRealm;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -26,11 +27,10 @@ import java.util.stream.Collectors;
 @Service
 @Transactional
 @AllArgsConstructor
-public class SysRoleService extends ServiceImpl<SysRoleMapper,SysRole> {
+public class SysRoleService extends ServiceImpl<SysRoleMapper, SysRole> {
     private SysUserRoleService sysUserRoleService;
     private SysRolePermissionService sysRolePermissionService;
     private SysPermissionService sysPermissionService;
-    private AuthorizingRealm authorizingRealm;
 
     /**
      * 列表
@@ -89,7 +89,7 @@ public class SysRoleService extends ServiceImpl<SysRoleMapper,SysRole> {
         //删除角色权限关系
         sysRolePermissionService.deleteByRoleId(id);
         //清空缓存
-        authorizingRealm.getAuthorizationCache().clear();
+        SpringAppContextFacade.applicationContext.getBean(ShiroRealm.class).getAuthorizationCache().clear();
     }
 
     /**

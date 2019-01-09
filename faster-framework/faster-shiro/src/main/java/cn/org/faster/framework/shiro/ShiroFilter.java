@@ -1,4 +1,4 @@
-package cn.org.faster.framework.admin.shiro;
+package cn.org.faster.framework.shiro;
 
 import cn.org.faster.framework.web.exception.model.BasisErrorCode;
 import cn.org.faster.framework.web.exception.model.ResultError;

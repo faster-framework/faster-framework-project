@@ -1,5 +1,6 @@
 package cn.org.faster.framework.admin.user.service;
 
+import cn.org.faster.framework.admin.shiro.ShiroRealm;
 import cn.org.faster.framework.admin.user.entity.SysUser;
 import cn.org.faster.framework.admin.user.error.UserError;
 import cn.org.faster.framework.admin.user.mapper.SysUserMapper;
@@ -7,12 +8,12 @@ import cn.org.faster.framework.admin.user.model.SysUserChangePwdReq;
 import cn.org.faster.framework.admin.userRole.service.SysUserRoleService;
 import cn.org.faster.framework.core.utils.Utils;
 import cn.org.faster.framework.mybatis.entity.BaseEntity;
+import cn.org.faster.framework.web.context.model.SpringAppContextFacade;
 import cn.org.faster.framework.web.exception.model.ResponseErrorEntity;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.AllArgsConstructor;
-import org.apache.shiro.realm.AuthorizingRealm;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -27,7 +28,6 @@ import org.springframework.util.StringUtils;
 @AllArgsConstructor
 public class SysUserService extends ServiceImpl<SysUserMapper, SysUser> {
     private SysUserRoleService sysUserRoleService;
-    private AuthorizingRealm authorizingRealm;
 
     /**
      * @param sysUser 用户实体
@@ -55,7 +55,7 @@ public class SysUserService extends ServiceImpl<SysUserMapper, SysUser> {
      */
     public ResponseEntity add(SysUser sysUser) {
         //判断当前用户是否存在
-        SysUser exist = super.baseMapper.selectOne(new LambdaQueryWrapper<SysUser>().eq(SysUser::getAccount,sysUser.getAccount()));
+        SysUser exist = super.baseMapper.selectOne(new LambdaQueryWrapper<SysUser>().eq(SysUser::getAccount, sysUser.getAccount()));
         if (exist != null) {
             return ResponseErrorEntity.error(UserError.USER_EXIST, HttpStatus.BAD_REQUEST);
         }
@@ -85,7 +85,7 @@ public class SysUserService extends ServiceImpl<SysUserMapper, SysUser> {
         //删除用户角色关系
         sysUserRoleService.deleteByUserId(userId);
         //清空缓存
-        authorizingRealm.getAuthorizationCache().clear();
+        SpringAppContextFacade.applicationContext.getBean(ShiroRealm.class).getAuthorizationCache().clear();
     }
 
     /**

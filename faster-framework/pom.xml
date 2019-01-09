@@ -19,5 +19,6 @@
         <module>faster-sms</module>
         <module>faster-mybatis</module>
         <module>faster-kafka</module>
+        <module>faster-shiro</module>
     </modules>
 </project>

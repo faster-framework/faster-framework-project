@@ -2,11 +2,12 @@ package cn.org.faster.framework.admin.rolePermission.service;
 
 import cn.org.faster.framework.admin.rolePermission.entity.SysRolePermission;
 import cn.org.faster.framework.admin.rolePermission.mapper.SysRolePermissionMapper;
+import cn.org.faster.framework.admin.shiro.ShiroRealm;
+import cn.org.faster.framework.web.context.model.SpringAppContextFacade;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.AllArgsConstructor;
-import org.apache.shiro.realm.AuthorizingRealm;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -22,7 +23,6 @@ import java.util.List;
 @Transactional
 @AllArgsConstructor
 public class SysRolePermissionService extends ServiceImpl<SysRolePermissionMapper, SysRolePermission> {
-    private AuthorizingRealm authorizingRealm;
 
     /**
      * 根据角色id列表查询角色权限关系列表
@@ -71,7 +71,7 @@ public class SysRolePermissionService extends ServiceImpl<SysRolePermissionMappe
         //根据角色删除所有的关系
         this.deleteByRoleId(roleId);
         //清空缓存
-        authorizingRealm.getAuthorizationCache().clear();
+        SpringAppContextFacade.applicationContext.getBean(ShiroRealm.class).getAuthorizationCache().clear();
         if (CollectionUtils.isEmpty(list)) {
             return;
         }

@@ -3,6 +3,7 @@ package cn.org.faster.framework.redis.cache;
 import cn.org.faster.framework.core.cache.service.ICacheService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -19,7 +20,11 @@ public class RedisCacheService<V> implements ICacheService<V> {
 
     @Override
     public void set(String key, V value, long exp) {
-        redisTemplate.opsForValue().set(key, value, exp, TimeUnit.SECONDS);
+        if (exp > -1) {
+            redisTemplate.opsForValue().set(key, value, exp, TimeUnit.SECONDS);
+        } else {
+            redisTemplate.opsForValue().set(key, value);
+        }
     }
 
     @Override
@@ -39,7 +44,7 @@ public class RedisCacheService<V> implements ICacheService<V> {
     @Override
     public void clear(String cachePrefix) {
         Set<String> keys = redisTemplate.keys(cachePrefix + "*");
-        if (keys.size() > 0) {
+        if (!CollectionUtils.isEmpty(keys)) {
             redisTemplate.delete(keys);
         }
     }

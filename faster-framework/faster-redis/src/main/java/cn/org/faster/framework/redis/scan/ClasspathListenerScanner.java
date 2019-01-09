@@ -38,12 +38,8 @@ public class ClasspathListenerScanner extends ClassPathBeanDefinitionScanner {
         if (beanDefinitionRegistry == null) {
             return beanDefinitions;
         }
-        beanDefinitions.forEach(item -> {
-                    beanDefinitionRegistry.registerBeanDefinition(item.getBeanName(),
-                            item.getBeanDefinition());
-                    Object registerBean = beanFactory.getBean(item.getBeanName());
-
-                }
+        beanDefinitions.forEach(item -> beanDefinitionRegistry.registerBeanDefinition(item.getBeanName(),
+                item.getBeanDefinition())
         );
         return beanDefinitions;
     }

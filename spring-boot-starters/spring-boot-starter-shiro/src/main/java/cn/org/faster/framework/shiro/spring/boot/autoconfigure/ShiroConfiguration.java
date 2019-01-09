@@ -1,8 +1,8 @@
-package cn.org.faster.framework.admin.spring.boot.autoconfigure;
+package cn.org.faster.framework.shiro.spring.boot.autoconfigure;
 
-import cn.org.faster.framework.admin.auth.error.AuthError;
-import cn.org.faster.framework.admin.shiro.ShiroFilter;
-import cn.org.faster.framework.admin.shiro.cache.ShiroCacheManager;
+import cn.org.faster.framework.shiro.ShiroFilter;
+import cn.org.faster.framework.shiro.cache.ShiroCacheManager;
+import cn.org.faster.framework.web.exception.model.BasisErrorCode;
 import cn.org.faster.framework.web.exception.model.ResponseErrorEntity;
 import cn.org.faster.framework.web.exception.model.ResultError;
 import org.apache.shiro.authz.AuthorizationException;
@@ -15,6 +15,8 @@ import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
@@ -29,7 +31,11 @@ import java.util.Map;
 /**
  * @author zhangbowen
  */
+@Configuration
+@ConditionalOnProperty(prefix = "faster.shiro", name = "enabled", havingValue = "true", matchIfMissing = true)
+@EnableConfigurationProperties(ShiroProperties.class)
 public class ShiroConfiguration {
+
     @Bean
     public LifecycleBeanPostProcessor lifecycleBeanPostProcessor() {
         return new LifecycleBeanPostProcessor();
@@ -74,18 +80,17 @@ public class ShiroConfiguration {
         authorizationAttributeSourceAdvisor.setSecurityManager(securityManager);
         return authorizationAttributeSourceAdvisor;
     }
-
     /**
-     * 拦截器
-     *
+     *  过滤器
      * @param securityManager 权限管理器
+     * @param shiroProperties shiro配置
      * @return 过滤器
      */
     @Bean
-    public ShiroFilterFactoryBean shiroFilter(SecurityManager securityManager) {
+    public ShiroFilterFactoryBean shiroFilter(SecurityManager securityManager, ShiroProperties shiroProperties) {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(securityManager);
-        Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
+        Map<String, String> filterChainDefinitionMap = shiroProperties.getFilterChainDefinitionMap();
         filterChainDefinitionMap.put("/login", "anon");
         filterChainDefinitionMap.put("/media/**", "anon");
         filterChainDefinitionMap.put("/captcha/**", "anon");
@@ -103,8 +108,8 @@ public class ShiroConfiguration {
         @ResponseBody
         @ExceptionHandler(value = AuthorizationException.class)
         public Object handleException(AuthorizationException exception) {
-            ResultError resultMsg = new ResultError(AuthError.NOT_HAVE_PERMISSION.getValue(), AuthError.NOT_HAVE_PERMISSION.getDescription() + "：" + exception.getMessage());
-            return ResponseErrorEntity.error(resultMsg, HttpStatus.BAD_REQUEST);
+            ResultError resultMsg = new ResultError(BasisErrorCode.PERMISSION_ERROR.getValue(), BasisErrorCode.PERMISSION_ERROR.getDescription() + "：" + exception.getMessage());
+            return ResponseErrorEntity.error(resultMsg, HttpStatus.UNAUTHORIZED);
         }
     }
 }

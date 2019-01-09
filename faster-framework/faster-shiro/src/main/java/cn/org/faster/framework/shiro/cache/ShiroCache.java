@@ -1,4 +1,4 @@
-package cn.org.faster.framework.admin.shiro.cache;
+package cn.org.faster.framework.shiro.cache;
 
 import cn.org.faster.framework.core.cache.context.CacheFacade;
 import org.apache.shiro.cache.Cache;
@@ -25,7 +25,7 @@ public class ShiroCache<K, V> implements Cache<K, V> {
 
     @Override
     public V put(K k, V v) throws CacheException {
-        CacheFacade.set(keyPrefix + k.toString(), v, 0);
+        CacheFacade.set(keyPrefix + k.toString(), v, -1);
         return v;
     }
 

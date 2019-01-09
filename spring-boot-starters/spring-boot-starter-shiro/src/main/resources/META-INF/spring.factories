@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+cn.org.faster.framework.shiro.spring.boot.autoconfigure.ShiroConfiguration

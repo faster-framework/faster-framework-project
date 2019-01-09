@@ -23,12 +23,13 @@
         </dependency>
         <dependency>
             <groupId>cn.org.faster</groupId>
-            <artifactId>faster-mybatis</artifactId>
+            <artifactId>faster-shiro</artifactId>
             <optional>true</optional>
         </dependency>
         <dependency>
-            <groupId>org.apache.shiro</groupId>
-            <artifactId>shiro-spring-boot-starter</artifactId>
+            <groupId>cn.org.faster</groupId>
+            <artifactId>faster-mybatis</artifactId>
+            <optional>true</optional>
         </dependency>
     </dependencies>
 </project>

@@ -1,5 +1,6 @@
 package cn.org.faster.framework.web.spring.boot.autoconfigure.secret.advice;
 
+import cn.org.faster.framework.web.secret.HttpMessageDecryptException;
 import cn.org.faster.framework.web.secret.annotation.SecretBody;
 import cn.org.faster.framework.web.secret.model.SecretHttpMessage;
 import cn.org.faster.framework.web.secret.utils.DesCbcUtil;
@@ -15,7 +16,6 @@ import org.springframework.core.annotation.Order;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
 import org.springframework.http.HttpInputMessage;
 import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StreamUtils;
@@ -114,7 +114,7 @@ public class SecretRequestAdvice extends RequestBodyAdviceAdapter {
     public HttpInputMessage beforeBodyRead(HttpInputMessage inputMessage, MethodParameter parameter, Type targetType, Class<? extends HttpMessageConverter<?>> converterType) throws IOException {
         String httpBody = decryptBody(inputMessage);
         if (httpBody == null) {
-            throw new HttpMessageNotReadableException("request body decrypt error");
+            throw new HttpMessageDecryptException("request body decrypt error");
         }
         return new SecretHttpMessage(new ByteArrayInputStream(httpBody.getBytes()), inputMessage.getHeaders());
     }

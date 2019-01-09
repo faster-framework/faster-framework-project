@@ -10,6 +10,7 @@ public enum BasisErrorCode implements ErrorCode {
     SMS_SEND_ERROR(1003, "短信发送失败"),
     PROCESS_ERROR(1004, "处理失败"),
     DISCARD_ERROR(1005, "版本过时"),
+    PERMISSION_ERROR(1006, "权限不足"),
     ;
 
     private int value;

@@ -1,4 +1,4 @@
-package cn.org.faster.framework.admin.shiro.cache;
+package cn.org.faster.framework.shiro.cache;
 
 import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.CacheException;

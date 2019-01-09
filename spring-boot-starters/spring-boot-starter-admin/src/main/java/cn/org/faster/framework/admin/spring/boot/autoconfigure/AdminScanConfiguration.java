@@ -10,6 +10,6 @@ import org.springframework.context.annotation.Import;
  */
 @Configuration
 @ConditionalOnProperty(prefix = "faster.auth", name = "mode", havingValue = "admin")
-@Import({ScanConfiguration.class,ShiroConfiguration.class})
+@Import({ScanConfiguration.class})
 public class AdminScanConfiguration {
 }

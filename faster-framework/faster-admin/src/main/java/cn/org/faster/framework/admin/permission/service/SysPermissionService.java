@@ -4,14 +4,15 @@ import cn.org.faster.framework.admin.permission.entity.SysPermission;
 import cn.org.faster.framework.admin.permission.error.SysPermissionError;
 import cn.org.faster.framework.admin.permission.mapper.SysPermissionMapper;
 import cn.org.faster.framework.admin.rolePermission.service.SysRolePermissionService;
+import cn.org.faster.framework.admin.shiro.ShiroRealm;
 import cn.org.faster.framework.core.entity.TreeNode;
 import cn.org.faster.framework.core.utils.tree.TreeUtils;
 import cn.org.faster.framework.mybatis.entity.BaseEntity;
+import cn.org.faster.framework.web.context.model.SpringAppContextFacade;
 import cn.org.faster.framework.web.exception.model.ResponseErrorEntity;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.AllArgsConstructor;
-import org.apache.shiro.realm.AuthorizingRealm;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -32,7 +33,6 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class SysPermissionService extends ServiceImpl<SysPermissionMapper, SysPermission> {
     private SysRolePermissionService sysRolePermissionService;
-    private AuthorizingRealm authorizingRealm;
 
     /**
      * @return 权限树
@@ -147,7 +147,7 @@ public class SysPermissionService extends ServiceImpl<SysPermissionMapper, SysPe
         //根据权限列表，删除角色权限关系
         sysRolePermissionService.deleteByPermissionIdList(delList);
         //清空缓存
-        authorizingRealm.getAuthorizationCache().clear();
+        SpringAppContextFacade.applicationContext.getBean(ShiroRealm.class).getAuthorizationCache().clear();
     }
 
     /**

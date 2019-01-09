@@ -19,6 +19,7 @@
         <module>spring-boot-starter-mybatis</module>
         <module>spring-boot-starter-parent</module>
         <module>spring-boot-starter-kafka</module>
+        <module>spring-boot-starter-shiro</module>
     </modules>
 
 </project>

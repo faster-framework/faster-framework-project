@@ -4,6 +4,7 @@ import cn.org.faster.framework.core.utils.error.BindingResultErrorUtils;
 import cn.org.faster.framework.web.exception.model.BasisErrorCode;
 import cn.org.faster.framework.web.exception.model.ResponseErrorEntity;
 import cn.org.faster.framework.web.exception.model.ResultError;
+import cn.org.faster.framework.web.secret.HttpMessageDecryptException;
 import cn.org.faster.framework.web.utils.ResponseBuilder;
 import cn.org.faster.framework.web.version.ApiVersionDiscardException;
 import org.springframework.context.annotation.Configuration;
@@ -24,7 +25,6 @@ import java.sql.SQLException;
 @Configuration
 public class GlobalExceptionHandler {
     /**
-     *
      * @param exception 参数绑定异常拦截
      * @return 错误信息
      */
@@ -32,8 +32,8 @@ public class GlobalExceptionHandler {
     public Object handleException(MethodArgumentNotValidException exception) {
         return ResponseBuilder.badArgument(BindingResultErrorUtils.resolveErrorMessage(exception.getBindingResult()));
     }
+
     /**
-     *
      * @param exception 参数绑定异常拦截
      * @return 错误信息
      */
@@ -41,8 +41,8 @@ public class GlobalExceptionHandler {
     public Object handleException(BindException exception) {
         return ResponseBuilder.badArgument(BindingResultErrorUtils.resolveErrorMessage(exception.getBindingResult()));
     }
+
     /**
-     *
      * @param exception token失效异常拦截
      * @return 错误信息
      */
@@ -50,8 +50,8 @@ public class GlobalExceptionHandler {
     public Object handleException(TokenValidException exception) {
         return ResponseErrorEntity.error(exception.getErrorCode(), HttpStatus.UNAUTHORIZED);
     }
+
     /**
-     *
      * @param exception sql异常拦截
      * @return 错误信息
      */
@@ -62,7 +62,6 @@ public class GlobalExceptionHandler {
     }
 
     /**
-     *
      * @param exception 版本废弃异常拦截
      * @return 错误信息
      */
@@ -71,4 +70,15 @@ public class GlobalExceptionHandler {
         ResultError resultMsg = new ResultError(BasisErrorCode.DISCARD_ERROR.getValue(), exception.getMessage());
         return ResponseErrorEntity.error(resultMsg, HttpStatus.BAD_REQUEST);
     }
+
+    /**
+     * @param exception 加密接口解密失败异常
+     * @return 错误信息
+     */
+    @ExceptionHandler(value = HttpMessageDecryptException.class)
+    public Object handleException(HttpMessageDecryptException exception) {
+        ResultError resultMsg = new ResultError(BasisErrorCode.VALIDATION_FAILED.getValue(), exception.getMessage());
+        return ResponseErrorEntity.error(resultMsg, HttpStatus.BAD_REQUEST);
+    }
+
 }

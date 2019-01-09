@@ -3,26 +3,28 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>spring-boot-starters</artifactId>
+        <artifactId>faster-framework</artifactId>
         <groupId>cn.org.faster</groupId>
         <version>${revision}</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>spring-boot-starter-admin</artifactId>
+    <artifactId>faster-shiro</artifactId>
+
     <dependencies>
         <dependency>
             <groupId>cn.org.faster</groupId>
-            <artifactId>faster-admin</artifactId>
+            <artifactId>faster-core</artifactId>
         </dependency>
         <dependency>
             <groupId>cn.org.faster</groupId>
             <artifactId>faster-web</artifactId>
             <optional>true</optional>
         </dependency>
+        <!--此处并没有引入shiro-spring-boot-starter，它注册了很多额外的组件，不符合我们的个性化需求-->
         <dependency>
-            <groupId>cn.org.faster</groupId>
-            <artifactId>spring-boot-starter-shiro</artifactId>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-spring</artifactId>
         </dependency>
     </dependencies>
 </project>

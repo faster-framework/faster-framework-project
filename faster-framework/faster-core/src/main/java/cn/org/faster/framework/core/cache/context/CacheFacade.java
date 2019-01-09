@@ -2,6 +2,7 @@ package cn.org.faster.framework.core.cache.context;
 
 
 import cn.org.faster.framework.core.cache.service.ICacheService;
+import org.springframework.util.StringUtils;
 
 import java.util.Collection;
 import java.util.Set;
@@ -13,6 +14,7 @@ import java.util.Set;
 public class CacheFacade {
     public static boolean local = true;
     private static ICacheService cacheService;
+    private static String prefix = "";
 
     /**
      * 设置缓存
@@ -23,7 +25,7 @@ public class CacheFacade {
      * @param <V>   泛型
      */
     public static <V> void set(String key, V value, long exp) {
-        cacheService.set(key, value, exp);
+        cacheService.set(prefix + key, value, exp);
     }
 
     /**
@@ -34,7 +36,7 @@ public class CacheFacade {
      * @return V 泛型
      */
     public static <V> V delete(String key) {
-        return (V) cacheService.delete(key);
+        return (V) cacheService.delete(prefix + key);
     }
 
     /**
@@ -45,12 +47,15 @@ public class CacheFacade {
      * @return 返回缓存实体
      */
     public static <V> V get(String key) {
-        return (V) cacheService.get(key);
+        return (V) cacheService.get(prefix + key);
     }
 
-    public static CacheFacade initCache(ICacheService cacheService, boolean local) {
+    public static CacheFacade initCache(ICacheService cacheService, boolean local, String prefix) {
         CacheFacade.cacheService = cacheService;
         CacheFacade.local = local;
+        if (!StringUtils.isEmpty(prefix)) {
+            CacheFacade.prefix = prefix + ":";
+        }
         return new CacheFacade();
     }
 
@@ -60,7 +65,7 @@ public class CacheFacade {
      * @param cachePrefix 缓存前缀
      */
     public static void clear(String cachePrefix) {
-        cacheService.clear(cachePrefix);
+        cacheService.clear(prefix + cachePrefix);
     }
 
     /**
@@ -70,7 +75,7 @@ public class CacheFacade {
      * @return 缓存数量
      */
     public static int size(String cachePrefix) {
-        return cacheService.size(cachePrefix);
+        return cacheService.size(prefix + cachePrefix);
     }
 
     /**
@@ -81,7 +86,7 @@ public class CacheFacade {
      * @return 返回缓存列表
      */
     public static <K> Set<K> keys(String cachePrefix) {
-        return cacheService.keys(cachePrefix);
+        return cacheService.keys(prefix + cachePrefix);
     }
 
     /**
@@ -92,6 +97,6 @@ public class CacheFacade {
      * @return 返回缓存列表
      */
     public static <V> Collection<V> values(String cachePrefix) {
-        return cacheService.values(cachePrefix);
+        return cacheService.values(prefix + cachePrefix);
     }
 }

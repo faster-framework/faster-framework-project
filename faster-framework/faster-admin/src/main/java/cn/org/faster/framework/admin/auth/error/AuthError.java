@@ -12,8 +12,7 @@ import lombok.Getter;
 public enum AuthError implements ErrorCode {
     USER_NOT_EXIST(1100, "用户未注册"),
     PASSWORD_ERROR(1101, "密码错误"),
-    NOT_HAVE_PERMISSION(1102, "权限不足"),
-    CAPTCHA_ERROR(1103, "验证码错误或已过期"),;
+    CAPTCHA_ERROR(1102, "验证码错误或已过期"),;
 
     private int value;
     private String description;

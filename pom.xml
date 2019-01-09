@@ -50,7 +50,7 @@
         <mybatis-plus-boot-starter.version>3.0.3</mybatis-plus-boot-starter.version>
         <mybatis-typehandlers-jsr310.version>1.0.2</mybatis-typehandlers-jsr310.version>
         <patchca.version>0.0.1</patchca.version>
-        <shiro-spring-boot-starter.version>1.4.0</shiro-spring-boot-starter.version>
+        <shiro-spring.version>1.4.0</shiro-spring.version>
         <aliyun-java-sdk-core.version>3.7.1</aliyun-java-sdk-core.version>
         <aliyun-java-sdk-dysmsapi.version>1.1.0</aliyun-java-sdk-dysmsapi.version>
     </properties>
@@ -93,6 +93,11 @@
             </dependency>
             <dependency>
                 <groupId>cn.org.faster</groupId>
+                <artifactId>faster-shiro</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.org.faster</groupId>
                 <artifactId>spring-boot-starter-web</artifactId>
                 <version>${revision}</version>
             </dependency>
@@ -119,6 +124,11 @@
             <dependency>
                 <groupId>cn.org.faster</groupId>
                 <artifactId>spring-boot-starter-kafka</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.org.faster</groupId>
+                <artifactId>spring-boot-starter-shiro</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>
@@ -158,8 +168,8 @@
             </dependency>
             <dependency>
                 <groupId>org.apache.shiro</groupId>
-                <artifactId>shiro-spring-boot-starter</artifactId>
-                <version>${shiro-spring-boot-starter.version}</version>
+                <artifactId>shiro-spring</artifactId>
+                <version>${shiro-spring.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.aliyun</groupId>

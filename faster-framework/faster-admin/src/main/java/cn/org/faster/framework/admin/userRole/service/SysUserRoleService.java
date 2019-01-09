@@ -1,11 +1,12 @@
 package cn.org.faster.framework.admin.userRole.service;
 
+import cn.org.faster.framework.admin.shiro.ShiroRealm;
 import cn.org.faster.framework.admin.userRole.entity.SysUserRole;
 import cn.org.faster.framework.admin.userRole.mapper.SysUserRoleMapper;
+import cn.org.faster.framework.web.context.model.SpringAppContextFacade;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.AllArgsConstructor;
-import org.apache.shiro.realm.AuthorizingRealm;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -20,7 +21,6 @@ import java.util.stream.Collectors;
 @Transactional
 @AllArgsConstructor
 public class SysUserRoleService extends ServiceImpl<SysUserRoleMapper, SysUserRole> {
-    private AuthorizingRealm authorizingRealm;
 
 
     /**
@@ -66,7 +66,7 @@ public class SysUserRoleService extends ServiceImpl<SysUserRoleMapper, SysUserRo
         //根据用户删除角色用户关系表
         this.deleteByUserId(userId);
         //清空缓存
-        authorizingRealm.getAuthorizationCache().clear();
+        SpringAppContextFacade.applicationContext.getBean(ShiroRealm.class).getAuthorizationCache().clear();
         if (CollectionUtils.isEmpty(list)) {
             return;
         }

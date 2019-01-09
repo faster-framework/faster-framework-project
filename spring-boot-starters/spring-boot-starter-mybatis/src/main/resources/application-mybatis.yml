@@ -1,28 +1,34 @@
 spring:
   datasource:
-      druid:
-        maxActive: 10
-        initialSize: 2
-        minIdle: 2
-        driver-class-name: com.mysql.cj.jdbc.Driver
-        timeBetweenEvictionRunsMillis: 60000
-        minEvictableIdleTimeMillis: 300000
-        validationQuery: select 'x'
-        testWhileIdle: true
-        testOnBorrow: false
-        testOnReturn: false
-        poolPreparedStatements: false
-        filters: stat,slf4j
-        # 配置 connection-properties，启用加密，配置公钥。
-        connection-properties: config.decrypt=true;config.decrypt.key=${spring.datasource.druid.public-key}
-        # 启动ConfigFilter
-        filter:
-          config:
-            enabled: true
+    druid:
+      maxActive: 10
+      initialSize: 2
+      minIdle: 2
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      timeBetweenEvictionRunsMillis: 60000
+      minEvictableIdleTimeMillis: 300000
+      validationQuery: select 'x'
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      poolPreparedStatements: false
+      filters: stat,slf4j
+      # 配置 connection-properties，启用加密，配置公钥。
+      connection-properties: config.decrypt=true;config.decrypt.key=${spring.datasource.druid.public-key}
+      # 启动ConfigFilter
+      filter:
+        config:
+          enabled: true
 
 mybatis-plus:
   mapper-locations: classpath*:**/mapper/xml/*Mapper.xml
 
+---
+spring:
+  profiles: local,dev
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 ---
 spring:
   profiles: test
@@ -31,6 +37,9 @@ spring:
       maxActive: 20
       initialSize: 10
       minIdle: 10
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 ---
 spring:
   profiles: prod

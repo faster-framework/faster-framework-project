@@ -3,10 +3,12 @@ package cn.org.faster.framework.admin.auth.service;
 import cn.org.faster.framework.admin.auth.error.AuthError;
 import cn.org.faster.framework.admin.auth.model.LoginReq;
 import cn.org.faster.framework.admin.auth.model.LoginRes;
+import cn.org.faster.framework.admin.shiro.ShiroRealm;
 import cn.org.faster.framework.admin.user.entity.SysUser;
 import cn.org.faster.framework.admin.user.service.SysUserService;
 import cn.org.faster.framework.core.utils.Utils;
 import cn.org.faster.framework.web.captcha.service.ICaptchaService;
+import cn.org.faster.framework.web.context.model.SpringAppContextFacade;
 import cn.org.faster.framework.web.exception.model.ResponseErrorEntity;
 import cn.org.faster.framework.web.jwt.service.JwtService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -14,7 +16,6 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.cache.Cache;
-import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,8 +35,6 @@ public class AuthService {
     private SysUserService sysUserService;
     @Autowired
     private JwtService jwtService;
-    @Autowired
-    private AuthorizingRealm authorizingRealm;
     @Autowired
     private ICaptchaService captchaService;
 
@@ -58,7 +57,7 @@ public class AuthService {
         if (!existUser.getPassword().equals(Utils.md5(loginReq.getPassword()))) {
             return ResponseErrorEntity.error(AuthError.PASSWORD_ERROR, HttpStatus.NOT_FOUND);
         }
-        String token = jwtService.createToken(existUser.getId().toString(), 0);
+        String token = jwtService.createToken(existUser.getId().toString(), -1);
         Subject subject = SecurityUtils.getSubject();
         subject.login(new AuthenticationToken() {
             @Override
@@ -83,7 +82,7 @@ public class AuthService {
     public void logout() {
         PrincipalCollection principalCollection = SecurityUtils.getSubject().getPrincipals();
         if (principalCollection != null) {
-            authorizingRealm.getAuthorizationCache().remove(principalCollection);
+            SpringAppContextFacade.applicationContext.getBean(ShiroRealm.class).getAuthorizationCache().remove(principalCollection);
         }
     }
 
@@ -91,7 +90,7 @@ public class AuthService {
      * @return 获取当前用户所有权限code
      */
     public Collection<String> permissions() {
-        Cache<Object, AuthorizationInfo> cache = authorizingRealm.getAuthorizationCache();
+        Cache<Object, AuthorizationInfo> cache = SpringAppContextFacade.applicationContext.getBean(ShiroRealm.class).getAuthorizationCache();
         AuthorizationInfo authorizationInfo = cache.get(SecurityUtils.getSubject().getPrincipals());
         //说明没有缓存，刷新缓存
         if (authorizationInfo == null) {
