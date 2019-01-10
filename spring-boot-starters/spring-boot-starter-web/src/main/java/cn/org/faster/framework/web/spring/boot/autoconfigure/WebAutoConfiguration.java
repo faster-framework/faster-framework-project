@@ -14,6 +14,7 @@ import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.web.servlet.WebMvcRegistrations;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -46,6 +47,7 @@ public class WebAutoConfiguration implements WebMvcConfigurer, WebMvcRegistratio
     private VersionProperties versionProperties;
 
     @Bean
+    @ConditionalOnMissingBean
     public JwtService jwtService(ProjectProperties projectProperties) {
         JwtService jwtService = new JwtService();
         jwtService.setBase64Security(projectProperties.getBase64Secret());
@@ -70,16 +72,19 @@ public class WebAutoConfiguration implements WebMvcConfigurer, WebMvcRegistratio
     }
 
     @Bean
+    @ConditionalOnMissingBean
     public RestTemplate restTemplate() {
         return new RestTemplate();
     }
 
     @Bean
+    @ConditionalOnMissingBean
     public SpringAppContextFacade springAppContextFacade() {
         return new SpringAppContextFacade();
     }
 
     @Bean
+    @ConditionalOnMissingBean
     public CorsFilter corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration corsConfiguration = new CorsConfiguration();
@@ -92,6 +97,7 @@ public class WebAutoConfiguration implements WebMvcConfigurer, WebMvcRegistratio
     }
 
     @Bean
+    @ConditionalOnMissingBean
     public Module customModule() {
         SimpleModule module = new SimpleModule();
         module.addSerializer(LocalDateTime.class, new LocalDatetimeFormatter.LocalDateTimeSerializer());
@@ -102,16 +108,19 @@ public class WebAutoConfiguration implements WebMvcConfigurer, WebMvcRegistratio
     }
 
     @Bean
+    @ConditionalOnMissingBean
     public Converter<String, LocalDateTime> localDateTimeConvert() {
         return new LocalDatetimeFormatter.LocalDatetimeConverter();
     }
 
     @Bean
+    @ConditionalOnMissingBean
     public Converter<String, LocalDate> localDateConvert() {
         return new LocalDateFormatter.LocalDateConverter();
     }
 
     @Bean
+    @ConditionalOnMissingBean
     public static RequestContextBeanFactoryPostProcessor requestContextBeanFactoryPostProcessor() {
         return new RequestContextBeanFactoryPostProcessor();
     }

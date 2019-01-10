@@ -16,7 +16,7 @@ public class CaptchaConfiguration {
      * @return 默认的图形验证码
      */
     @Bean
-    @ConditionalOnMissingBean(ICaptchaService.class)
+    @ConditionalOnMissingBean
     public ICaptchaService defaultCaptcha() {
         return new CaptchaService();
     }

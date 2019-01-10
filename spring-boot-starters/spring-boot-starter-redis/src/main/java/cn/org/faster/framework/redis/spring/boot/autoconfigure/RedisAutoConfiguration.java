@@ -38,7 +38,7 @@ public class RedisAutoConfiguration {
      * @return RedisTemplate
      */
     @Bean
-    @ConditionalOnMissingBean(RedisTemplate.class)
+    @ConditionalOnMissingBean
     public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory, ObjectMapper objectMapper) {
         JacksonSerializer<Object> jacksonSerializer = new JacksonSerializer<>(objectMapper);
         RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
@@ -54,6 +54,7 @@ public class RedisAutoConfiguration {
     }
 
     @Bean
+    @ConditionalOnMissingBean
     RedisMessageListenerContainer redisContainer(RedisConnectionFactory redisConnectionFactory, ApplicationContext applicationContext) {
         RedisMessageListenerContainer container
                 = new RedisMessageListenerContainer();

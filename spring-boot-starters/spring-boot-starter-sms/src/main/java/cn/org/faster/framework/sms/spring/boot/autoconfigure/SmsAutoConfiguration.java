@@ -25,6 +25,7 @@ public class SmsAutoConfiguration {
      */
     @Bean
     @ConditionalOnProperty(prefix = "faster.sms", name = "mode", havingValue = "ali", matchIfMissing = true)
+    @ConditionalOnMissingBean
     public ISmsService aliSmsCode(SmsProperties smsProperties) {
         return new AliSmsService(smsProperties.getAli().getAccessKeyId(), smsProperties.getAli().getAccessKeySecret());
     }
@@ -36,7 +37,7 @@ public class SmsAutoConfiguration {
      * @return ISmsCaptchaService
      */
     @Bean
-    @ConditionalOnMissingBean(ISmsCaptchaService.class)
+    @ConditionalOnMissingBean
     public ISmsCaptchaService debugSmsCode(SmsProperties smsProperties) {
         return new ISmsCaptchaService(smsProperties.isDebug(), smsProperties.getCaptcha().getExpire()) {
             @Override

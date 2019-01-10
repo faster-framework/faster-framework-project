@@ -29,6 +29,7 @@ public class ErrorConfiguration {
      */
     @Bean
     @ConditionalOnProperty(prefix = "faster.kafka.error", name = "dead-letter", havingValue = "true")
+    @ConditionalOnMissingBean
     public GenericErrorHandler kafkaDeadLetterBatchErrorHandler(KafkaTemplate<Object, Object> kafkaTemplate,
                                                                 ConcurrentKafkaListenerContainerFactory concurrentKafkaListenerContainerFactory) {
         //此处之所以要获取bean而非获取配置文件进行判断，因为spring-kafka允许注册自定义factory并且设置batchListener为true，此时配置文件参数可为空。
@@ -48,7 +49,7 @@ public class ErrorConfiguration {
      * @return 普通处理器
      */
     @Bean
-    @ConditionalOnMissingBean(GenericErrorHandler.class)
+    @ConditionalOnMissingBean
     public GenericErrorHandler kafkaBatchErrorHandler(ConcurrentKafkaListenerContainerFactory concurrentKafkaListenerContainerFactory) {
         //此处之所以要获取bean而非获取配置文件进行判断，因为spring-kafka允许注册自定义factory并且设置batchListener为true，此时配置文件参数可为空。
         if (concurrentKafkaListenerContainerFactory.isBatchListener() != null && concurrentKafkaListenerContainerFactory.isBatchListener()) {

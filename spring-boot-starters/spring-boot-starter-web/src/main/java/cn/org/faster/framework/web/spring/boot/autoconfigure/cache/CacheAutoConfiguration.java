@@ -5,6 +5,7 @@ import cn.org.faster.framework.core.cache.service.ICacheService;
 import cn.org.faster.framework.core.cache.service.LocalCacheService;
 import cn.org.faster.framework.web.spring.boot.autoconfigure.ProjectProperties;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -24,6 +25,7 @@ public class CacheAutoConfiguration {
      */
     @ConditionalOnProperty(prefix = "faster.cache", name = "mode", havingValue = "local", matchIfMissing = true)
     @Bean
+    @ConditionalOnMissingBean
     public ICacheService localCacheService() {
         return new LocalCacheService();
     }

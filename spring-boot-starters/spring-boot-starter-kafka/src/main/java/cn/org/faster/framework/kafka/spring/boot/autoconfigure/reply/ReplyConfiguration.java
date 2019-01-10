@@ -2,6 +2,7 @@ package cn.org.faster.framework.kafka.spring.boot.autoconfigure.reply;
 
 import cn.org.faster.framework.kafka.spring.boot.autoconfigure.FastKafkaProperties;
 import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.context.annotation.Bean;
@@ -45,10 +46,10 @@ public class ReplyConfiguration {
     }
 
     /**
-     *
      * @return replyContainer
      */
     @Bean
+    @ConditionalOnMissingBean
     public KafkaMessageListenerContainer<Object, Object> replyContainer() {
         ContainerProperties containerProperties = new ContainerProperties(properties.getProducer().getReplyTopic());
         return new KafkaMessageListenerContainer<>(consumerFactory, containerProperties);
@@ -58,6 +59,7 @@ public class ReplyConfiguration {
      * @return 回复操作类
      */
     @Bean
+    @ConditionalOnMissingBean
     public ReplyingKafkaTemplate<?, ?, ?> replyingKafkaTemplate() {
         ReplyingKafkaTemplate<Object, Object, Object> kafkaTemplate = new ReplyingKafkaTemplate<>(producerFactory, replyContainer());
         if (this.messageConverter != null) {
