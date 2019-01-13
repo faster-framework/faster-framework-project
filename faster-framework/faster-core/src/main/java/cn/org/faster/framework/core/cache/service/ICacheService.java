@@ -6,7 +6,7 @@ import java.util.Set;
 /**
  * @author zhangbowen
  */
-public interface ICacheService<V> {
+public interface ICacheService {
     /**
      * 设置缓存
      *
@@ -14,7 +14,7 @@ public interface ICacheService<V> {
      * @param value 缓存值
      * @param exp   失效时间(秒)
      */
-    void set(String key, V value, long exp);
+    void set(String key, String value, long exp);
 
     /**
      * 删除缓存数据
@@ -22,7 +22,7 @@ public interface ICacheService<V> {
      * @param key 缓存键
      * @return V 泛型
      */
-    V delete(String key);
+    String delete(String key);
 
     /**
      * 获取缓存数据,如果关键字不存在返回null
@@ -30,7 +30,7 @@ public interface ICacheService<V> {
      * @param key 缓存键
      * @return 缓存实体
      */
-    V get(String key);
+    String get(String key);
 
     /**
      * 清空以cacheService开头的缓存
@@ -61,5 +61,5 @@ public interface ICacheService<V> {
      * @param cachePrefix 缓存前缀
      * @return 缓存列表
      */
-    Collection<V> values(String cachePrefix);
+    Collection<String> values(String cachePrefix);
 }

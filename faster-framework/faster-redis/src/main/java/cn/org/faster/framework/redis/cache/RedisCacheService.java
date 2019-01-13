@@ -2,7 +2,7 @@ package cn.org.faster.framework.redis.cache;
 
 import cn.org.faster.framework.core.cache.service.ICacheService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
@@ -14,12 +14,12 @@ import java.util.concurrent.TimeUnit;
 /**
  * @author zhangbowen
  */
-public class RedisCacheService<V> implements ICacheService<V> {
+public class RedisCacheService implements ICacheService {
     @Autowired
-    private RedisTemplate<String, V> redisTemplate;
+    private StringRedisTemplate redisTemplate;
 
     @Override
-    public void set(String key, V value, long exp) {
+    public void set(String key, String value, long exp) {
         if (exp > -1) {
             redisTemplate.opsForValue().set(key, value, exp, TimeUnit.SECONDS);
         } else {
@@ -28,16 +28,17 @@ public class RedisCacheService<V> implements ICacheService<V> {
     }
 
     @Override
-    public V delete(String key) {
-        V value = get(key);
+    public String delete(String key) {
+        String value = get(key);
         if (value != null) {
             redisTemplate.opsForValue().getOperations().delete(key);
         }
         return value;
     }
 
+
     @Override
-    public V get(String key) {
+    public String get(String key) {
         return redisTemplate.opsForValue().get(key);
     }
 
@@ -60,11 +61,11 @@ public class RedisCacheService<V> implements ICacheService<V> {
     }
 
     @Override
-    public Collection<V> values(String cachePrefix) {
-        List<V> list = new ArrayList<>();
+    public Collection<String> values(String cachePrefix) {
+        List<String> list = new ArrayList<>();
         Set<String> keys = keys(cachePrefix);
         keys.forEach(k -> {
-            V value = get(k);
+            String value = get(k);
             if (value != null) {
                 list.add(value);
             }

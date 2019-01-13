@@ -20,5 +20,6 @@
         <module>faster-mybatis</module>
         <module>faster-kafka</module>
         <module>faster-shiro</module>
+        <module>faster-grpc</module>
     </modules>
 </project>

@@ -1,37 +1,45 @@
 package cn.org.faster.framework.shiro.cache;
 
 import cn.org.faster.framework.core.cache.context.CacheFacade;
+import com.alibaba.fastjson.TypeReference;
+import org.apache.shiro.authz.AuthorizationInfo;
+import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.CacheException;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
  * @author zhangbowen
  */
-public class ShiroCache<K, V> implements Cache<K, V> {
+@SuppressWarnings("unchecked")
+public class ShiroCache implements Cache<Object, AuthorizationInfo> {
     private static final String CACHE_PREFIX = "shiro:";
     private String keyPrefix;
 
-    public ShiroCache(String keyPrefix) {
+    public ShiroCache(Object keyPrefix) {
         this.keyPrefix = CACHE_PREFIX + keyPrefix;
     }
 
     @Override
-    public V get(K k) throws CacheException {
-        return CacheFacade.get(keyPrefix + k.toString());
+    public AuthorizationInfo put(Object k, AuthorizationInfo authenticationInfo) throws CacheException {
+        CacheFacade.set(keyPrefix + k, authenticationInfo, -1);
+        return authenticationInfo;
     }
 
     @Override
-    public V put(K k, V v) throws CacheException {
-        CacheFacade.set(keyPrefix + k.toString(), v, -1);
-        return v;
+    public AuthorizationInfo get(Object k) throws CacheException {
+        return CacheFacade.get(keyPrefix + k, new TypeReference<SimpleAuthorizationInfo>() {
+        });
     }
 
+
     @Override
-    public V remove(K k) throws CacheException {
-        return CacheFacade.delete(keyPrefix + k.toString());
+    public AuthorizationInfo remove(Object k) throws CacheException {
+        return CacheFacade.delete(keyPrefix + k, new TypeReference<SimpleAuthorizationInfo>() {
+        });
     }
 
     @Override
@@ -45,12 +53,13 @@ public class ShiroCache<K, V> implements Cache<K, V> {
     }
 
     @Override
-    public Set<K> keys() {
-        return CacheFacade.keys(keyPrefix);
+    public Set<Object> keys() {
+        return new HashSet<>(CacheFacade.keys(keyPrefix));
     }
 
     @Override
-    public Collection<V> values() {
-        return CacheFacade.values(keyPrefix);
+    public Collection values() {
+        return CacheFacade.values(keyPrefix, new TypeReference<SimpleAuthorizationInfo>() {
+        });
     }
 }

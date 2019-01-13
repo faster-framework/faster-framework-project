@@ -9,14 +9,12 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
  * @author zhangbowen
  */
 @MapperScan(markerInterface = BaseMapper.class, basePackages = "**.mapper")
 @Configuration
-@EnableTransactionManagement
 @Import({MyBatisExceptionHandler.class})
 public class MybatisAutoConfiguration {
     /**

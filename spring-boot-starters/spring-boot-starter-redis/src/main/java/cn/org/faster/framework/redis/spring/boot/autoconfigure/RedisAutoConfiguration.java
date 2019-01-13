@@ -1,80 +1,35 @@
 package cn.org.faster.framework.redis.spring.boot.autoconfigure;
 
-import cn.org.faster.framework.redis.annotation.RedisListener;
-import cn.org.faster.framework.redis.annotation.RedisListenerScan;
-import cn.org.faster.framework.redis.registrar.SubscribeListenerScannerRegistrar;
-import cn.org.faster.framework.redis.serializer.JacksonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import cn.org.faster.framework.redis.processor.RedisListenerProcessor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.core.annotation.AnnotationUtils;
-import org.springframework.data.redis.connection.MessageListener;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.listener.ChannelTopic;
-import org.springframework.data.redis.listener.PatternTopic;
 import org.springframework.data.redis.listener.RedisMessageListenerContainer;
-import org.springframework.data.redis.serializer.RedisSerializer;
-import org.springframework.data.redis.serializer.StringRedisSerializer;
-
-import java.util.Map;
 
 /**
  * @author zhangbowen
  * @since 2018/10/10
  */
 @Configuration
-@RedisListenerScan(annotationClass = RedisListener.class)
-@Import({SubscribeListenerScannerRegistrar.class, RedisCacheAutoConfiguration.class})
+@Import(RedisCacheAutoConfiguration.class)
+@ConditionalOnProperty(prefix = "faster.redis", name = "enabled", havingValue = "true", matchIfMissing = true)
 public class RedisAutoConfiguration {
-    /**
-     * 设置redisTemplate序列化
-     *
-     * @param redisConnectionFactory 连接工厂
-     * @param objectMapper           json序列化
-     * @return RedisTemplate
-     */
     @Bean
     @ConditionalOnMissingBean
-    public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory, ObjectMapper objectMapper) {
-        JacksonSerializer<Object> jacksonSerializer = new JacksonSerializer<>(objectMapper);
-        RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
-        redisTemplate.setConnectionFactory(redisConnectionFactory);
-        RedisSerializer stringSerializer = new StringRedisSerializer();
-        redisTemplate.setKeySerializer(stringSerializer);
-        redisTemplate.setValueSerializer(jacksonSerializer);
-        redisTemplate.setHashKeySerializer(stringSerializer);
-        redisTemplate.setHashValueSerializer(jacksonSerializer);
-        redisTemplate.setEnableTransactionSupport(true);
-        redisTemplate.afterPropertiesSet();
-        return redisTemplate;
+    public static RedisListenerProcessor redisListenerProcessor() {
+        return new RedisListenerProcessor();
     }
 
     @Bean
     @ConditionalOnMissingBean
-    RedisMessageListenerContainer redisContainer(RedisConnectionFactory redisConnectionFactory, ApplicationContext applicationContext) {
+    public RedisMessageListenerContainer redisContainer(RedisConnectionFactory redisConnectionFactory, ApplicationContext applicationContext) {
         RedisMessageListenerContainer container
                 = new RedisMessageListenerContainer();
         container.setConnectionFactory(redisConnectionFactory);
-        Map<String, Object> beansWithAnnotation = applicationContext.getBeansWithAnnotation(RedisListener.class);
-        beansWithAnnotation.forEach((k, v) -> {
-            RedisListener redisListener = AnnotationUtils.findAnnotation(v.getClass(), RedisListener.class);
-            if (redisListener == null) {
-                return;
-            }
-            String[] channels = redisListener.value();
-            if (channels.length == 0) {
-                return;
-            }
-            if (v instanceof MessageListener) {
-                for (String channel : channels) {
-                    container.addMessageListener((MessageListener) v, channel.contains("*") ? new PatternTopic(channel) : new ChannelTopic(channel));
-                }
-            }
-        });
         return container;
     }
 }

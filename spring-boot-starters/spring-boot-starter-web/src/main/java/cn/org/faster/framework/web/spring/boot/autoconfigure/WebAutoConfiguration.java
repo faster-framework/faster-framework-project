@@ -22,6 +22,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -39,6 +40,7 @@ import java.time.LocalDateTime;
 @Configuration
 @Import({GlobalExceptionHandler.class})
 @EnableConfigurationProperties({ProjectProperties.class, VersionProperties.class})
+@EnableTransactionManagement
 @EnableScheduling
 public class WebAutoConfiguration implements WebMvcConfigurer, WebMvcRegistrations {
     @Value("${spring.profiles.active}")

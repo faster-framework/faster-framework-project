@@ -1,4 +1,4 @@
-package cn.org.faster.framework.redis.serializer;
+package cn.org.faster.framework.core.entity;
 
 import com.fasterxml.jackson.databind.JavaType;
 import lombok.Data;

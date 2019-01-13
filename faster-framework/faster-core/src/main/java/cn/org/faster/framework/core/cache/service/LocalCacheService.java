@@ -10,12 +10,12 @@ import java.util.stream.Collectors;
 /**
  * @author zhangbowen
  */
-public class LocalCacheService<V> implements ICacheService<V> {
-    private Map<String, LocalCacheEntity<V>> softHashMap = new ConcurrentReferenceHashMap<>();
+public class LocalCacheService implements ICacheService {
+    private Map<String, LocalCacheEntity> softHashMap = new ConcurrentReferenceHashMap<>();
 
     @Override
-    public void set(String key, V value, long exp) {
-        LocalCacheEntity<V> localCacheEntity = new LocalCacheEntity<>();
+    public void set(String key, String value, long exp) {
+        LocalCacheEntity localCacheEntity = new LocalCacheEntity();
         localCacheEntity.setValue(value);
         localCacheEntity.setSaveTime(System.currentTimeMillis());
         localCacheEntity.setExp(exp);
@@ -23,8 +23,8 @@ public class LocalCacheService<V> implements ICacheService<V> {
     }
 
     @Override
-    public V delete(String key) {
-        V value = get(key);
+    public String delete(String key) {
+        String value = get(key);
         if (value != null) {
             softHashMap.remove(key);
         }
@@ -32,10 +32,10 @@ public class LocalCacheService<V> implements ICacheService<V> {
     }
 
     @Override
-    public V get(String key) {
-        LocalCacheEntity<V> localCacheEntity = softHashMap.get(key);
+    public String get(String key) {
+        LocalCacheEntity localCacheEntity = softHashMap.get(key);
         //说明没过期
-        if (localCacheEntity != null && (localCacheEntity.getExp() == 0 || ((System.currentTimeMillis() - localCacheEntity.getSaveTime()) <= localCacheEntity.getExp() * 1000))) {
+        if (localCacheEntity != null && (localCacheEntity.getExp() <= 0 || ((System.currentTimeMillis() - localCacheEntity.getSaveTime()) <= localCacheEntity.getExp() * 1000))) {
             return localCacheEntity.getValue();
         }
         softHashMap.remove(key);
@@ -68,11 +68,11 @@ public class LocalCacheService<V> implements ICacheService<V> {
     }
 
     @Override
-    public Collection<V> values(String cachePrefix) {
-        List<V> values = new ArrayList<>();
+    public Collection<String> values(String cachePrefix) {
+        List<String> values = new ArrayList<>();
         softHashMap.forEach((k, v) -> {
             if (k.startsWith(cachePrefix)) {
-                V value = get(k);
+                String value = get(k);
                 if (value != null) {
                     values.add(value);
                 }

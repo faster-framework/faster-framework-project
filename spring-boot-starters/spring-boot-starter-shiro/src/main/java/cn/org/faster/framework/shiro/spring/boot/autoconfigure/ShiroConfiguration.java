@@ -1,5 +1,6 @@
 package cn.org.faster.framework.shiro.spring.boot.autoconfigure;
 
+import cn.org.faster.framework.shiro.ShiroFilter;
 import cn.org.faster.framework.shiro.cache.ShiroCacheManager;
 import cn.org.faster.framework.web.exception.model.BasisErrorCode;
 import cn.org.faster.framework.web.exception.model.ResponseErrorEntity;
@@ -23,6 +24,8 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.Filter;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -98,7 +101,11 @@ public class ShiroConfiguration {
         filterChainDefinitionMap.put("/login", "anon");
         filterChainDefinitionMap.put("/media/**", "anon");
         filterChainDefinitionMap.put("/captcha/**", "anon");
+        filterChainDefinitionMap.put("/**", "jwt");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
+        Map<String, Filter> filters = new LinkedHashMap<>();
+        filters.put("jwt", new ShiroFilter());
+        shiroFilterFactoryBean.setFilters(filters);
         return shiroFilterFactoryBean;
     }
 

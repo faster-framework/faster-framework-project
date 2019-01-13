@@ -1,5 +1,6 @@
 package cn.org.faster.framework.shiro;
 
+import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.web.filter.authc.AuthenticatingFilter;
 import org.apache.shiro.web.util.WebUtils;
@@ -34,13 +35,15 @@ public class ShiroFilter extends AuthenticatingFilter {
         };
     }
 
-    /**
-     * @param servletRequest  请求
-     * @param servletResponse 相应
-     * @return 直接返回允许，权限验证部分交给realm
-     */
     @Override
-    protected boolean onAccessDenied(ServletRequest servletRequest, ServletResponse servletResponse) {
+    protected boolean onAccessDenied(ServletRequest servletRequest, ServletResponse servletResponse) throws Exception {
+        return executeLogin(servletRequest, servletResponse);
+    }
+
+    @Override
+    protected boolean onLoginFailure(AuthenticationToken token, AuthenticationException e, ServletRequest request, ServletResponse response) {
+        //可能存在不需要权限的接口，前端无须传递token，故登录失败。
+        //权限认证交由realm
         return true;
     }
 

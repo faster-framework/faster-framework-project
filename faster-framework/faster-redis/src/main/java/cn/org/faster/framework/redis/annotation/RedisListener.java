@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
  * @since 2018/10/19
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.TYPE})
+@Target({ElementType.METHOD})
 public @interface RedisListener {
     /**
      * 定义要监听的channel数组，可为pattern模式
