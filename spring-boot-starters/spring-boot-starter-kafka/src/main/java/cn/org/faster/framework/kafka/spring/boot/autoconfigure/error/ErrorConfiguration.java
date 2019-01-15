@@ -18,7 +18,6 @@ import org.springframework.kafka.listener.GenericErrorHandler;
  * @author zhangbowen
  * @since 2019/1/3
  */
-@Configuration
 @ConditionalOnProperty(prefix = "faster.kafka.error", name = "enabled", havingValue = "true", matchIfMissing = true)
 public class ErrorConfiguration {
 

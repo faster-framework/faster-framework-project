@@ -9,7 +9,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  */
 @ConfigurationProperties(prefix = "faster.kafka")
 @Data
-public class FastKafkaProperties {
+public class KafkaProperties {
     /**
      * kafka额外配置开关，true or false
      */

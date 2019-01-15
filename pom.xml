@@ -54,6 +54,7 @@
         <aliyun-java-sdk-core.version>3.7.1</aliyun-java-sdk-core.version>
         <aliyun-java-sdk-dysmsapi.version>1.1.0</aliyun-java-sdk-dysmsapi.version>
         <grpc.version>1.17.1</grpc.version>
+        <guava.version>23.6-jre</guava.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -138,6 +139,11 @@
                 <version>${revision}</version>
             </dependency>
             <dependency>
+                <groupId>cn.org.faster</groupId>
+                <artifactId>spring-boot-starter-grpc</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
                 <groupId>io.jsonwebtoken</groupId>
                 <artifactId>jjwt</artifactId>
                 <version>${jsonwebtoken-jjwt.version}</version>
@@ -201,6 +207,11 @@
                 <groupId>io.grpc</groupId>
                 <artifactId>grpc-stub</artifactId>
                 <version>${grpc.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${guava.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

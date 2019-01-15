@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Import;
  * @since 2018/12/27
  */
 @Configuration
-@EnableConfigurationProperties(FastKafkaProperties.class)
+@EnableConfigurationProperties(KafkaProperties.class)
 @ConditionalOnProperty(prefix = "faster.kafka", name = "enabled", havingValue = "true", matchIfMissing = true)
 @Import({ValidationConfiguration.class, ReplyConfiguration.class, ErrorConfiguration.class})
 public class KafkaAutoConfiguration {

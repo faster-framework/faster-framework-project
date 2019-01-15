@@ -1,10 +1,9 @@
 package cn.org.faster.framework.kafka.spring.boot.autoconfigure.reply;
 
-import cn.org.faster.framework.kafka.spring.boot.autoconfigure.FastKafkaProperties;
+import cn.org.faster.framework.kafka.spring.boot.autoconfigure.KafkaProperties;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.core.ConsumerFactory;
@@ -21,18 +20,17 @@ import org.springframework.kafka.support.converter.RecordMessageConverter;
  * @author zhangbowen
  * @since 2019/1/3
  */
-@Configuration
 @ConditionalOnProperty(prefix = "faster.kafka.producer", name = "reply", havingValue = "true")
 public class ReplyConfiguration {
-    private final FastKafkaProperties properties;
-    private final KafkaProperties kafkaProperties;
+    private final KafkaProperties properties;
+    private final org.springframework.boot.autoconfigure.kafka.KafkaProperties kafkaProperties;
     private final RecordMessageConverter messageConverter;
     private final ConsumerFactory<Object, Object> consumerFactory;
     private final ProducerFactory<Object, Object> producerFactory;
     private final ProducerListener<Object, Object> producerListener;
 
-    public ReplyConfiguration(FastKafkaProperties properties,
-                              KafkaProperties kafkaProperties,
+    public ReplyConfiguration(KafkaProperties properties,
+                              org.springframework.boot.autoconfigure.kafka.KafkaProperties kafkaProperties,
                               ObjectProvider<RecordMessageConverter> messageConverter,
                               ConsumerFactory<Object, Object> consumerFactory,
                               ProducerFactory<Object, Object> producerFactory,

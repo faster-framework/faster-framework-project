@@ -1,12 +1,13 @@
 package cn.org.faster.framework.grpc.marshaller;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.TypeReference;
 import io.grpc.MethodDescriptor;
+import lombok.Data;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Type;
 
 /**
  * grpc传输装配器-jackson
@@ -14,7 +15,17 @@ import java.io.InputStream;
  * @author zhangbowen
  * @since 2019/1/13
  */
-public class FastJsonMarshaller<T> implements MethodDescriptor.Marshaller<T> {
+@Data
+public class FastJsonMarshaller implements MethodDescriptor.Marshaller<Object> {
+    private final Type type;
+
+    public FastJsonMarshaller(Type type) {
+        this.type = type;
+    }
+
+    public FastJsonMarshaller() {
+        this.type = null;
+    }
 
     @Override
     public InputStream stream(Object value) {
@@ -22,10 +33,9 @@ public class FastJsonMarshaller<T> implements MethodDescriptor.Marshaller<T> {
     }
 
     @Override
-    public T parse(InputStream stream) {
+    public Object parse(InputStream stream) {
         try {
-            return JSON.parseObject(stream, new TypeReference<T>() {
-            }.getType());
+            return JSON.parseObject(stream, type);
         } catch (IOException ignored) {
         }
         return null;

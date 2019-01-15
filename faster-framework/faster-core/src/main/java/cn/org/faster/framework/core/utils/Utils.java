@@ -90,6 +90,20 @@ public class Utils {
     }
 
     /**
+     * 将map装换为javabean对象
+     *
+     * @param map  原始map
+     * @param bean 实例化空bean
+     * @param <T>  泛型
+     * @return 填充后的bean
+     */
+    public static <T> T mapToBean(Map<String, Object> map, T bean) {
+        BeanMap beanMap = BeanMap.create(bean);
+        beanMap.putAll(map);
+        return bean;
+    }
+
+    /**
      * 排序签名
      *
      * @param o      要签名的对象
