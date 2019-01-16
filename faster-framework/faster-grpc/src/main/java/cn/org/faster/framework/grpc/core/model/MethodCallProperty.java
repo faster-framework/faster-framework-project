@@ -1,4 +1,4 @@
-package cn.org.faster.framework.grpc.client.model;
+package cn.org.faster.framework.grpc.core.model;
 
 import io.grpc.MethodDescriptor;
 import lombok.Data;

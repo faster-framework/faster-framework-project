@@ -1,4 +1,4 @@
-package cn.org.faster.framework.grpc.exception;
+package cn.org.faster.framework.grpc.core.exception;
 
 /**
  * @author zhangbowen

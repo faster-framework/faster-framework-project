@@ -1,4 +1,4 @@
-package cn.org.faster.framework.grpc.marshaller;
+package cn.org.faster.framework.grpc.core.marshaller;
 
 import com.alibaba.fastjson.JSON;
 import io.grpc.MethodDescriptor;

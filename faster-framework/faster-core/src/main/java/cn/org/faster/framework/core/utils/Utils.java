@@ -173,6 +173,29 @@ public class Utils {
     }
 
     /**
+     * 判断方法中是否包含某个类型的参数
+     *
+     * @param method     方法
+     * @param paramClass 参数class
+     * @return true/false
+     */
+    public static boolean checkMethodHasParamClass(Method method, Class paramClass) {
+        Type[] types = method.getGenericParameterTypes();
+        if (types != null && types.length > 0) {
+            for (Type type : types) {
+                if (type instanceof ParameterizedType) {
+                    ParameterizedType parameterizedType = (ParameterizedType) type;
+                    if (parameterizedType.getRawType().getTypeName().equals(paramClass.getName())) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+
+    /**
      * 通过反射获取方法某个参数的泛型
      *
      * @param method     方法
@@ -180,17 +203,18 @@ public class Utils {
      * @return 泛型
      */
     public static Type[] reflectMethodParameterTypes(Method method, Class paramClass) {
-        try {
-            Type[] types = method.getDeclaringClass().getMethod(method.getName(), paramClass).getGenericParameterTypes();
-            if (types != null && types.length > 0) {
-                if (types[0] instanceof ParameterizedType) {
-                    return ((ParameterizedType) types[0]).getActualTypeArguments();
+        Type[] types = method.getGenericParameterTypes();
+        if (types != null && types.length > 0) {
+            for (Type type : types) {
+                if (type instanceof ParameterizedType) {
+                    ParameterizedType parameterizedType = (ParameterizedType) type;
+                    if (parameterizedType.getRawType().getTypeName().equals(paramClass.getName())) {
+                        return parameterizedType.getActualTypeArguments();
+                    }
                 }
             }
-        } catch (NoSuchMethodException e) {
-            return null;
         }
-        return new Type[]{Object.class};
+        return null;
     }
 
     /**
@@ -206,4 +230,5 @@ public class Utils {
         }
         return new Type[]{Object.class};
     }
+
 }

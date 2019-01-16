@@ -1,4 +1,4 @@
-package cn.org.faster.framework.grpc.annotation;
+package cn.org.faster.framework.grpc.core.annotation;
 
 import io.grpc.MethodDescriptor;
 

@@ -1,11 +1,11 @@
 package cn.org.faster.framework.grpc.client.factory;
 
-import cn.org.faster.framework.grpc.annotation.GrpcMethod;
 import cn.org.faster.framework.grpc.client.annotation.GrpcService;
 import cn.org.faster.framework.grpc.client.exception.GrpcChannelCreateException;
 import cn.org.faster.framework.grpc.client.model.ChannelProperty;
-import cn.org.faster.framework.grpc.client.model.MethodCallProperty;
 import cn.org.faster.framework.grpc.client.proxy.ManageChannelProxy;
+import cn.org.faster.framework.grpc.core.annotation.GrpcMethod;
+import cn.org.faster.framework.grpc.core.model.MethodCallProperty;
 import lombok.Data;
 import org.springframework.cglib.proxy.Proxy;
 import org.springframework.core.MethodIntrospector;
@@ -23,7 +23,7 @@ import java.util.Map;
 @Data
 public class ClientFactory {
     /**
-     * 服务名-连接配置 字典
+     * 服务名-连接配置 字典，factory创建时设置
      */
     private Map<String, ChannelProperty> serverChannelMap = new HashMap<>();
 
@@ -32,7 +32,6 @@ public class ClientFactory {
         GrpcService grpcService = target.getAnnotation(GrpcService.class);
         ChannelProperty channelProperty = serverChannelMap.get(grpcService.value());
         if (channelProperty == null) {
-
             throw new GrpcChannelCreateException("GrpcService scheme:{" + grpcService.value() + "} was not found in properties.Please check your configuration.");
         }
         ManageChannelProxy manageChannelProxy = new ManageChannelProxy(channelProperty);

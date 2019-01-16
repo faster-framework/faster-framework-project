@@ -1,7 +1,6 @@
 package cn.org.faster.framework.grpc.client.scanner;
 
 import cn.org.faster.framework.grpc.client.factory.ManageChannelFactoryBean;
-import cn.org.faster.framework.grpc.client.model.ChannelProperty;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.AnnotatedBeanDefinition;
@@ -11,8 +10,6 @@ import org.springframework.beans.factory.support.GenericBeanDefinition;
 import org.springframework.context.annotation.ClassPathBeanDefinitionScanner;
 
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -21,16 +18,11 @@ import java.util.Set;
  */
 @Slf4j
 public class ClassPathGrpcServiceScanner extends ClassPathBeanDefinitionScanner {
-    private Map<String, ChannelProperty> serverChannelMap = new HashMap<>();
     private final BeanFactory beanFactory;
 
     public ClassPathGrpcServiceScanner(BeanDefinitionRegistry registry, BeanFactory beanFactory) {
         super(registry, false);
         this.beanFactory = beanFactory;
-    }
-
-    public void putServerChannelMap(String serverName, ChannelProperty channelProperty) {
-        serverChannelMap.put(serverName, channelProperty);
     }
 
     /**
