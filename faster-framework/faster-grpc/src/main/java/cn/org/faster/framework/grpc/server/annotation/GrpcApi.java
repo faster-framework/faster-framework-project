@@ -1,8 +1,5 @@
 package cn.org.faster.framework.grpc.server.annotation;
 
-import cn.org.faster.framework.grpc.server.register.GrpcServerRegister;
-import org.springframework.context.annotation.Import;
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -18,8 +15,7 @@ import java.lang.annotation.Target;
 @Target({ElementType.TYPE})
 public @interface GrpcApi {
     /**
-     * @return 提供的scheme名称，client端调用时使用
+     * @return 提供的scheme名称，client端调用时使用，默认使用全类名
      */
-    String value();
-
+    String value() default "";
 }

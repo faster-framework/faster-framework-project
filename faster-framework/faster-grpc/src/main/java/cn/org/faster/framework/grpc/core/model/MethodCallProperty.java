@@ -15,4 +15,5 @@ public class MethodCallProperty {
     private MethodDescriptor.MethodType methodType;
     private String scheme;
     private Method method;
+    private Object proxyTarget;
 }

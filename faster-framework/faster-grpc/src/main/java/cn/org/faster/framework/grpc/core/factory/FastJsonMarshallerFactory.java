@@ -121,13 +121,18 @@ public class FastJsonMarshallerFactory {
         Method method = methodCallProperty.getMethod();
         Type[] types;
         switch (methodCallProperty.getMethodType()) {
-            case UNARY: //等于asyncUnaryCall()
+            case UNARY: //一对一，等于asyncUnaryCall()
                 //检验是否两个参数，并且顺序一致
                 checkTwoParam(methodCallProperty);
                 //获取获取请求参数类型，第一个为业务实体
                 types = method.getGenericParameterTypes();
                 return new FastJsonMarshaller(types[0]);
-            case BIDI_STREAMING://双向流，相当于asyncBidiStreamingCall
+            case BIDI_STREAMING://双向流，等于asyncBidiStreamingCall()
+                //检查方法的返回值是否为StreamObserver类型
+                if (method.getReturnType() != StreamObserver.class) {
+                    throw new GrpcMethodNoMatchException(method.getDeclaringClass().getName(), method.getName(), methodCallProperty.getMethodType().name(),
+                            "You should use [StreamObserver] for your return value.Please check it.");
+                }
                 //获取方法参数类型为StreamObserver的泛型
                 types = Utils.reflectMethodParameterTypes(method, StreamObserver.class);
                 if (types == null) {
@@ -137,7 +142,12 @@ public class FastJsonMarshallerFactory {
                 //获取返回类型的泛型
                 types = Utils.reflectMethodReturnTypes(method);
                 return new FastJsonMarshaller(types[0]);
-            case CLIENT_STREAMING: //客户端流。等于ClientCalls.asyncClientStreamingCall()
+            case CLIENT_STREAMING: //客户端流。等于asyncClientStreamingCall()
+                //检查方法的返回值是否为StreamObserver类型
+                if (method.getReturnType() != StreamObserver.class) {
+                    throw new GrpcMethodNoMatchException(method.getDeclaringClass().getName(), method.getName(), methodCallProperty.getMethodType().name(),
+                            "You should use [StreamObserver] for your return value.Please check it.");
+                }
                 //获取方法参数类型为StreamObserver的泛型
                 types = Utils.reflectMethodParameterTypes(method, StreamObserver.class);
                 if (types == null) {
@@ -147,7 +157,7 @@ public class FastJsonMarshallerFactory {
                 //获取返回类型的泛型
                 types = Utils.reflectMethodReturnTypes(method);
                 return new FastJsonMarshaller(types[0]);
-            case SERVER_STREAMING://等于ClientCalls.blockingServerStreamingCall
+            case SERVER_STREAMING://等于asyncServerStreamingCall()
                 //检验是否两个参数，并且顺序一致
                 checkTwoParam(methodCallProperty);
                 //获取获取请求参数类型，第一个为业务实体

@@ -3,6 +3,7 @@ package cn.org.faster.framework.grpc.server.adapter;
 import cn.org.faster.framework.grpc.core.factory.FastJsonMarshallerFactory;
 import cn.org.faster.framework.grpc.core.marshaller.FastJsonMarshaller;
 import cn.org.faster.framework.grpc.core.model.MethodCallProperty;
+import cn.org.faster.framework.grpc.server.exception.GrpcServerCreateException;
 import io.grpc.BindableService;
 import io.grpc.MethodDescriptor;
 import io.grpc.ServerCallHandler;
@@ -10,6 +11,8 @@ import io.grpc.ServerServiceDefinition;
 import io.grpc.stub.ServerCalls;
 import io.grpc.stub.StreamObserver;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.List;
 
 /**
@@ -35,14 +38,48 @@ public class BindServiceAdapter implements BindableService {
                 .build();
     }
 
+    @SuppressWarnings("unchecked")
     private ServerCallHandler<Object, Object> parseCallHandlerFromType(MethodCallProperty methodCallProperty) {
-        //todo
-        return ServerCalls.asyncClientStreamingCall(new ServerCalls.ClientStreamingMethod<Object, Object>() {
-            @Override
-            public StreamObserver<Object> invoke(StreamObserver<Object> responseObserver) {
-                return null;
-            }
-        });
+        Method method = methodCallProperty.getMethod();
+        Object target = methodCallProperty.getProxyTarget();
+        switch (methodCallProperty.getMethodType()) {
+            case UNARY:
+                return ServerCalls.asyncUnaryCall((request, responseObserver) -> {
+                    try {
+                        method.invoke(target, request, responseObserver);
+                    } catch (IllegalAccessException | InvocationTargetException e) {
+                        e.printStackTrace();
+                    }
+
+                });
+            case SERVER_STREAMING:
+                return ServerCalls.asyncServerStreamingCall((request, responseObserver) -> {
+                    try {
+                        method.invoke(target, request, responseObserver);
+                    } catch (IllegalAccessException | InvocationTargetException e) {
+                        e.printStackTrace();
+                    }
+                });
+            case CLIENT_STREAMING:
+                return ServerCalls.asyncClientStreamingCall(responseObserver -> {
+                    try {
+                        return (StreamObserver<Object>) method.invoke(target, responseObserver);
+                    } catch (IllegalAccessException | InvocationTargetException e) {
+                        e.printStackTrace();
+                    }
+                    return null;
+                });
+            case BIDI_STREAMING:
+                return ServerCalls.asyncBidiStreamingCall(responseObserver -> {
+                    try {
+                        return (StreamObserver<Object>) method.invoke(target, responseObserver);
+                    } catch (IllegalAccessException | InvocationTargetException e) {
+                        e.printStackTrace();
+                    }
+                    return null;
+                });
+        }
+        throw new GrpcServerCreateException("Grpc method type not match.Please check your class.");
     }
 
     /**

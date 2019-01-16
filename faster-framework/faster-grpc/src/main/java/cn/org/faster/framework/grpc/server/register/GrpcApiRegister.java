@@ -24,14 +24,14 @@ import java.util.List;
  * <p>
  * 1. scanner扫描带有GrpcApi注解的类，注入到spring中。
  * 2. processor扫描带有GrpcMethod注解的方法，创建ServerCallAdapter（实现了BindableService），放入ServerCallContainer中。
- * 3. 创建ServerCallAdapter时，获取当前方法，放入ServerCallAdapter中，当接收到消息时，调用此方法，传入接收的参数。
+ * 3. 创建ServerCallAdapter时，创建MethodCallProperty，放入ServerCallAdapter中，当接收到消息时，调用此方法，传入接收的参数。
  * 4. server启动时，获取serverCallConatiner中的所有BindableService，进行设置。
  *
  * @author zhangbowen
  * @since 2019/1/13
  */
 @Slf4j
-public class GrpcServerRegister implements BeanFactoryAware, ImportBeanDefinitionRegistrar, ResourceLoaderAware {
+public class GrpcApiRegister implements BeanFactoryAware, ImportBeanDefinitionRegistrar, ResourceLoaderAware {
     private BeanFactory beanFactory;
     private ResourceLoader resourceLoader;
 
