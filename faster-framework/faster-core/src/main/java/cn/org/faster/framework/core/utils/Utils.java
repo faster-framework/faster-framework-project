@@ -4,6 +4,7 @@ import org.springframework.cglib.beans.BeanMap;
 import org.springframework.util.DigestUtils;
 import org.springframework.util.StringUtils;
 
+import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.*;
@@ -169,5 +170,40 @@ public class Utils {
      */
     public static <T> T safeElement(T[] array, int index) {
         return array == null ? null : array.length - 1 < index ? null : array[index];
+    }
+
+    /**
+     * 通过反射获取方法某个参数的泛型
+     *
+     * @param method     方法
+     * @param paramClass 参数class
+     * @return 泛型
+     */
+    public static Type[] reflectMethodParameterTypes(Method method, Class paramClass) {
+        try {
+            Type[] types = method.getDeclaringClass().getMethod(method.getName(), paramClass).getGenericParameterTypes();
+            if (types != null && types.length > 0) {
+                if (types[0] instanceof ParameterizedType) {
+                    return ((ParameterizedType) types[0]).getActualTypeArguments();
+                }
+            }
+        } catch (NoSuchMethodException e) {
+            return null;
+        }
+        return new Type[]{Object.class};
+    }
+
+    /**
+     * 通过反射获取方法的返回参数的泛型
+     *
+     * @param method 方法
+     * @return 泛型
+     */
+    public static Type[] reflectMethodReturnTypes(Method method) {
+        Type type = method.getGenericReturnType();
+        if (type instanceof ParameterizedType) {
+            return ((ParameterizedType) type).getActualTypeArguments();
+        }
+        return new Type[]{Object.class};
     }
 }

@@ -4,8 +4,8 @@ package cn.org.faster.framework.grpc.client.exception;
  * @author zhangbowen
  * @since 2019/1/15
  */
-public class ChannelCreateException extends RuntimeException{
-    public ChannelCreateException(String message) {
+public class GrpcChannelCreateException extends RuntimeException{
+    public GrpcChannelCreateException(String message) {
         super(message);
     }
 }

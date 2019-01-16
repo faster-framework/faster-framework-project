@@ -2,7 +2,7 @@ package cn.org.faster.framework.grpc.client.factory;
 
 import cn.org.faster.framework.grpc.annotation.GrpcMethod;
 import cn.org.faster.framework.grpc.client.annotation.GrpcService;
-import cn.org.faster.framework.grpc.client.exception.ChannelCreateException;
+import cn.org.faster.framework.grpc.client.exception.GrpcChannelCreateException;
 import cn.org.faster.framework.grpc.client.model.ChannelProperty;
 import cn.org.faster.framework.grpc.client.model.MethodCallProperty;
 import cn.org.faster.framework.grpc.client.proxy.ManageChannelProxy;
@@ -33,7 +33,7 @@ public class ClientFactory {
         ChannelProperty channelProperty = serverChannelMap.get(grpcService.value());
         if (channelProperty == null) {
 
-            throw new ChannelCreateException("GrpcService scheme:{" + grpcService.value() + "} was not found in properties.Please check your configuration.");
+            throw new GrpcChannelCreateException("GrpcService scheme:{" + grpcService.value() + "} was not found in properties.Please check your configuration.");
         }
         ManageChannelProxy manageChannelProxy = new ManageChannelProxy(channelProperty);
         //获取该类下所有包含GrpcMethod的注解，创建call
