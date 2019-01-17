@@ -37,7 +37,7 @@ public class ClassPathGrpcServiceScanner extends ClassPathBeanDefinitionScanner 
     public Set<BeanDefinitionHolder> doScan(String... basePackages) {
         Set<BeanDefinitionHolder> beanDefinitions = super.doScan(basePackages);
         if (beanDefinitions.isEmpty()) {
-            logger.warn("No Grpc Service was found in '" + Arrays.toString(basePackages) + "' package. Please check your configuration.");
+            logger.warn("No gRPC Service was found in '" + Arrays.toString(basePackages) + "' package. Please check your configuration.");
         } else {
             processBeanDefinitions(beanDefinitions);
         }

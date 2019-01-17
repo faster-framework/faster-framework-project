@@ -6,10 +6,10 @@ package cn.org.faster.framework.grpc.core.exception;
  */
 public class GrpcMethodNoMatchException extends RuntimeException {
     public GrpcMethodNoMatchException(String className, String methodName, String grpcMethodType, String errorMessage) {
-        super("GrpcService method does not match grpc type." +
+        super("GrpcService method does not match gRPC type." +
                 "[Class:" + className + "]" +
                 "[Method:" + methodName + "]:" +
-                "[Grpc method type is :" + grpcMethodType + "]." +
+                "[gRPC method type is :" + grpcMethodType + "]." +
                 errorMessage);
     }
 }

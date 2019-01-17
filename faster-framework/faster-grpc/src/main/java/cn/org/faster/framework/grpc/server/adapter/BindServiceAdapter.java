@@ -79,7 +79,7 @@ public class BindServiceAdapter implements BindableService {
                     return null;
                 });
         }
-        throw new GrpcServerCreateException("Grpc method type not match.Please check your class.");
+        throw new GrpcServerCreateException("gRPC method type not match.Please check your class.");
     }
 
     /**

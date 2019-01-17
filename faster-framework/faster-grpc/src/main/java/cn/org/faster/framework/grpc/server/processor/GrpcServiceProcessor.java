@@ -4,6 +4,7 @@ import cn.org.faster.framework.grpc.core.annotation.GrpcMethod;
 import cn.org.faster.framework.grpc.core.model.MethodCallProperty;
 import cn.org.faster.framework.grpc.server.adapter.BindServiceAdapter;
 import cn.org.faster.framework.grpc.server.annotation.GrpcApi;
+import lombok.Data;
 import org.springframework.aop.support.AopUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
@@ -20,6 +21,7 @@ import java.util.Map;
  * @author zhangbowen
  * @since 2019/1/16
  */
+@Data
 public class GrpcServiceProcessor implements BeanPostProcessor {
     private List<BindServiceAdapter> bindServiceAdapterList = new ArrayList<>();
 
