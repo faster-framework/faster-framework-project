@@ -34,22 +34,25 @@ public class JacksonMarshaller implements MethodDescriptor.Marshaller<Object> {
 
     @Override
     public InputStream stream(Object value) {
+        if (value == null) {
+            return new ByteArrayInputStream(new byte[]{});
+        }
         try {
             return new ByteArrayInputStream(objectMapper.writeValueAsBytes(value));
         } catch (JsonProcessingException ignored) {
         }
-        return null;
+        return new ByteArrayInputStream(new byte[]{});
     }
 
     @Override
     public Object parse(InputStream stream) {
-        if (type == null) {
-            return null;
+        if (stream == null || type == null || type.getTypeName().equals("void")) {
+            return new Object();
         }
         try {
             return objectMapper.readValue(stream, TypeFactory.defaultInstance().constructType(type));
         } catch (IOException ignored) {
         }
-        return null;
+        return new Object();
     }
 }

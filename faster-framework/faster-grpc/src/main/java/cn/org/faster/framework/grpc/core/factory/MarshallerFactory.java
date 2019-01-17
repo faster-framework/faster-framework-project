@@ -46,19 +46,20 @@ public class MarshallerFactory {
                     //等于ClientCalls.futureUnaryCall()
                     //获取ListenableFuture的泛型
                     types = Utils.reflectMethodReturnTypes(method);
-                    return new JacksonMarshaller(types[0], objectMapper);
+                    return new JacksonMarshaller(Utils.safeElement(types, 0), objectMapper);
                 } else if (method.getReturnType().getName().equals("void")) {
-                    //检查是否存在两个参数，一个为业务参数，一个为StreamObserver，并且顺序一致
-                    checkTwoParamHasStreamObServer(methodCallProperty);
-                    //等于ClientCalls.asyncUnaryCall();
+                    //判断参数中是否存在StreamObserver泛型
                     //参数中为StreamObserver的泛型
                     types = Utils.reflectMethodParameterTypes(method, StreamObserver.class);
                     //说明参数中不含有StreamObserver参数
                     if (types == null) {
-                        throw new GRpcMethodNoMatchException(method.getDeclaringClass().getName(), method.getName(), methodCallProperty.getMethodType().name(),
-                                "You use void for your return type.And you should use [StreamObserver] for your param value.Please check it.");
+                        //返回普通方式
+                        return new JacksonMarshaller(method.getGenericReturnType(), objectMapper);
                     }
-                    return new JacksonMarshaller(types[0], objectMapper);
+                    //存在，相当于ClientCalls.asyncUnaryCall();
+                    //检查是否存在两个参数，一个为业务参数，一个为StreamObserver，并且顺序一致
+                    checkTwoParamHasStreamObServer(methodCallProperty);
+                    return new JacksonMarshaller(Utils.safeElement(types, 0), objectMapper);
                 }
                 //直接返回方法的返回类型，等于ClientCalls.blockingUnaryCall
                 return new JacksonMarshaller(method.getGenericReturnType(), objectMapper);
@@ -78,12 +79,12 @@ public class MarshallerFactory {
                 }
                 //获取返回类型的泛型
                 types = Utils.reflectMethodReturnTypes(method);
-                return new JacksonMarshaller(types[0], objectMapper);
+                return new JacksonMarshaller(Utils.safeElement(types, 0), objectMapper);
             case CLIENT_STREAMING: //客户端流。等于ClientCalls.asyncClientStreamingCall()
                 //检查是否存在一个参数，为StreamObserver
                 checkOneParamHasStreamObServer(methodCallProperty);
-                //判断方法返回类型是否为StreamObserver（此为客户端传输数据所用，服务端响应在参数的StreamObserver中）
-                if (method.getReturnType() != StreamObserver.class) {
+                //方法返回类型不为空时，必须为StreamObserver，检验（此为客户端传输数据所用，服务端响应在参数的StreamObserver中）
+                if (!method.getReturnType().getName().equals("void") && method.getReturnType() != StreamObserver.class) {
                     throw new GRpcMethodNoMatchException(method.getDeclaringClass().getName(), method.getName(), methodCallProperty.getMethodType().name(),
                             "You should use [StreamObserver] for your return value.Please check it.");
                 }
@@ -95,7 +96,7 @@ public class MarshallerFactory {
                 }
                 //获取返回类型的泛型
                 types = Utils.reflectMethodReturnTypes(method);
-                return new JacksonMarshaller(types[0], objectMapper);
+                return new JacksonMarshaller(Utils.safeElement(types, 0), objectMapper);
             case SERVER_STREAMING://等于ClientCalls.blockingServerStreamingCall
                 if (method.getReturnType() != Iterator.class) {
                     throw new GRpcMethodNoMatchException(method.getDeclaringClass().getName(), method.getName(), methodCallProperty.getMethodType().name(),
@@ -103,7 +104,7 @@ public class MarshallerFactory {
                 }
                 //获取返回类型的泛型
                 types = Utils.reflectMethodReturnTypes(method);
-                return new JacksonMarshaller(types[0], objectMapper);
+                return new JacksonMarshaller(Utils.safeElement(types, 0), objectMapper);
         }
         throw new GRpcMethodNoMatchException(method.getDeclaringClass().getName(), method.getName(), methodCallProperty.getMethodType().name(),
                 "Return value type no match.Please check your configuration.");
@@ -123,7 +124,7 @@ public class MarshallerFactory {
                     "You should use one param [StreamObserver] in your method.Please check it.");
         }
         //检查第一个参数是否为StreamObserver
-        Type type = types[0];
+        Type type = Utils.safeElement(types, 0);
         if (type instanceof ParameterizedType) {
             if (!((ParameterizedType) type).getRawType().getTypeName().equals(StreamObserver.class.getName())) {
                 throw new GRpcMethodNoMatchException(method.getDeclaringClass().getName(), method.getName(), methodCallProperty.getMethodType().name(),
@@ -151,7 +152,7 @@ public class MarshallerFactory {
                     "You should use two param in your method.One of your [Business Request Bean],another is [StreamObserver].And the order must be consistent.Please check it.");
         }
         //检查第二个参数是否为StreamObserver
-        Type type = types[1];
+        Type type = Utils.safeElement(types, 1);
         if (type instanceof ParameterizedType) {
             if (!((ParameterizedType) type).getRawType().getTypeName().equals(StreamObserver.class.getName())) {
                 throw new GRpcMethodNoMatchException(method.getDeclaringClass().getName(), method.getName(), methodCallProperty.getMethodType().name(),
@@ -177,10 +178,12 @@ public class MarshallerFactory {
         switch (methodCallProperty.getMethodType()) {
             case UNARY: //一对一，等于asyncUnaryCall()
                 //检验是否两个参数，包含StreamObserver，并且顺序一致
-                checkTwoParamHasStreamObServer(methodCallProperty);
+                if (method.getGenericParameterTypes().length == 2) {
+                    checkTwoParamHasStreamObServer(methodCallProperty);
+                }
                 //获取获取请求参数类型，第一个为业务实体
                 types = method.getGenericParameterTypes();
-                return new JacksonMarshaller(types[0], objectMapper);
+                return new JacksonMarshaller(Utils.safeElement(types, 0), objectMapper);
             case BIDI_STREAMING://双向流，等于asyncBidiStreamingCall()
                 //检验是否一个参数，为StreamObserver
                 checkOneParamHasStreamObServer(methodCallProperty);
@@ -197,30 +200,28 @@ public class MarshallerFactory {
                 }
                 //获取返回类型的泛型
                 types = Utils.reflectMethodReturnTypes(method);
-                return new JacksonMarshaller(types[0], objectMapper);
+                return new JacksonMarshaller(Utils.safeElement(types, 0), objectMapper);
             case CLIENT_STREAMING: //客户端流。等于asyncClientStreamingCall()
-                //检验是否一个参数，为StreamObserver
-                checkOneParamHasStreamObServer(methodCallProperty);
                 //检查方法的返回值是否为StreamObserver类型
                 if (method.getReturnType() != StreamObserver.class) {
                     throw new GRpcMethodNoMatchException(method.getDeclaringClass().getName(), method.getName(), methodCallProperty.getMethodType().name(),
                             "You should use [StreamObserver] for your return value.Please check it.");
                 }
-                //获取方法参数类型为StreamObserver的泛型
-                types = Utils.reflectMethodParameterTypes(method, StreamObserver.class);
-                if (types == null) {
-                    throw new GRpcMethodNoMatchException(method.getDeclaringClass().getName(), method.getName(), methodCallProperty.getMethodType().name(),
-                            "You should use [StreamObserver] for your param value.Please check it.");
-                }
-                //获取返回类型的泛型
+                //检验返回流StreamObserver是否存在，并且唯一。
+                checkOneParamHasStreamObServer(methodCallProperty);
+                //获取返回类型的泛型，为请求参数的泛型
                 types = Utils.reflectMethodReturnTypes(method);
-                return new JacksonMarshaller(types[0], objectMapper);
+                return new JacksonMarshaller(Utils.safeElement(types, 0), objectMapper);
             case SERVER_STREAMING://等于asyncServerStreamingCall()
                 //检验是否两个参数，并且顺序一致
-                checkTwoParamHasStreamObServer(methodCallProperty);
+                if (method.getGenericParameterTypes().length == 2) {
+                    checkTwoParamHasStreamObServer(methodCallProperty);
+                } else {
+                    checkOneParamHasStreamObServer(methodCallProperty);
+                }
                 //获取获取请求参数类型，第一个为业务实体
                 types = method.getGenericParameterTypes();
-                return new JacksonMarshaller(types[0], objectMapper);
+                return new JacksonMarshaller(Utils.safeElement(types, 0), objectMapper);
         }
         throw new GRpcMethodNoMatchException(method.getDeclaringClass().getName(), method.getName(), methodCallProperty.getMethodType().name(),
                 "Request value type no match.Please check your configuration.");
