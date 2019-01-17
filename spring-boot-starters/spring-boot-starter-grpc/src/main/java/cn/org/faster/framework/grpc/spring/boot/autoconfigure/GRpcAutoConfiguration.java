@@ -2,12 +2,15 @@ package cn.org.faster.framework.grpc.spring.boot.autoconfigure;
 
 import cn.org.faster.framework.grpc.client.annotation.GRpcClientScan;
 import cn.org.faster.framework.grpc.client.factory.ClientFactory;
+import cn.org.faster.framework.grpc.core.exception.CreateMarshallerException;
+import cn.org.faster.framework.grpc.core.factory.MarshallerFactory;
 import cn.org.faster.framework.grpc.server.adapter.DefaultServerBuilderConfigureAdapter;
 import cn.org.faster.framework.grpc.server.annotation.GRpcServerScan;
 import cn.org.faster.framework.grpc.server.configure.GRpcServerBuilderConfigure;
 import cn.org.faster.framework.grpc.server.processor.GRpcServiceProcessor;
 import cn.org.faster.framework.grpc.server.run.GRpcServerApplicationRunner;
 import cn.org.faster.framework.grpc.spring.boot.autoconfigure.properties.GRpcProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -25,6 +28,17 @@ import org.springframework.context.annotation.Import;
 @ConditionalOnProperty(prefix = "faster.grpc", name = "enabled", havingValue = "true", matchIfMissing = true)
 @Import({GRpcAutoConfiguration.GrpcClientAutoConfiguration.class, GRpcAutoConfiguration.GrpcServerAutoConfiguration.class})
 public class GRpcAutoConfiguration {
+    @Autowired
+    private ObjectMapper objectMapper;
+
+    @Bean
+    @ConditionalOnMissingBean
+    public MarshallerFactory marshallerFactory() {
+        if (objectMapper == null) {
+            throw new CreateMarshallerException("Object mapper is no inject in spring.Please check your configuration.");
+        }
+        return new MarshallerFactory(objectMapper);
+    }
 
     /**
      * 客户端配置
@@ -37,8 +51,8 @@ public class GRpcAutoConfiguration {
 
         @Bean
         @ConditionalOnMissingBean
-        public ClientFactory clientFactory() {
-            ClientFactory clientFactory = new ClientFactory();
+        public ClientFactory clientFactory(MarshallerFactory marshallerFactory) {
+            ClientFactory clientFactory = new ClientFactory(marshallerFactory);
             clientFactory.setServerChannelMap(grpcProperties.getClient().getServices());
             return clientFactory;
         }
@@ -66,14 +80,14 @@ public class GRpcAutoConfiguration {
         }
 
         /**
-         * 扫描grpcMethod
-         *
+         * 扫描grpc server 服务
+         * @param marshallerFactory 序列化处理器
          * @return GRpcServiceProcessor
          */
         @Bean
         @ConditionalOnMissingBean
-        public GRpcServiceProcessor grpcServiceProcessor() {
-            return new GRpcServiceProcessor();
+        public GRpcServiceProcessor grpcServiceProcessor(MarshallerFactory marshallerFactory) {
+            return new GRpcServiceProcessor(marshallerFactory);
         }
 
         /**

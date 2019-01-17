@@ -1,7 +1,7 @@
 package cn.org.faster.framework.grpc.server.adapter;
 
-import cn.org.faster.framework.grpc.core.factory.FastJsonMarshallerFactory;
-import cn.org.faster.framework.grpc.core.marshaller.FastJsonMarshaller;
+import cn.org.faster.framework.grpc.core.factory.MarshallerFactory;
+import cn.org.faster.framework.grpc.core.marshaller.JacksonMarshaller;
 import cn.org.faster.framework.grpc.core.model.MethodCallProperty;
 import cn.org.faster.framework.grpc.server.exception.GRpcServerCreateException;
 import io.grpc.BindableService;
@@ -24,17 +24,19 @@ import java.util.List;
 public class BindServiceAdapter implements BindableService {
     private final String scheme;
     private final List<MethodCallProperty> methodCallList;
+    private final MarshallerFactory marshallerFactory;
 
-    public BindServiceAdapter(String scheme, List<MethodCallProperty> methodCallList) {
+    public BindServiceAdapter(String scheme, List<MethodCallProperty> methodCallList, MarshallerFactory marshallerFactory) {
         this.scheme = scheme;
         this.methodCallList = methodCallList;
+        this.marshallerFactory = marshallerFactory;
     }
 
 
     private MethodDescriptor<Object, Object> createMethodDescriptor(MethodCallProperty methodCallProperty) {
         return MethodDescriptor.newBuilder(
-                FastJsonMarshallerFactory.parseRequestMarshaller(methodCallProperty),
-                new FastJsonMarshaller()
+                marshallerFactory.parseRequestMarshaller(methodCallProperty),
+                marshallerFactory.emptyJacksonMarshaller()
         ).setType(methodCallProperty.getMethodType())
                 .setFullMethodName(MethodDescriptor.generateFullMethodName(methodCallProperty.getScheme(), methodCallProperty.getMethodName()))
                 .build();

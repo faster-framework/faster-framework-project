@@ -1,6 +1,7 @@
 package cn.org.faster.framework.grpc.server.processor;
 
 import cn.org.faster.framework.grpc.core.annotation.GRpcMethod;
+import cn.org.faster.framework.grpc.core.factory.MarshallerFactory;
 import cn.org.faster.framework.grpc.core.model.MethodCallProperty;
 import cn.org.faster.framework.grpc.server.adapter.BindServiceAdapter;
 import cn.org.faster.framework.grpc.server.annotation.GRpcApi;
@@ -25,6 +26,11 @@ import java.util.Map;
 @Data
 public class GRpcServiceProcessor implements BeanPostProcessor {
     private List<BindServiceAdapter> bindServiceAdapterList = new ArrayList<>();
+    private final MarshallerFactory marshallerFactory;
+
+    public GRpcServiceProcessor(MarshallerFactory marshallerFactory) {
+        this.marshallerFactory = marshallerFactory;
+    }
 
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
@@ -53,7 +59,7 @@ public class GRpcServiceProcessor implements BeanPostProcessor {
             methodCallProperty.setMethodType(v.type());
             methodCallPropertyList.add(methodCallProperty);
         });
-        BindServiceAdapter bindServiceAdapter = new BindServiceAdapter(scheme, methodCallPropertyList);
+        BindServiceAdapter bindServiceAdapter = new BindServiceAdapter(scheme, methodCallPropertyList, marshallerFactory);
         bindServiceAdapterList.add(bindServiceAdapter);
         return bean;
     }

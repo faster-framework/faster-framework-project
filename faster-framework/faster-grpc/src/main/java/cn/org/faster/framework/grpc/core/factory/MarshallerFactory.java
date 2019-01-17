@@ -2,8 +2,9 @@ package cn.org.faster.framework.grpc.core.factory;
 
 import cn.org.faster.framework.core.utils.Utils;
 import cn.org.faster.framework.grpc.core.exception.GRpcMethodNoMatchException;
-import cn.org.faster.framework.grpc.core.marshaller.FastJsonMarshaller;
+import cn.org.faster.framework.grpc.core.marshaller.JacksonMarshaller;
 import cn.org.faster.framework.grpc.core.model.MethodCallProperty;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.util.concurrent.ListenableFuture;
 import io.grpc.stub.StreamObserver;
 
@@ -18,14 +19,24 @@ import java.util.Iterator;
  * @author zhangbowen
  * @since 2019/1/16
  */
-public class FastJsonMarshallerFactory {
+public class MarshallerFactory {
+    private final ObjectMapper objectMapper;
+
+    public MarshallerFactory(ObjectMapper objectMapper) {
+        this.objectMapper = objectMapper;
+    }
+
+    public JacksonMarshaller emptyJacksonMarshaller() {
+        return new JacksonMarshaller(objectMapper);
+    }
+
     /**
      * 获取返回类型的解析器
      *
      * @param methodCallProperty methodCallProperty
      * @return 解析器
      */
-    public static FastJsonMarshaller parseReturnMarshaller(MethodCallProperty methodCallProperty) {
+    public JacksonMarshaller parseReturnMarshaller(MethodCallProperty methodCallProperty) {
         Method method = methodCallProperty.getMethod();
         Type[] types;
         boolean existParam;
@@ -35,7 +46,7 @@ public class FastJsonMarshallerFactory {
                     //等于ClientCalls.futureUnaryCall()
                     //获取ListenableFuture的泛型
                     types = Utils.reflectMethodReturnTypes(method);
-                    return new FastJsonMarshaller(types[0]);
+                    return new JacksonMarshaller(types[0], objectMapper);
                 } else if (method.getReturnType().getName().equals("void")) {
                     //检查是否存在两个参数，一个为业务参数，一个为StreamObserver，并且顺序一致
                     checkTwoParamHasStreamObServer(methodCallProperty);
@@ -47,10 +58,10 @@ public class FastJsonMarshallerFactory {
                         throw new GRpcMethodNoMatchException(method.getDeclaringClass().getName(), method.getName(), methodCallProperty.getMethodType().name(),
                                 "You use void for your return type.And you should use [StreamObserver] for your param value.Please check it.");
                     }
-                    return new FastJsonMarshaller(types[0]);
+                    return new JacksonMarshaller(types[0], objectMapper);
                 }
                 //直接返回方法的返回类型，等于ClientCalls.blockingUnaryCall
-                return new FastJsonMarshaller(method.getGenericReturnType());
+                return new JacksonMarshaller(method.getGenericReturnType(), objectMapper);
             case BIDI_STREAMING://双向流，相当于asyncBidiStreamingCall
                 //检查是否存在一个参数，为StreamObserver
                 checkOneParamHasStreamObServer(methodCallProperty);
@@ -67,7 +78,7 @@ public class FastJsonMarshallerFactory {
                 }
                 //获取返回类型的泛型
                 types = Utils.reflectMethodReturnTypes(method);
-                return new FastJsonMarshaller(types[0]);
+                return new JacksonMarshaller(types[0], objectMapper);
             case CLIENT_STREAMING: //客户端流。等于ClientCalls.asyncClientStreamingCall()
                 //检查是否存在一个参数，为StreamObserver
                 checkOneParamHasStreamObServer(methodCallProperty);
@@ -84,7 +95,7 @@ public class FastJsonMarshallerFactory {
                 }
                 //获取返回类型的泛型
                 types = Utils.reflectMethodReturnTypes(method);
-                return new FastJsonMarshaller(types[0]);
+                return new JacksonMarshaller(types[0], objectMapper);
             case SERVER_STREAMING://等于ClientCalls.blockingServerStreamingCall
                 if (method.getReturnType() != Iterator.class) {
                     throw new GRpcMethodNoMatchException(method.getDeclaringClass().getName(), method.getName(), methodCallProperty.getMethodType().name(),
@@ -92,7 +103,7 @@ public class FastJsonMarshallerFactory {
                 }
                 //获取返回类型的泛型
                 types = Utils.reflectMethodReturnTypes(method);
-                return new FastJsonMarshaller(types[0]);
+                return new JacksonMarshaller(types[0], objectMapper);
         }
         throw new GRpcMethodNoMatchException(method.getDeclaringClass().getName(), method.getName(), methodCallProperty.getMethodType().name(),
                 "Return value type no match.Please check your configuration.");
@@ -103,7 +114,7 @@ public class FastJsonMarshallerFactory {
      *
      * @param methodCallProperty 方法
      */
-    private static void checkOneParamHasStreamObServer(MethodCallProperty methodCallProperty) {
+    private void checkOneParamHasStreamObServer(MethodCallProperty methodCallProperty) {
         Method method = methodCallProperty.getMethod();
         //判断当前方法是否仅包含一个参数，为StreamObserver。如果不是，抛出异常。
         Type[] types = method.getGenericParameterTypes();
@@ -131,7 +142,7 @@ public class FastJsonMarshallerFactory {
      *
      * @param methodCallProperty 方法
      */
-    private static void checkTwoParamHasStreamObServer(MethodCallProperty methodCallProperty) {
+    private void checkTwoParamHasStreamObServer(MethodCallProperty methodCallProperty) {
         Method method = methodCallProperty.getMethod();
         //判断当前方法是否仅包含两个参数，一个为请求实体，一个为StreamObserver。如果不是，抛出异常。
         Type[] types = method.getGenericParameterTypes();
@@ -160,7 +171,7 @@ public class FastJsonMarshallerFactory {
      * @param methodCallProperty methodCallProperty
      * @return 解析器
      */
-    public static FastJsonMarshaller parseRequestMarshaller(MethodCallProperty methodCallProperty) {
+    public JacksonMarshaller parseRequestMarshaller(MethodCallProperty methodCallProperty) {
         Method method = methodCallProperty.getMethod();
         Type[] types;
         switch (methodCallProperty.getMethodType()) {
@@ -169,7 +180,7 @@ public class FastJsonMarshallerFactory {
                 checkTwoParamHasStreamObServer(methodCallProperty);
                 //获取获取请求参数类型，第一个为业务实体
                 types = method.getGenericParameterTypes();
-                return new FastJsonMarshaller(types[0]);
+                return new JacksonMarshaller(types[0], objectMapper);
             case BIDI_STREAMING://双向流，等于asyncBidiStreamingCall()
                 //检验是否一个参数，为StreamObserver
                 checkOneParamHasStreamObServer(methodCallProperty);
@@ -186,7 +197,7 @@ public class FastJsonMarshallerFactory {
                 }
                 //获取返回类型的泛型
                 types = Utils.reflectMethodReturnTypes(method);
-                return new FastJsonMarshaller(types[0]);
+                return new JacksonMarshaller(types[0], objectMapper);
             case CLIENT_STREAMING: //客户端流。等于asyncClientStreamingCall()
                 //检验是否一个参数，为StreamObserver
                 checkOneParamHasStreamObServer(methodCallProperty);
@@ -203,13 +214,13 @@ public class FastJsonMarshallerFactory {
                 }
                 //获取返回类型的泛型
                 types = Utils.reflectMethodReturnTypes(method);
-                return new FastJsonMarshaller(types[0]);
+                return new JacksonMarshaller(types[0], objectMapper);
             case SERVER_STREAMING://等于asyncServerStreamingCall()
                 //检验是否两个参数，并且顺序一致
                 checkTwoParamHasStreamObServer(methodCallProperty);
                 //获取获取请求参数类型，第一个为业务实体
                 types = method.getGenericParameterTypes();
-                return new FastJsonMarshaller(types[0]);
+                return new JacksonMarshaller(types[0], objectMapper);
         }
         throw new GRpcMethodNoMatchException(method.getDeclaringClass().getName(), method.getName(), methodCallProperty.getMethodType().name(),
                 "Request value type no match.Please check your configuration.");

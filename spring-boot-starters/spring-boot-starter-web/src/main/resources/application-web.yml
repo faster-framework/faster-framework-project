@@ -10,6 +10,8 @@ spring:
       WRITE_NUMBERS_AS_STRINGS: true
     deserialization:
       FAIL_ON_UNKNOWN_PROPERTIES: false
+    serialization:
+      FAIL_ON_EMPTY_BEANS: false
   mvc:
     date-format: yyyy-MM-dd HH:mm:ss
   servlet:

@@ -2,8 +2,7 @@ package cn.org.faster.framework.grpc.client.proxy;
 
 import cn.org.faster.framework.grpc.client.model.ChannelProperty;
 import cn.org.faster.framework.grpc.core.annotation.GRpcMethod;
-import cn.org.faster.framework.grpc.core.factory.FastJsonMarshallerFactory;
-import cn.org.faster.framework.grpc.core.marshaller.FastJsonMarshaller;
+import cn.org.faster.framework.grpc.core.factory.MarshallerFactory;
 import cn.org.faster.framework.grpc.core.model.MethodCallProperty;
 import com.google.common.util.concurrent.ListenableFuture;
 import io.grpc.*;
@@ -21,11 +20,13 @@ import java.util.Map;
  * @since 2019/1/14
  */
 public class ManageChannelProxy implements InvocationHandler {
+    private final MarshallerFactory marshallerFactory;
     private ManagedChannel channel;
     private Object invoker = new Object();
     private Map<String, ClientCall<Object, Object>> clientCallMap = new HashMap<>();
 
-    public ManageChannelProxy(ChannelProperty channelProperty) {
+    public ManageChannelProxy(ChannelProperty channelProperty, MarshallerFactory marshallerFactory) {
+        this.marshallerFactory = marshallerFactory;
         this.channel = ManagedChannelBuilder.forAddress(channelProperty.getHost(), channelProperty.getPort())
                 .usePlaintext()
                 .build();
@@ -34,8 +35,8 @@ public class ManageChannelProxy implements InvocationHandler {
     public void addCall(MethodCallProperty methodCallProperty) {
         Method method = methodCallProperty.getMethod();
         MethodDescriptor.Builder<Object, Object> builder = MethodDescriptor.newBuilder(
-                new FastJsonMarshaller(),
-                FastJsonMarshallerFactory.parseReturnMarshaller(methodCallProperty)
+                marshallerFactory.emptyJacksonMarshaller(),
+                marshallerFactory.parseReturnMarshaller(methodCallProperty)
         ).setType(methodCallProperty.getMethodType())
                 .setFullMethodName(MethodDescriptor.generateFullMethodName(methodCallProperty.getScheme(), methodCallProperty.getMethodName()));
         clientCallMap.put(method.getName(), channel.newCall(builder.build(), CallOptions.DEFAULT));
