@@ -188,6 +188,10 @@ public class Utils {
                     if (parameterizedType.getRawType().getTypeName().equals(paramClass.getName())) {
                         return true;
                     }
+                } else {
+                    if (type.getTypeName().equals(paramClass.getName())) {
+                        return true;
+                    }
                 }
             }
         }
@@ -203,6 +207,9 @@ public class Utils {
      * @return 泛型
      */
     public static Type[] reflectMethodParameterTypes(Method method, Class paramClass) {
+        if (!checkMethodHasParamClass(method, paramClass)) {
+            return null;
+        }
         Type[] types = method.getGenericParameterTypes();
         if (types != null && types.length > 0) {
             for (Type type : types) {
@@ -214,7 +221,7 @@ public class Utils {
                 }
             }
         }
-        return null;
+        return new Type[]{Object.class};
     }
 
     /**

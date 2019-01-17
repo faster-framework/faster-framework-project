@@ -10,6 +10,7 @@ import io.grpc.ServerCallHandler;
 import io.grpc.ServerServiceDefinition;
 import io.grpc.stub.ServerCalls;
 import io.grpc.stub.StreamObserver;
+import lombok.Data;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -19,6 +20,7 @@ import java.util.List;
  * @author zhangbowen
  * @since 2019/1/16
  */
+@Data
 public class BindServiceAdapter implements BindableService {
     private final String scheme;
     private final List<MethodCallProperty> methodCallList;

@@ -4,8 +4,8 @@ import cn.org.faster.framework.core.utils.Utils;
 import cn.org.faster.framework.grpc.core.exception.GrpcMethodNoMatchException;
 import cn.org.faster.framework.grpc.core.marshaller.FastJsonMarshaller;
 import cn.org.faster.framework.grpc.core.model.MethodCallProperty;
+import com.google.common.util.concurrent.ListenableFuture;
 import io.grpc.stub.StreamObserver;
-import org.springframework.util.concurrent.ListenableFuture;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
@@ -36,20 +36,24 @@ public class FastJsonMarshallerFactory {
                     //获取ListenableFuture的泛型
                     types = Utils.reflectMethodReturnTypes(method);
                     return new FastJsonMarshaller(types[0]);
-                } else if (method.getReturnType() == Void.class) {
+                } else if (method.getReturnType().getName().equals("void")) {
+                    //检查是否存在两个参数，一个为业务参数，一个为StreamObserver，并且顺序一致
+                    checkTwoParamHasStreamObServer(methodCallProperty);
                     //等于ClientCalls.asyncUnaryCall();
                     //参数中为StreamObserver的泛型
                     types = Utils.reflectMethodParameterTypes(method, StreamObserver.class);
                     //说明参数中不含有StreamObserver参数
                     if (types == null) {
                         throw new GrpcMethodNoMatchException(method.getDeclaringClass().getName(), method.getName(), methodCallProperty.getMethodType().name(),
-                                "You should use [StreamObserver] for your param value.Please check it.");
+                                "You use void for your return type.And you should use [StreamObserver] for your param value.Please check it.");
                     }
                     return new FastJsonMarshaller(types[0]);
                 }
                 //直接返回方法的返回类型，等于ClientCalls.blockingUnaryCall
                 return new FastJsonMarshaller(method.getGenericReturnType());
             case BIDI_STREAMING://双向流，相当于asyncBidiStreamingCall
+                //检查是否存在一个参数，为StreamObserver
+                checkOneParamHasStreamObServer(methodCallProperty);
                 //判断方法返回类型是否为StreamObserver（此为客户端传输数据所用，服务端响应在参数的StreamObserver中）
                 if (method.getReturnType() != StreamObserver.class) {
                     throw new GrpcMethodNoMatchException(method.getDeclaringClass().getName(), method.getName(), methodCallProperty.getMethodType().name(),
@@ -65,6 +69,8 @@ public class FastJsonMarshallerFactory {
                 types = Utils.reflectMethodReturnTypes(method);
                 return new FastJsonMarshaller(types[0]);
             case CLIENT_STREAMING: //客户端流。等于ClientCalls.asyncClientStreamingCall()
+                //检查是否存在一个参数，为StreamObserver
+                checkOneParamHasStreamObServer(methodCallProperty);
                 //判断方法返回类型是否为StreamObserver（此为客户端传输数据所用，服务端响应在参数的StreamObserver中）
                 if (method.getReturnType() != StreamObserver.class) {
                     throw new GrpcMethodNoMatchException(method.getDeclaringClass().getName(), method.getName(), methodCallProperty.getMethodType().name(),
@@ -93,21 +99,58 @@ public class FastJsonMarshallerFactory {
     }
 
     /**
+     * 检查方法是否包含一个参数，为StreamObserver
+     *
+     * @param methodCallProperty 方法
+     */
+    private static void checkOneParamHasStreamObServer(MethodCallProperty methodCallProperty) {
+        Method method = methodCallProperty.getMethod();
+        //判断当前方法是否仅包含一个参数，为StreamObserver。如果不是，抛出异常。
+        Type[] types = method.getGenericParameterTypes();
+        if (types == null || types.length != 1) {
+            throw new GrpcMethodNoMatchException(method.getDeclaringClass().getName(), method.getName(), methodCallProperty.getMethodType().name(),
+                    "You should use one param [StreamObserver] in your method.Please check it.");
+        }
+        //检查第一个参数是否为StreamObserver
+        Type type = types[0];
+        if (type instanceof ParameterizedType) {
+            if (!((ParameterizedType) type).getRawType().getTypeName().equals(StreamObserver.class.getName())) {
+                throw new GrpcMethodNoMatchException(method.getDeclaringClass().getName(), method.getName(), methodCallProperty.getMethodType().name(),
+                        "You should use one param [StreamObserver] in your method.Please check it.");
+            }
+        } else {
+            if (!type.getTypeName().equals(StreamObserver.class.getName())) {
+                throw new GrpcMethodNoMatchException(method.getDeclaringClass().getName(), method.getName(), methodCallProperty.getMethodType().name(),
+                        "You should use one param [StreamObserver] in your method.Please check it.");
+            }
+        }
+    }
+
+    /**
      * 检查方法是否包含两个参数，一个为业务实体，另外一个为StreamObserver
      *
      * @param methodCallProperty 方法
      */
-    private static void checkTwoParam(MethodCallProperty methodCallProperty) {
+    private static void checkTwoParamHasStreamObServer(MethodCallProperty methodCallProperty) {
         Method method = methodCallProperty.getMethod();
         //判断当前方法是否仅包含两个参数，一个为请求实体，一个为StreamObserver。如果不是，抛出异常。
         Type[] types = method.getGenericParameterTypes();
         if (types == null || types.length != 2) {
             throw new GrpcMethodNoMatchException(method.getDeclaringClass().getName(), method.getName(), methodCallProperty.getMethodType().name(),
-                    "You should use two param in your method.One of your [Business Request Bean],another is [StreamObserver].Please check it.");
+                    "You should use two param in your method.One of your [Business Request Bean],another is [StreamObserver].And the order must be consistent.Please check it.");
         }
-        if (!(types[1] instanceof ParameterizedType) || !((ParameterizedType) types[1]).getRawType().getTypeName().equals(StreamObserver.class.getName())) {
-            throw new GrpcMethodNoMatchException(method.getDeclaringClass().getName(), method.getName(), methodCallProperty.getMethodType().name(),
-                    "You should use two param in your method.One of your [Business Request Bean],another is [StreamObserver].Please check it.");
+        //检查第二个参数是否为StreamObserver
+        Type type = types[1];
+        if (type instanceof ParameterizedType) {
+            if (!((ParameterizedType) type).getRawType().getTypeName().equals(StreamObserver.class.getName())) {
+                throw new GrpcMethodNoMatchException(method.getDeclaringClass().getName(), method.getName(), methodCallProperty.getMethodType().name(),
+                        "You should use two param in your method.One of your [Business Request Bean],another is [StreamObserver].And the order must be consistent.Please check it.");
+            }
+        } else {
+            if (!type.getTypeName().equals(StreamObserver.class.getName())) {
+                throw new GrpcMethodNoMatchException(method.getDeclaringClass().getName(), method.getName(), methodCallProperty.getMethodType().name(),
+                        "You should use two param in your method.One of your [Business Request Bean],another is [StreamObserver].And the order must be consistent.Please check it.");
+            }
         }
     }
 
@@ -122,12 +165,14 @@ public class FastJsonMarshallerFactory {
         Type[] types;
         switch (methodCallProperty.getMethodType()) {
             case UNARY: //一对一，等于asyncUnaryCall()
-                //检验是否两个参数，并且顺序一致
-                checkTwoParam(methodCallProperty);
+                //检验是否两个参数，包含StreamObserver，并且顺序一致
+                checkTwoParamHasStreamObServer(methodCallProperty);
                 //获取获取请求参数类型，第一个为业务实体
                 types = method.getGenericParameterTypes();
                 return new FastJsonMarshaller(types[0]);
             case BIDI_STREAMING://双向流，等于asyncBidiStreamingCall()
+                //检验是否一个参数，为StreamObserver
+                checkOneParamHasStreamObServer(methodCallProperty);
                 //检查方法的返回值是否为StreamObserver类型
                 if (method.getReturnType() != StreamObserver.class) {
                     throw new GrpcMethodNoMatchException(method.getDeclaringClass().getName(), method.getName(), methodCallProperty.getMethodType().name(),
@@ -143,6 +188,8 @@ public class FastJsonMarshallerFactory {
                 types = Utils.reflectMethodReturnTypes(method);
                 return new FastJsonMarshaller(types[0]);
             case CLIENT_STREAMING: //客户端流。等于asyncClientStreamingCall()
+                //检验是否一个参数，为StreamObserver
+                checkOneParamHasStreamObServer(methodCallProperty);
                 //检查方法的返回值是否为StreamObserver类型
                 if (method.getReturnType() != StreamObserver.class) {
                     throw new GrpcMethodNoMatchException(method.getDeclaringClass().getName(), method.getName(), methodCallProperty.getMethodType().name(),
@@ -159,7 +206,7 @@ public class FastJsonMarshallerFactory {
                 return new FastJsonMarshaller(types[0]);
             case SERVER_STREAMING://等于asyncServerStreamingCall()
                 //检验是否两个参数，并且顺序一致
-                checkTwoParam(methodCallProperty);
+                checkTwoParamHasStreamObServer(methodCallProperty);
                 //获取获取请求参数类型，第一个为业务实体
                 types = method.getGenericParameterTypes();
                 return new FastJsonMarshaller(types[0]);

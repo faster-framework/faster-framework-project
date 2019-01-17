@@ -4,6 +4,7 @@ import cn.org.faster.framework.grpc.core.annotation.GrpcMethod;
 import cn.org.faster.framework.grpc.core.model.MethodCallProperty;
 import cn.org.faster.framework.grpc.server.adapter.BindServiceAdapter;
 import cn.org.faster.framework.grpc.server.annotation.GrpcApi;
+import cn.org.faster.framework.grpc.server.exception.GrpcServerCreateException;
 import lombok.Data;
 import org.springframework.aop.support.AopUtils;
 import org.springframework.beans.BeansException;
@@ -28,7 +29,14 @@ public class GrpcServiceProcessor implements BeanPostProcessor {
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
         GrpcApi grpcApi = bean.getClass().getAnnotation(GrpcApi.class);
-        String scheme = StringUtils.isEmpty(grpcApi.value()) ? bean.getClass().getName() : grpcApi.value();
+        if (grpcApi == null) {
+            return bean;
+        }
+        String scheme = grpcApi.value();
+        //检验scheme是否存在
+        if (bindServiceAdapterList.stream().anyMatch(item -> item.getScheme().equals(scheme))) {
+            throw new GrpcServerCreateException("The scheme " + "[" + scheme + "] is already exist.Please check your configuration.");
+        }
         Class<?> targetClass = AopUtils.getTargetClass(bean);
         Map<Method, GrpcMethod> annotatedMethods = MethodIntrospector.selectMethods(targetClass,
                 (MethodIntrospector.MetadataLookup<GrpcMethod>) method -> AnnotatedElementUtils.findMergedAnnotation(method, GrpcMethod.class));

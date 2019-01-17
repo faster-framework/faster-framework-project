@@ -15,7 +15,7 @@ import java.lang.annotation.Target;
 @Target({ElementType.TYPE})
 public @interface GrpcApi {
     /**
-     * @return 提供的scheme名称，client端调用时使用，默认使用全类名
+     * @return 提供的scheme名称, client端调用时需统一。
      */
-    String value() default "";
+    String value();
 }

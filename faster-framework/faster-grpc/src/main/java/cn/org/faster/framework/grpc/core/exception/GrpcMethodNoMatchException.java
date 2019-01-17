@@ -8,8 +8,8 @@ public class GrpcMethodNoMatchException extends RuntimeException {
     public GrpcMethodNoMatchException(String className, String methodName, String grpcMethodType, String errorMessage) {
         super("GrpcService method does not match gRPC type." +
                 "[Class:" + className + "]" +
-                "[Method:" + methodName + "]:" +
-                "[gRPC method type is :" + grpcMethodType + "]." +
+                "[Method:" + methodName + "]" +
+                "[gRPC method type is:" + grpcMethodType + "]." +
                 errorMessage);
     }
 }
