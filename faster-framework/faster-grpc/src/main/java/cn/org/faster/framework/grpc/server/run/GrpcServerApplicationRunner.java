@@ -30,7 +30,7 @@ public class GrpcServerApplicationRunner implements ApplicationRunner, Disposabl
     @Override
     public void run(ApplicationArguments args) throws Exception {
         if (CollectionUtils.isEmpty(bindServiceAdapterList)) {
-            log.warn("gRPC server service is empty.gRPC server is not start.");
+            log.info("gRPC server services empty.gRPC server is not start.");
             return;
         }
         ServerBuilder serverBuilder = ServerBuilder.forPort(port);
