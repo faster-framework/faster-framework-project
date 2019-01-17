@@ -17,10 +17,10 @@ import java.util.Set;
  * @since 2019/1/15
  */
 @Slf4j
-public class ClassPathGrpcServiceScanner extends ClassPathBeanDefinitionScanner {
+public class ClassPathGRpcServiceScanner extends ClassPathBeanDefinitionScanner {
     private final BeanFactory beanFactory;
 
-    public ClassPathGrpcServiceScanner(BeanDefinitionRegistry registry, BeanFactory beanFactory) {
+    public ClassPathGRpcServiceScanner(BeanDefinitionRegistry registry, BeanFactory beanFactory) {
         super(registry, false);
         this.beanFactory = beanFactory;
     }
@@ -37,7 +37,7 @@ public class ClassPathGrpcServiceScanner extends ClassPathBeanDefinitionScanner 
     public Set<BeanDefinitionHolder> doScan(String... basePackages) {
         Set<BeanDefinitionHolder> beanDefinitions = super.doScan(basePackages);
         if (beanDefinitions.isEmpty()) {
-            logger.warn("No gRPC Service was found in '" + Arrays.toString(basePackages) + "' package. Please check your configuration.");
+            logger.warn("No GRpc Service was found in '" + Arrays.toString(basePackages) + "' package. Please check your configuration.");
         } else {
             processBeanDefinitions(beanDefinitions);
         }

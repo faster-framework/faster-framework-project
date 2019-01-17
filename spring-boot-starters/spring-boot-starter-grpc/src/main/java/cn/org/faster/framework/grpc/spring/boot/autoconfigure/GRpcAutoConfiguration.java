@@ -1,11 +1,13 @@
 package cn.org.faster.framework.grpc.spring.boot.autoconfigure;
 
-import cn.org.faster.framework.grpc.client.annotation.GrpcClientScan;
+import cn.org.faster.framework.grpc.client.annotation.GRpcClientScan;
 import cn.org.faster.framework.grpc.client.factory.ClientFactory;
-import cn.org.faster.framework.grpc.server.annotation.GrpcServerScan;
-import cn.org.faster.framework.grpc.server.processor.GrpcServiceProcessor;
-import cn.org.faster.framework.grpc.server.run.GrpcServerApplicationRunner;
-import cn.org.faster.framework.grpc.spring.boot.autoconfigure.properties.GrpcProperties;
+import cn.org.faster.framework.grpc.server.adapter.DefaultServerBuilderConfigureAdapter;
+import cn.org.faster.framework.grpc.server.annotation.GRpcServerScan;
+import cn.org.faster.framework.grpc.server.configure.GRpcServerBuilderConfigure;
+import cn.org.faster.framework.grpc.server.processor.GRpcServiceProcessor;
+import cn.org.faster.framework.grpc.server.run.GRpcServerApplicationRunner;
+import cn.org.faster.framework.grpc.spring.boot.autoconfigure.properties.GRpcProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -19,19 +21,19 @@ import org.springframework.context.annotation.Import;
  * @since 2019/1/15
  */
 @Configuration
-@EnableConfigurationProperties(GrpcProperties.class)
+@EnableConfigurationProperties(GRpcProperties.class)
 @ConditionalOnProperty(prefix = "faster.grpc", name = "enabled", havingValue = "true", matchIfMissing = true)
-@Import({GrpcAutoConfiguration.GrpcClientAutoConfiguration.class, GrpcAutoConfiguration.GrpcServerAutoConfiguration.class})
-public class GrpcAutoConfiguration {
+@Import({GRpcAutoConfiguration.GrpcClientAutoConfiguration.class, GRpcAutoConfiguration.GrpcServerAutoConfiguration.class})
+public class GRpcAutoConfiguration {
 
     /**
      * 客户端配置
      */
     @ConditionalOnProperty(prefix = "faster.grpc.client", name = "enabled", havingValue = "true", matchIfMissing = true)
-    @GrpcClientScan
+    @GRpcClientScan
     public static class GrpcClientAutoConfiguration {
         @Autowired
-        private GrpcProperties grpcProperties;
+        private GRpcProperties grpcProperties;
 
         @Bean
         @ConditionalOnMissingBean
@@ -46,32 +48,44 @@ public class GrpcAutoConfiguration {
      * 服务端配置
      */
     @ConditionalOnProperty(prefix = "faster.grpc.server", name = "enabled", havingValue = "true", matchIfMissing = true)
-    @GrpcServerScan
+    @GRpcServerScan
     public static class GrpcServerAutoConfiguration {
         @Autowired
-        private GrpcProperties grpcProperties;
+        private GRpcProperties grpcProperties;
+
+        /**
+         * server builder 配置
+         *
+         * @param grpcServiceProcessor grpcServiceProcessor
+         * @return server builder 配置
+         */
+        @Bean
+        @ConditionalOnMissingBean
+        public GRpcServerBuilderConfigure grpcServerBuilderConfigure(GRpcServiceProcessor grpcServiceProcessor) {
+            return new DefaultServerBuilderConfigureAdapter(grpcServiceProcessor.getBindServiceAdapterList(), grpcProperties.getServer().getPort());
+        }
 
         /**
          * 扫描grpcMethod
          *
-         * @return GrpcServiceProcessor
+         * @return GRpcServiceProcessor
          */
         @Bean
         @ConditionalOnMissingBean
-        public GrpcServiceProcessor grpcServiceProcessor() {
-            return new GrpcServiceProcessor();
+        public GRpcServiceProcessor grpcServiceProcessor() {
+            return new GRpcServiceProcessor();
         }
 
         /**
          * grpc 服务
          *
-         * @param grpcServiceProcessor grpcServiceProcessor
+         * @param grpcServerBuilderConfigure grpcServerBuilderConfigure
          * @return 服务
          */
         @Bean
         @ConditionalOnMissingBean
-        public GrpcServerApplicationRunner grpcServerApplicationRunner(GrpcServiceProcessor grpcServiceProcessor) {
-            return new GrpcServerApplicationRunner(grpcServiceProcessor.getBindServiceAdapterList(), grpcProperties.getServer().getPort());
+        public GRpcServerApplicationRunner grpcServerApplicationRunner(GRpcServerBuilderConfigure grpcServerBuilderConfigure) {
+            return new GRpcServerApplicationRunner(grpcServerBuilderConfigure);
         }
     }
 }

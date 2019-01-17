@@ -13,7 +13,7 @@ import java.util.Map;
  */
 @ConfigurationProperties(prefix = "faster.grpc")
 @Data
-public class GrpcProperties {
+public class GRpcProperties {
     /**
      * 是否开启grpc：true/false
      */

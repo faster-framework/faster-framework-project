@@ -1,7 +1,8 @@
-package cn.org.faster.framework.grpc.server.register;
+package cn.org.faster.framework.grpc.client.register;
 
-import cn.org.faster.framework.grpc.server.annotation.GrpcApi;
-import cn.org.faster.framework.grpc.server.annotation.GrpcServerScan;
+import cn.org.faster.framework.grpc.client.annotation.GRpcClientScan;
+import cn.org.faster.framework.grpc.client.annotation.GRpcService;
+import cn.org.faster.framework.grpc.client.scanner.ClassPathGRpcServiceScanner;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
@@ -9,7 +10,6 @@ import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.boot.autoconfigure.AutoConfigurationPackages;
 import org.springframework.context.ResourceLoaderAware;
-import org.springframework.context.annotation.ClassPathBeanDefinitionScanner;
 import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
 import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.core.io.ResourceLoader;
@@ -20,18 +20,17 @@ import org.springframework.util.StringUtils;
 import java.util.List;
 
 /**
- * 扫描Server端流程如下：
- * <p>
- * 1. scanner扫描带有GrpcApi注解的类，注入到spring中。
- * 2. processor扫描带有GrpcMethod注解的方法，创建ServerCallAdapter（实现了BindableService），放入list中。
- * 3. 创建ServerCallAdapter时，创建MethodCallProperty，放入ServerCallAdapter中，当接收到消息时，调用此方法，传入接收的参数。
- * 4. server启动时，获取GrpcServiceProcessor中的所有BindableService，进行设置。
+ * 扫描Client流程如下：
+ * 1. 扫描所有带有GrpcService注解的接口，设置bean定义为动态工厂类ManageChannelFactoryBean，创建代理channel。
+ * 2. ManageChannelFactoryBean创建时，根据GrpcService注解获取value服务名，与配置文件中的service列表对应创建channelProxy。
+ * 3. ManageChannelFactoryBean创建时获取当前接口下所有方法，并获取GrpcMethod注解值，以此创建call，设置进channelProxy中。
+ * 4. 调用方法时，根据方法名获取channelProxy中的call，根据type选择通信方式，请求server端。
  *
  * @author zhangbowen
- * @since 2019/1/13
+ * @since 2019/1/15
  */
 @Slf4j
-public class GrpcApiRegister implements BeanFactoryAware, ImportBeanDefinitionRegistrar, ResourceLoaderAware {
+public class GRpcClientRegister implements BeanFactoryAware, ImportBeanDefinitionRegistrar, ResourceLoaderAware {
     private BeanFactory beanFactory;
     private ResourceLoader resourceLoader;
 
@@ -47,20 +46,21 @@ public class GrpcApiRegister implements BeanFactoryAware, ImportBeanDefinitionRe
 
     @Override
     public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata, BeanDefinitionRegistry registry) {
-        AnnotationAttributes annotationAttributes = AnnotationAttributes.fromMap(importingClassMetadata.getAnnotationAttributes(GrpcServerScan.class.getCanonicalName()));
+        AnnotationAttributes annotationAttributes = AnnotationAttributes.fromMap(importingClassMetadata.getAnnotationAttributes(GRpcClientScan.class.getCanonicalName()));
         if (annotationAttributes == null) {
             log.warn("GrpcScan was not found.Please check your configuration.");
             return;
         }
-        ClassPathBeanDefinitionScanner classPathGrpcApiScanner = new ClassPathBeanDefinitionScanner(registry, false);
-        classPathGrpcApiScanner.setResourceLoader(this.resourceLoader);
-        classPathGrpcApiScanner.addIncludeFilter(new AnnotationTypeFilter(GrpcApi.class));
+        ClassPathGRpcServiceScanner classPathGrpcServiceScanner = new ClassPathGRpcServiceScanner(registry, beanFactory);
+        classPathGrpcServiceScanner.setResourceLoader(this.resourceLoader);
+        classPathGrpcServiceScanner.addIncludeFilter(new AnnotationTypeFilter(GRpcService.class));
         List<String> basePackages = AutoConfigurationPackages.get(this.beanFactory);
         for (String pkg : annotationAttributes.getStringArray("basePackages")) {
             if (StringUtils.hasText(pkg)) {
                 basePackages.add(pkg);
             }
         }
-        classPathGrpcApiScanner.scan(StringUtils.toStringArray(basePackages));
+        classPathGrpcServiceScanner.doScan(StringUtils.toStringArray(basePackages));
     }
+
 }

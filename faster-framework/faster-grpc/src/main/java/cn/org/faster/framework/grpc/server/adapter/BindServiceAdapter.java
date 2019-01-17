@@ -3,7 +3,7 @@ package cn.org.faster.framework.grpc.server.adapter;
 import cn.org.faster.framework.grpc.core.factory.FastJsonMarshallerFactory;
 import cn.org.faster.framework.grpc.core.marshaller.FastJsonMarshaller;
 import cn.org.faster.framework.grpc.core.model.MethodCallProperty;
-import cn.org.faster.framework.grpc.server.exception.GrpcServerCreateException;
+import cn.org.faster.framework.grpc.server.exception.GRpcServerCreateException;
 import io.grpc.BindableService;
 import io.grpc.MethodDescriptor;
 import io.grpc.ServerCallHandler;
@@ -81,7 +81,7 @@ public class BindServiceAdapter implements BindableService {
                     return null;
                 });
         }
-        throw new GrpcServerCreateException("gRPC method type not match.Please check your class.");
+        throw new GRpcServerCreateException("GRpc method type not match.Please check your class.");
     }
 
     /**

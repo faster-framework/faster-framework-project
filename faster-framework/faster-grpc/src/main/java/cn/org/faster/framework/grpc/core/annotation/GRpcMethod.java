@@ -15,7 +15,7 @@ import java.lang.annotation.Target;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD})
-public @interface GrpcMethod {
+public @interface GRpcMethod {
 
     /**
      * @return 方法名，客户端与服务端需统一，默认为反射出的方法名称

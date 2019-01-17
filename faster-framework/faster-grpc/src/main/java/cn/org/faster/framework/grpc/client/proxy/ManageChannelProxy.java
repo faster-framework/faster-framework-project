@@ -1,7 +1,7 @@
 package cn.org.faster.framework.grpc.client.proxy;
 
 import cn.org.faster.framework.grpc.client.model.ChannelProperty;
-import cn.org.faster.framework.grpc.core.annotation.GrpcMethod;
+import cn.org.faster.framework.grpc.core.annotation.GRpcMethod;
 import cn.org.faster.framework.grpc.core.factory.FastJsonMarshallerFactory;
 import cn.org.faster.framework.grpc.core.marshaller.FastJsonMarshaller;
 import cn.org.faster.framework.grpc.core.model.MethodCallProperty;
@@ -55,7 +55,7 @@ public class ManageChannelProxy implements InvocationHandler {
             Object another = args[0];
             return proxy == another;
         }
-        GrpcMethod grpcMethod = method.getAnnotation(GrpcMethod.class);
+        GRpcMethod grpcMethod = method.getAnnotation(GRpcMethod.class);
         String annotationMethodName = grpcMethod.value();
         MethodCallProperty methodCallProperty = new MethodCallProperty();
         methodCallProperty.setMethodName(StringUtils.isEmpty(annotationMethodName) ? method.getName() : annotationMethodName);

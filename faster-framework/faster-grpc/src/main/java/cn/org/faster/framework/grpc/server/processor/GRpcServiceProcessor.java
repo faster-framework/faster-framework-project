@@ -1,10 +1,10 @@
 package cn.org.faster.framework.grpc.server.processor;
 
-import cn.org.faster.framework.grpc.core.annotation.GrpcMethod;
+import cn.org.faster.framework.grpc.core.annotation.GRpcMethod;
 import cn.org.faster.framework.grpc.core.model.MethodCallProperty;
 import cn.org.faster.framework.grpc.server.adapter.BindServiceAdapter;
-import cn.org.faster.framework.grpc.server.annotation.GrpcApi;
-import cn.org.faster.framework.grpc.server.exception.GrpcServerCreateException;
+import cn.org.faster.framework.grpc.server.annotation.GRpcApi;
+import cn.org.faster.framework.grpc.server.exception.GRpcServerCreateException;
 import lombok.Data;
 import org.springframework.aop.support.AopUtils;
 import org.springframework.beans.BeansException;
@@ -23,23 +23,23 @@ import java.util.Map;
  * @since 2019/1/16
  */
 @Data
-public class GrpcServiceProcessor implements BeanPostProcessor {
+public class GRpcServiceProcessor implements BeanPostProcessor {
     private List<BindServiceAdapter> bindServiceAdapterList = new ArrayList<>();
 
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
-        GrpcApi grpcApi = bean.getClass().getAnnotation(GrpcApi.class);
+        GRpcApi grpcApi = bean.getClass().getAnnotation(GRpcApi.class);
         if (grpcApi == null) {
             return bean;
         }
         String scheme = grpcApi.value();
         //检验scheme是否存在
         if (bindServiceAdapterList.stream().anyMatch(item -> item.getScheme().equals(scheme))) {
-            throw new GrpcServerCreateException("The scheme " + "[" + scheme + "] is already exist.Please check your configuration.");
+            throw new GRpcServerCreateException("The scheme " + "[" + scheme + "] is already exist.Please check your configuration.");
         }
         Class<?> targetClass = AopUtils.getTargetClass(bean);
-        Map<Method, GrpcMethod> annotatedMethods = MethodIntrospector.selectMethods(targetClass,
-                (MethodIntrospector.MetadataLookup<GrpcMethod>) method -> AnnotatedElementUtils.findMergedAnnotation(method, GrpcMethod.class));
+        Map<Method, GRpcMethod> annotatedMethods = MethodIntrospector.selectMethods(targetClass,
+                (MethodIntrospector.MetadataLookup<GRpcMethod>) method -> AnnotatedElementUtils.findMergedAnnotation(method, GRpcMethod.class));
         if (annotatedMethods.size() == 0) {
             return bean;
         }

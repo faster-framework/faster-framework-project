@@ -6,7 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * grpc客户端组件。被{@link GrpcClientScan}扫描注入到spring中。
+ * grpc客户端组件。被{@link GRpcClientScan}扫描注入到spring中。
  * 用于调用远程服务
  *
  * @author zhangbowen
@@ -14,7 +14,7 @@ import java.lang.annotation.Target;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE})
-public @interface GrpcService {
+public @interface GRpcService {
 
     /**
      * @return 远程服务名，与faster.grpc.cn.org.faster.framework.grpc.client.service中的服务名需对应

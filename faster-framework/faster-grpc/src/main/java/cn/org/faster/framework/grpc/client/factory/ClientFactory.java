@@ -1,10 +1,10 @@
 package cn.org.faster.framework.grpc.client.factory;
 
-import cn.org.faster.framework.grpc.client.annotation.GrpcService;
-import cn.org.faster.framework.grpc.client.exception.GrpcChannelCreateException;
+import cn.org.faster.framework.grpc.client.annotation.GRpcService;
+import cn.org.faster.framework.grpc.client.exception.GRpcChannelCreateException;
 import cn.org.faster.framework.grpc.client.model.ChannelProperty;
 import cn.org.faster.framework.grpc.client.proxy.ManageChannelProxy;
-import cn.org.faster.framework.grpc.core.annotation.GrpcMethod;
+import cn.org.faster.framework.grpc.core.annotation.GRpcMethod;
 import cn.org.faster.framework.grpc.core.model.MethodCallProperty;
 import lombok.Data;
 import org.springframework.cglib.proxy.Proxy;
@@ -29,15 +29,15 @@ public class ClientFactory {
 
 
     public Object createClientProxy(Class<?> target) {
-        GrpcService grpcService = target.getAnnotation(GrpcService.class);
+        GRpcService grpcService = target.getAnnotation(GRpcService.class);
         ChannelProperty channelProperty = serverChannelMap.get(grpcService.value());
         if (channelProperty == null) {
-            throw new GrpcChannelCreateException("GrpcService scheme:{" + grpcService.value() + "} was not found in properties.Please check your configuration.");
+            throw new GRpcChannelCreateException("GRpcService scheme:{" + grpcService.value() + "} was not found in properties.Please check your configuration.");
         }
         ManageChannelProxy manageChannelProxy = new ManageChannelProxy(channelProperty);
         //获取该类下所有包含GrpcMethod的注解，创建call
-        Map<Method, GrpcMethod> annotatedMethods = MethodIntrospector.selectMethods(target,
-                (MethodIntrospector.MetadataLookup<GrpcMethod>) method -> AnnotatedElementUtils.findMergedAnnotation(method, GrpcMethod.class));
+        Map<Method, GRpcMethod> annotatedMethods = MethodIntrospector.selectMethods(target,
+                (MethodIntrospector.MetadataLookup<GRpcMethod>) method -> AnnotatedElementUtils.findMergedAnnotation(method, GRpcMethod.class));
         annotatedMethods.forEach((k, v) -> {
             String annotationMethodName = v.value();
             MethodCallProperty methodCallProperty = new MethodCallProperty();

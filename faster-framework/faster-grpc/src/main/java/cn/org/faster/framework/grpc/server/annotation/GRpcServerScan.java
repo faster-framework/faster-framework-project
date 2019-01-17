@@ -1,6 +1,6 @@
-package cn.org.faster.framework.grpc.client.annotation;
+package cn.org.faster.framework.grpc.server.annotation;
 
-import cn.org.faster.framework.grpc.client.register.GrpcClientRegister;
+import cn.org.faster.framework.grpc.server.register.GRpcApiRegister;
 import org.springframework.context.annotation.Import;
 
 import java.lang.annotation.ElementType;
@@ -16,8 +16,8 @@ import java.lang.annotation.Target;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-@Import(GrpcClientRegister.class)
-public @interface GrpcClientScan {
+@Import(GRpcApiRegister.class)
+public @interface GRpcServerScan {
     /**
      * @return 扫描的包
      */

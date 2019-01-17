@@ -1,3 +1,3 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-cn.org.faster.framework.grpc.spring.boot.autoconfigure.GrpcAutoConfiguration
+cn.org.faster.framework.grpc.spring.boot.autoconfigure.GRpcAutoConfiguration
 
