@@ -39,7 +39,7 @@ public class BindServiceAdapter implements BindableService {
     private MethodDescriptor<Object, Object> createMethodDescriptor(MethodCallProperty methodCallProperty) {
         return MethodDescriptor.newBuilder(
                 marshallerFactory.parseRequestMarshaller(methodCallProperty),
-                marshallerFactory.emptyJacksonMarshaller()
+                marshallerFactory.emptyMarshaller()
         ).setType(methodCallProperty.getMethodType())
                 .setFullMethodName(MethodDescriptor.generateFullMethodName(methodCallProperty.getScheme(), methodCallProperty.getMethodName()))
                 .build();

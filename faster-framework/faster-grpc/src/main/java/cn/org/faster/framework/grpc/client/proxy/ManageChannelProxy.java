@@ -36,7 +36,7 @@ public class ManageChannelProxy implements InvocationHandler {
     public void addCall(MethodCallProperty methodCallProperty) {
         Method method = methodCallProperty.getMethod();
         MethodDescriptor.Builder<Object, Object> builder = MethodDescriptor.newBuilder(
-                marshallerFactory.emptyJacksonMarshaller(),
+                marshallerFactory.emptyMarshaller(),
                 marshallerFactory.parseReturnMarshaller(methodCallProperty)
         ).setType(methodCallProperty.getMethodType())
                 .setFullMethodName(MethodDescriptor.generateFullMethodName(methodCallProperty.getScheme(), methodCallProperty.getMethodName()));

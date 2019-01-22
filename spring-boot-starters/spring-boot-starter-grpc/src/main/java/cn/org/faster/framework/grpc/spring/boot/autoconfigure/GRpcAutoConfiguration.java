@@ -3,6 +3,7 @@ package cn.org.faster.framework.grpc.spring.boot.autoconfigure;
 import cn.org.faster.framework.grpc.client.annotation.GRpcClientScan;
 import cn.org.faster.framework.grpc.client.factory.ClientFactory;
 import cn.org.faster.framework.grpc.core.exception.CreateMarshallerException;
+import cn.org.faster.framework.grpc.core.factory.JacksonMarshallerFactory;
 import cn.org.faster.framework.grpc.core.factory.MarshallerFactory;
 import cn.org.faster.framework.grpc.server.adapter.DefaultServerBuilderConfigureAdapter;
 import cn.org.faster.framework.grpc.server.annotation.GRpcServerScan;
@@ -28,16 +29,19 @@ import org.springframework.context.annotation.Import;
 @ConditionalOnProperty(prefix = "faster.grpc", name = "enabled", havingValue = "true", matchIfMissing = true)
 @Import({GRpcAutoConfiguration.GrpcClientAutoConfiguration.class, GRpcAutoConfiguration.GrpcServerAutoConfiguration.class})
 public class GRpcAutoConfiguration {
-    @Autowired
-    private ObjectMapper objectMapper;
 
+    /**
+     *
+     * @param objectMapper jackson操作工具类
+     * @return jackson序列化工厂
+     */
     @Bean
     @ConditionalOnMissingBean
-    public MarshallerFactory marshallerFactory() {
+    public MarshallerFactory marshallerFactory(ObjectMapper objectMapper) {
         if (objectMapper == null) {
             throw new CreateMarshallerException("Object mapper is no inject in spring.Please check your configuration.");
         }
-        return new MarshallerFactory(objectMapper);
+        return new JacksonMarshallerFactory(objectMapper);
     }
 
     /**
@@ -81,6 +85,7 @@ public class GRpcAutoConfiguration {
 
         /**
          * 扫描grpc server 服务
+         *
          * @param marshallerFactory 序列化处理器
          * @return GRpcServiceProcessor
          */
