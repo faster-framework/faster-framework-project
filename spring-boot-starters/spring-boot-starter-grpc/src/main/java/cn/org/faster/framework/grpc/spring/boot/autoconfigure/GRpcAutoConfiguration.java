@@ -5,6 +5,7 @@ import cn.org.faster.framework.grpc.client.factory.ClientFactory;
 import cn.org.faster.framework.grpc.core.exception.CreateMarshallerException;
 import cn.org.faster.framework.grpc.core.factory.JacksonMarshallerFactory;
 import cn.org.faster.framework.grpc.core.factory.MarshallerFactory;
+import cn.org.faster.framework.grpc.core.factory.ProtoMarshallerFactory;
 import cn.org.faster.framework.grpc.server.adapter.DefaultServerBuilderConfigureAdapter;
 import cn.org.faster.framework.grpc.server.annotation.GRpcServerScan;
 import cn.org.faster.framework.grpc.server.configure.GRpcServerBuilderConfigure;
@@ -31,17 +32,27 @@ import org.springframework.context.annotation.Import;
 public class GRpcAutoConfiguration {
 
     /**
-     *
      * @param objectMapper jackson操作工具类
      * @return jackson序列化工厂
      */
     @Bean
     @ConditionalOnMissingBean
-    public MarshallerFactory marshallerFactory(ObjectMapper objectMapper) {
+    @ConditionalOnProperty(prefix = "faster.grpc", name = "marshaller", havingValue = "json")
+    public MarshallerFactory jsonMarshallerFactory(ObjectMapper objectMapper) {
         if (objectMapper == null) {
             throw new CreateMarshallerException("Object mapper is no inject in spring.Please check your configuration.");
         }
         return new JacksonMarshallerFactory(objectMapper);
+    }
+
+    /**
+     * @return protobuf 序列化工厂
+     */
+    @Bean
+    @ConditionalOnMissingBean
+    @ConditionalOnProperty(prefix = "faster.grpc", name = "marshaller", havingValue = "proto")
+    public MarshallerFactory protoMarshallerFactory() {
+        return new ProtoMarshallerFactory();
     }
 
     /**

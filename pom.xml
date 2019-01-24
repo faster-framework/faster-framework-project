@@ -55,6 +55,7 @@
         <aliyun-java-sdk-dysmsapi.version>1.1.0</aliyun-java-sdk-dysmsapi.version>
         <grpc.version>1.17.1</grpc.version>
         <guava.version>23.6-jre</guava.version>
+        <io-protostuff.version>1.6.0</io-protostuff.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -207,6 +208,17 @@
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
                 <version>${guava.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.protostuff</groupId>
+                <artifactId>protostuff-core</artifactId>
+                <version>${io-protostuff.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.protostuff</groupId>
+                <artifactId>protostuff-runtime</artifactId>
+                <version>${io-protostuff.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

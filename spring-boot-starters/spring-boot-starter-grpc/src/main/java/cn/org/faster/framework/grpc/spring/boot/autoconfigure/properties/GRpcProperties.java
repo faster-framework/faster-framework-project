@@ -19,6 +19,10 @@ public class GRpcProperties {
      */
     private boolean enabled;
     /**
+     * 序列化工具
+     */
+    private MarshallerType marshaller = MarshallerType.JSON;
+    /**
      * 客户端配置
      */
     private Client client = new Client();
@@ -53,5 +57,10 @@ public class GRpcProperties {
          * 端口号
          */
         private int port = 50051;
+    }
+
+    public enum MarshallerType {
+        PROTO,
+        JSON
     }
 }

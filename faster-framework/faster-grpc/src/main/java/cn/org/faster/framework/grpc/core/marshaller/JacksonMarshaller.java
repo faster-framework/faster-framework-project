@@ -27,11 +27,6 @@ public class JacksonMarshaller implements MethodDescriptor.Marshaller<Object> {
         this.objectMapper = objectMapper;
     }
 
-    public JacksonMarshaller(ObjectMapper objectMapper) {
-        this.objectMapper = objectMapper;
-        this.type = null;
-    }
-
     @Override
     public InputStream stream(Object value) {
         if (value == null) {

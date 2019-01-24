@@ -16,6 +16,4 @@ public interface MarshallerFactory {
     MethodDescriptor.Marshaller<Object> parseReturnMarshaller(MethodCallProperty methodCallProperty);
 
     MethodDescriptor.Marshaller<Object> parseRequestMarshaller(MethodCallProperty methodCallProperty);
-
-
 }
