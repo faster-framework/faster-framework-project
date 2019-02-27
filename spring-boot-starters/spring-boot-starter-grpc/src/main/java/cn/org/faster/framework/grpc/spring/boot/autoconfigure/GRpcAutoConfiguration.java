@@ -37,7 +37,7 @@ public class GRpcAutoConfiguration {
      */
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnProperty(prefix = "faster.grpc", name = "marshaller", havingValue = "json")
+    @ConditionalOnProperty(prefix = "faster.grpc", name = "marshaller", havingValue = "json",matchIfMissing = true)
     public MarshallerFactory jsonMarshallerFactory(ObjectMapper objectMapper) {
         if (objectMapper == null) {
             throw new CreateMarshallerException("Object mapper is no inject in spring.Please check your configuration.");
