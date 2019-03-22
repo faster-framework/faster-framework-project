@@ -1,6 +1,7 @@
 package cn.org.faster.framework.grpc.client.proxy;
 
 import cn.org.faster.framework.core.utils.Utils;
+import cn.org.faster.framework.grpc.client.annotation.GRpcService;
 import cn.org.faster.framework.grpc.client.model.ChannelProperty;
 import cn.org.faster.framework.grpc.core.annotation.GRpcMethod;
 import cn.org.faster.framework.grpc.core.factory.MarshallerFactory;
@@ -13,8 +14,6 @@ import org.springframework.cglib.proxy.InvocationHandler;
 import org.springframework.util.StringUtils;
 
 import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author zhangbowen
@@ -24,7 +23,6 @@ public class ManageChannelProxy implements InvocationHandler {
     private final MarshallerFactory marshallerFactory;
     private ManagedChannel channel;
     private Object invoker = new Object();
-    private Map<String, ClientCall<Object, Object>> clientCallMap = new HashMap<>();
 
     public ManageChannelProxy(ChannelProperty channelProperty, MarshallerFactory marshallerFactory) {
         this.marshallerFactory = marshallerFactory;
@@ -33,14 +31,13 @@ public class ManageChannelProxy implements InvocationHandler {
                 .build();
     }
 
-    public void addCall(MethodCallProperty methodCallProperty) {
-        Method method = methodCallProperty.getMethod();
+    public ClientCall<Object, Object> buildCall(MethodCallProperty methodCallProperty) {
         MethodDescriptor.Builder<Object, Object> builder = MethodDescriptor.newBuilder(
                 marshallerFactory.emptyMarshaller(),
                 marshallerFactory.parseReturnMarshaller(methodCallProperty)
         ).setType(methodCallProperty.getMethodType())
                 .setFullMethodName(MethodDescriptor.generateFullMethodName(methodCallProperty.getScheme(), methodCallProperty.getMethodName()));
-        clientCallMap.put(method.getName(), channel.newCall(builder.build(), CallOptions.DEFAULT));
+        return channel.newCall(builder.build(), CallOptions.DEFAULT);
     }
 
 
@@ -62,7 +59,10 @@ public class ManageChannelProxy implements InvocationHandler {
         MethodCallProperty methodCallProperty = new MethodCallProperty();
         methodCallProperty.setMethodName(StringUtils.isEmpty(annotationMethodName) ? method.getName() : annotationMethodName);
         methodCallProperty.setMethodType(grpcMethod.type());
-        ClientCall<Object, Object> clientCall = this.clientCallMap.get(method.getName());
+        methodCallProperty.setMethod(method);
+        GRpcService grpcService = method.getDeclaringClass().getAnnotation(GRpcService.class);
+        methodCallProperty.setScheme(grpcService.scheme());
+        ClientCall<Object, Object> clientCall = buildCall(methodCallProperty);
         switch (methodCallProperty.getMethodType()) {
             case UNARY:
                 if (method.getReturnType() == ListenableFuture.class) { //等于ClientCalls.futureUnaryCall()

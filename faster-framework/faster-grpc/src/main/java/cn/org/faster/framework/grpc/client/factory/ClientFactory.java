@@ -40,18 +40,6 @@ public class ClientFactory {
             throw new GRpcChannelCreateException("GRpcService scheme:{" + grpcService.value() + "} was not found in properties.Please check your configuration.");
         }
         ManageChannelProxy manageChannelProxy = new ManageChannelProxy(channelProperty, marshallerFactory);
-        //获取该类下所有包含GrpcMethod的注解，创建call
-        Map<Method, GRpcMethod> annotatedMethods = MethodIntrospector.selectMethods(target,
-                (MethodIntrospector.MetadataLookup<GRpcMethod>) method -> AnnotatedElementUtils.findMergedAnnotation(method, GRpcMethod.class));
-        annotatedMethods.forEach((k, v) -> {
-            String annotationMethodName = v.value();
-            MethodCallProperty methodCallProperty = new MethodCallProperty();
-            methodCallProperty.setMethod(k);
-            methodCallProperty.setMethodName(StringUtils.isEmpty(annotationMethodName) ? k.getName() : annotationMethodName);
-            methodCallProperty.setMethodType(v.type());
-            methodCallProperty.setScheme(grpcService.scheme());
-            manageChannelProxy.addCall(methodCallProperty);
-        });
         return Proxy.newProxyInstance(target.getClassLoader(), new Class[]{target}, manageChannelProxy);
     }
 }
