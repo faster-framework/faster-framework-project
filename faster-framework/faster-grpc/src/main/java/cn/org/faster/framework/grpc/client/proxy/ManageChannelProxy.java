@@ -1,9 +1,7 @@
 package cn.org.faster.framework.grpc.client.proxy;
 
 import cn.org.faster.framework.core.utils.Utils;
-import cn.org.faster.framework.grpc.client.annotation.GRpcService;
 import cn.org.faster.framework.grpc.client.model.ChannelProperty;
-import cn.org.faster.framework.grpc.core.annotation.GRpcMethod;
 import cn.org.faster.framework.grpc.core.factory.MarshallerFactory;
 import cn.org.faster.framework.grpc.core.model.MethodCallProperty;
 import com.google.common.util.concurrent.ListenableFuture;
@@ -11,9 +9,10 @@ import io.grpc.*;
 import io.grpc.stub.ClientCalls;
 import io.grpc.stub.StreamObserver;
 import org.springframework.cglib.proxy.InvocationHandler;
-import org.springframework.util.StringUtils;
 
 import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author zhangbowen
@@ -23,6 +22,7 @@ public class ManageChannelProxy implements InvocationHandler {
     private final MarshallerFactory marshallerFactory;
     private ManagedChannel channel;
     private Object invoker = new Object();
+    private static final Map<String, MethodCallProperty> callDefinitions = new HashMap<>();
 
     public ManageChannelProxy(ChannelProperty channelProperty, MarshallerFactory marshallerFactory) {
         this.marshallerFactory = marshallerFactory;
@@ -31,7 +31,11 @@ public class ManageChannelProxy implements InvocationHandler {
                 .build();
     }
 
-    public ClientCall<Object, Object> buildCall(MethodCallProperty methodCallProperty) {
+    public void addCall(MethodCallProperty methodCallProperty) {
+        callDefinitions.put(methodCallProperty.getMethodName(), methodCallProperty);
+    }
+
+    private ClientCall<Object, Object> buildCall(MethodCallProperty methodCallProperty) {
         MethodDescriptor.Builder<Object, Object> builder = MethodDescriptor.newBuilder(
                 marshallerFactory.emptyMarshaller(),
                 marshallerFactory.parseReturnMarshaller(methodCallProperty)
@@ -54,14 +58,7 @@ public class ManageChannelProxy implements InvocationHandler {
             Object another = Utils.safeElement(args, 0);
             return proxy == another;
         }
-        GRpcMethod grpcMethod = method.getAnnotation(GRpcMethod.class);
-        String annotationMethodName = grpcMethod.value();
-        MethodCallProperty methodCallProperty = new MethodCallProperty();
-        methodCallProperty.setMethodName(StringUtils.isEmpty(annotationMethodName) ? method.getName() : annotationMethodName);
-        methodCallProperty.setMethodType(grpcMethod.type());
-        methodCallProperty.setMethod(method);
-        GRpcService grpcService = method.getDeclaringClass().getAnnotation(GRpcService.class);
-        methodCallProperty.setScheme(grpcService.scheme());
+        MethodCallProperty methodCallProperty = callDefinitions.get(methodName);
         ClientCall<Object, Object> clientCall = buildCall(methodCallProperty);
         switch (methodCallProperty.getMethodType()) {
             case UNARY:
