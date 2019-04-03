@@ -105,7 +105,7 @@ public class BindServiceAdapter implements BindableService {
                         invokeMethodWithParamSize(target, method, paramSize, request, responseObserver, MethodDescriptor.MethodType.UNARY);
                     } catch (IllegalAccessException | InvocationTargetException exception) {
                         exception.printStackTrace();
-                        throw new StatusRuntimeException(Status.UNKNOWN);
+                        throw new StatusRuntimeException(Status.INTERNAL);
                     }
                 });
             case SERVER_STREAMING:
@@ -114,7 +114,7 @@ public class BindServiceAdapter implements BindableService {
                         invokeMethodWithParamSize(target, method, paramSize, request, responseObserver, MethodDescriptor.MethodType.SERVER_STREAMING);
                     } catch (IllegalAccessException | InvocationTargetException exception) {
                         exception.printStackTrace();
-                        throw new StatusRuntimeException(Status.UNKNOWN);
+                        throw new StatusRuntimeException(Status.INTERNAL);
                     }
                 });
             case CLIENT_STREAMING:
@@ -123,7 +123,7 @@ public class BindServiceAdapter implements BindableService {
                         return (StreamObserver<Object>) method.invoke(target, responseObserver);
                     } catch (IllegalAccessException | InvocationTargetException exception) {
                         exception.printStackTrace();
-                        throw new StatusRuntimeException(Status.UNKNOWN);
+                        throw new StatusRuntimeException(Status.INTERNAL);
                     }
                 });
             case BIDI_STREAMING:
@@ -132,7 +132,7 @@ public class BindServiceAdapter implements BindableService {
                         return (StreamObserver<Object>) method.invoke(target, responseObserver);
                     } catch (IllegalAccessException | InvocationTargetException exception) {
                         exception.printStackTrace();
-                        throw new StatusRuntimeException(Status.UNKNOWN);
+                        throw new StatusRuntimeException(Status.INTERNAL);
                     }
                 });
         }
