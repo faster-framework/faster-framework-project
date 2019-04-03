@@ -6,7 +6,7 @@ import cn.org.faster.framework.web.exception.model.ResponseErrorEntity;
 import cn.org.faster.framework.web.exception.model.ResultError;
 import cn.org.faster.framework.web.secret.HttpMessageDecryptException;
 import cn.org.faster.framework.web.utils.ResponseBuilder;
-import cn.org.faster.framework.web.version.ApiVersionDiscardException;
+import cn.org.faster.framework.web.version.exception.ApiVersionDiscardException;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindException;

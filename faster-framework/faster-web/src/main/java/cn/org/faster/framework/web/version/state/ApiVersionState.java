@@ -1,5 +1,6 @@
-package cn.org.faster.framework.web.version;
+package cn.org.faster.framework.web.version.state;
 
+import cn.org.faster.framework.web.version.annotation.ApiVersion;
 import lombok.Data;
 
 /**
@@ -68,16 +69,13 @@ public class ApiVersionState {
             }
         }
 
+        /**
+         * 设置废弃版本
+         */
         private void initDiscard() {
-            //todo 增加专有的废弃注解
-            //如果当前存在注解，并且允许覆盖父级废弃功能
-            if (apiVersion != null && apiVersion.overrideDiscard()) {
-                apiVersionState.setDiscard(apiVersion.discard());
-            } else {
-                //如果不允许覆盖，使用最低版本判断是否应该废弃
-                if (apiVersionState.getVersion() < minimumVersion) {
-                    apiVersionState.setDiscard(true);
-                }
+            //判断当前版本是否小于最低版本
+            if (apiVersionState.getVersion() < minimumVersion) {
+                apiVersionState.setDiscard(true);
             }
         }
 

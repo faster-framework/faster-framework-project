@@ -1,5 +1,7 @@
-package cn.org.faster.framework.web.version;
+package cn.org.faster.framework.web.version.condition;
 
+import cn.org.faster.framework.web.version.state.ApiVersionState;
+import cn.org.faster.framework.web.version.exception.ApiVersionDiscardException;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.web.servlet.mvc.condition.RequestCondition;

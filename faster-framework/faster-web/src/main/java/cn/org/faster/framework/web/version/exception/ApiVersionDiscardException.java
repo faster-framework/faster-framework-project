@@ -1,4 +1,4 @@
-package cn.org.faster.framework.web.version;
+package cn.org.faster.framework.web.version.exception;
 
 /**
  * @author zhangbowen
