@@ -69,6 +69,7 @@ public class ApiVersionState {
         }
 
         private void initDiscard() {
+            //todo 增加专有的废弃注解
             //如果当前存在注解，并且允许覆盖父级废弃功能
             if (apiVersion != null && apiVersion.overrideDiscard()) {
                 apiVersionState.setDiscard(apiVersion.discard());

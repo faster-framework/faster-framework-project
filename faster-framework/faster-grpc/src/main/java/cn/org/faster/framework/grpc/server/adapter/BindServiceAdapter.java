@@ -5,6 +5,7 @@ import cn.org.faster.framework.grpc.core.exception.GRpcMethodNoMatchException;
 import cn.org.faster.framework.grpc.core.factory.MarshallerFactory;
 import cn.org.faster.framework.grpc.core.model.MethodCallProperty;
 import cn.org.faster.framework.grpc.server.exception.GRpcServerCreateException;
+import cn.org.faster.framework.grpc.server.exception.GRpcServerException;
 import io.grpc.BindableService;
 import io.grpc.MethodDescriptor;
 import io.grpc.ServerCallHandler;
@@ -74,28 +75,35 @@ public class BindServiceAdapter implements BindableService {
     }
 
 
-    private Object invokeMethodWithParamSize(Object target, Method method, int paramSize, Object request, StreamObserver<Object> responseObserver, MethodDescriptor.MethodType methodType) throws InvocationTargetException, IllegalAccessException {
-        Object object = null;
+    private void invokeMethodWithParamSize(Object target, Method method, int paramSize, Object request, StreamObserver<Object> responseObserver, MethodDescriptor.MethodType methodType) throws InvocationTargetException, IllegalAccessException {
         if (paramSize == 2) {
             checkTwoParamHasStreamObServer(method, methodType);
-            object = method.invoke(target, request, responseObserver);
+            method.invoke(target, request, responseObserver);
         } else if (paramSize == 1) {
             //判断这个方法是StreamObserver还是业务实体
             if (Utils.checkMethodHasParamClass(method, StreamObserver.class)) {
                 //传递StreamObserver
-                object = method.invoke(target, responseObserver);
+                method.invoke(target, responseObserver);
             } else {
                 //业务实体，将业务传递，返回空
-                object = method.invoke(target, request);
+                method.invoke(target, request);
                 responseObserver.onNext(null);
                 responseObserver.onCompleted();
             }
         } else if (paramSize == 0) {
-            object = method.invoke(target);
+            method.invoke(target);
             responseObserver.onNext(null);
             responseObserver.onCompleted();
         }
-        return object;
+    }
+
+    /**
+     *
+     * @param throwable 多个异常
+     * @return 统一返回异常信息
+     */
+    private String processExceptionMessage(Throwable throwable) {
+        return "GRpc server error.";
     }
 
     @SuppressWarnings("unchecked")
@@ -110,6 +118,7 @@ public class BindServiceAdapter implements BindableService {
                         invokeMethodWithParamSize(target, method, paramSize, request, responseObserver, MethodDescriptor.MethodType.UNARY);
                     } catch (IllegalAccessException | InvocationTargetException exception) {
                         exception.printStackTrace();
+                        throw new GRpcServerException(processExceptionMessage(exception));
                     }
                 });
             case SERVER_STREAMING:
@@ -118,6 +127,7 @@ public class BindServiceAdapter implements BindableService {
                         invokeMethodWithParamSize(target, method, paramSize, request, responseObserver, MethodDescriptor.MethodType.SERVER_STREAMING);
                     } catch (IllegalAccessException | InvocationTargetException exception) {
                         exception.printStackTrace();
+                        throw new GRpcServerException(processExceptionMessage(exception));
                     }
                 });
             case CLIENT_STREAMING:
@@ -126,8 +136,8 @@ public class BindServiceAdapter implements BindableService {
                         return (StreamObserver<Object>) method.invoke(target, responseObserver);
                     } catch (IllegalAccessException | InvocationTargetException exception) {
                         exception.printStackTrace();
+                        throw new GRpcServerException(processExceptionMessage(exception));
                     }
-                    return null;
                 });
             case BIDI_STREAMING:
                 return ServerCalls.asyncBidiStreamingCall(responseObserver -> {
@@ -135,8 +145,8 @@ public class BindServiceAdapter implements BindableService {
                         return (StreamObserver<Object>) method.invoke(target, responseObserver);
                     } catch (IllegalAccessException | InvocationTargetException exception) {
                         exception.printStackTrace();
+                        throw new GRpcServerException(processExceptionMessage(exception));
                     }
-                    return null;
                 });
         }
         throw new GRpcServerCreateException("GRpc method type not match.Please check your class.");
