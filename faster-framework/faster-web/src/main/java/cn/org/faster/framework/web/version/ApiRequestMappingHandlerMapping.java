@@ -1,8 +1,5 @@
 package cn.org.faster.framework.web.version;
 
-import cn.org.faster.framework.web.version.annotation.ApiVersion;
-import cn.org.faster.framework.web.version.condition.ApiVersionCondition;
-import cn.org.faster.framework.web.version.state.ApiVersionState;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.condition.RequestCondition;

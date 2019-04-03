@@ -1,6 +1,5 @@
-package cn.org.faster.framework.web.version.state;
+package cn.org.faster.framework.web.version;
 
-import cn.org.faster.framework.web.version.annotation.ApiVersion;
 import lombok.Data;
 
 /**
