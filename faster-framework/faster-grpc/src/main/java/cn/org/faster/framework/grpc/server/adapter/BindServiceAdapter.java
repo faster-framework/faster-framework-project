@@ -5,11 +5,7 @@ import cn.org.faster.framework.grpc.core.exception.GRpcMethodNoMatchException;
 import cn.org.faster.framework.grpc.core.factory.MarshallerFactory;
 import cn.org.faster.framework.grpc.core.model.MethodCallProperty;
 import cn.org.faster.framework.grpc.server.exception.GRpcServerCreateException;
-import cn.org.faster.framework.grpc.server.exception.GRpcServerException;
-import io.grpc.BindableService;
-import io.grpc.MethodDescriptor;
-import io.grpc.ServerCallHandler;
-import io.grpc.ServerServiceDefinition;
+import io.grpc.*;
 import io.grpc.stub.ServerCalls;
 import io.grpc.stub.StreamObserver;
 import lombok.Data;
@@ -97,15 +93,6 @@ public class BindServiceAdapter implements BindableService {
         }
     }
 
-    /**
-     *
-     * @param throwable 多个异常
-     * @return 统一返回异常信息
-     */
-    private String processExceptionMessage(Throwable throwable) {
-        return "GRpc server error.";
-    }
-
     @SuppressWarnings("unchecked")
     private ServerCallHandler<Object, Object> parseCallHandlerFromType(MethodCallProperty methodCallProperty) {
         Method method = methodCallProperty.getMethod();
@@ -118,7 +105,7 @@ public class BindServiceAdapter implements BindableService {
                         invokeMethodWithParamSize(target, method, paramSize, request, responseObserver, MethodDescriptor.MethodType.UNARY);
                     } catch (IllegalAccessException | InvocationTargetException exception) {
                         exception.printStackTrace();
-                        throw new GRpcServerException(processExceptionMessage(exception));
+                        throw new StatusRuntimeException(Status.UNKNOWN);
                     }
                 });
             case SERVER_STREAMING:
@@ -127,7 +114,7 @@ public class BindServiceAdapter implements BindableService {
                         invokeMethodWithParamSize(target, method, paramSize, request, responseObserver, MethodDescriptor.MethodType.SERVER_STREAMING);
                     } catch (IllegalAccessException | InvocationTargetException exception) {
                         exception.printStackTrace();
-                        throw new GRpcServerException(processExceptionMessage(exception));
+                        throw new StatusRuntimeException(Status.UNKNOWN);
                     }
                 });
             case CLIENT_STREAMING:
@@ -136,7 +123,7 @@ public class BindServiceAdapter implements BindableService {
                         return (StreamObserver<Object>) method.invoke(target, responseObserver);
                     } catch (IllegalAccessException | InvocationTargetException exception) {
                         exception.printStackTrace();
-                        throw new GRpcServerException(processExceptionMessage(exception));
+                        throw new StatusRuntimeException(Status.UNKNOWN);
                     }
                 });
             case BIDI_STREAMING:
@@ -145,7 +132,7 @@ public class BindServiceAdapter implements BindableService {
                         return (StreamObserver<Object>) method.invoke(target, responseObserver);
                     } catch (IllegalAccessException | InvocationTargetException exception) {
                         exception.printStackTrace();
-                        throw new GRpcServerException(processExceptionMessage(exception));
+                        throw new StatusRuntimeException(Status.UNKNOWN);
                     }
                 });
         }
