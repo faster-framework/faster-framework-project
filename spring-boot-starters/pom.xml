@@ -22,6 +22,7 @@
         <module>spring-boot-starter-shiro</module>
         <module>spring-boot-starter-grpc</module>
         <module>spring-boot-starter-elasticsearch</module>
+        <module>spring-boot-starter-amqp</module>
     </modules>
 
 </project>

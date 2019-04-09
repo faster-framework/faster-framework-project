@@ -150,6 +150,11 @@
                 <version>${revision}</version>
             </dependency>
             <dependency>
+                <groupId>cn.org.faster</groupId>
+                <artifactId>spring-boot-starter-amqp</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
                 <groupId>io.jsonwebtoken</groupId>
                 <artifactId>jjwt</artifactId>
                 <version>${jsonwebtoken-jjwt.version}</version>
