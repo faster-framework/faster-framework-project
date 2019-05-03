@@ -6,6 +6,7 @@ import org.apache.shiro.web.filter.authc.AuthenticatingFilter;
 import org.apache.shiro.web.util.WebUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.ServletRequest;
@@ -53,7 +54,10 @@ public class ShiroFilter extends AuthenticatingFilter {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         httpResponse.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "*");
         httpResponse.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS, "GET,HEAD,POST,PUT,PATCH,DELETE,OPTIONS,TRACE");
-        httpResponse.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS, httpServletRequest.getHeader("Access-Control-Request-Headers"));
+        String accessControlRequestHeaders = httpServletRequest.getHeader("Access-Control-Request-Headers");
+        if (!StringUtils.isEmpty(accessControlRequestHeaders)) {
+            httpResponse.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS, accessControlRequestHeaders);
+        }
         httpResponse.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS, "true");
         if (RequestMethod.OPTIONS.name().equals(WebUtils.toHttp(request).getMethod())) {
             httpResponse.setStatus(HttpStatus.OK.value());
