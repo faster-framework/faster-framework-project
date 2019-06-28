@@ -1,7 +1,11 @@
-package cn.org.faster.framework.web.utils;
+package cn.org.faster.framework.gateway.cloud.spring.boot.autoconfigure.requestProxy;
 
-import javax.servlet.http.HttpServletRequest;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.server.reactive.ServerHttpRequest;
+
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.util.Objects;
 
 /**
  * @author zhangbowen
@@ -13,33 +17,35 @@ public class NetworkUtil {
     public static final String HTTP_CLIENT_IP = "HTTP_CLIENT_IP";
     public static final String HTTP_X_FORWARD_IP = "HTTP_X_FORWARDED_FOR";
 
-
     /**
      * 获取请求主机IP地址,如果通过代理进来，则透过防火墙获取真实IP地址;
      *
      * @param request 请求
      * @return ip
      */
-    public static String getIp(HttpServletRequest request) {
+    public static String getIp(ServerHttpRequest request) {
+
         try {
+            HttpHeaders httpHeaders = request.getHeaders();
             // 获取请求主机IP地址,如果通过代理进来，则透过防火墙获取真实IP地址
-            String ip = request.getHeader(HEADER_X_FORWARDED_FOR);
+            String ip = httpHeaders.getFirst(HEADER_X_FORWARDED_FOR);
 
             if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
                 if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-                    ip = request.getHeader(PROXY_CLIENT_IP);
+                    ip = httpHeaders.getFirst(PROXY_CLIENT_IP);
                 }
                 if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-                    ip = request.getHeader(WL_PROXY_CLIENT_IP);
+                    ip = httpHeaders.getFirst(WL_PROXY_CLIENT_IP);
                 }
                 if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-                    ip = request.getHeader(HTTP_CLIENT_IP);
+                    ip = httpHeaders.getFirst(HTTP_CLIENT_IP);
                 }
                 if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-                    ip = request.getHeader(HTTP_X_FORWARD_IP);
+                    ip = httpHeaders.getFirst(HTTP_X_FORWARD_IP);
                 }
                 if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-                    ip = request.getRemoteAddr();
+                    InetSocketAddress remoteAddress = request.getRemoteAddress();
+                    ip = Objects.requireNonNull(remoteAddress).getAddress().getHostAddress();
                 }
             } else if (ip.length() > 15) {
                 String[] ips = ip.split(",");

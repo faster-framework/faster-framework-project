@@ -6,7 +6,7 @@
     <parent>
         <artifactId>spring-boot-starter-parent</artifactId>
         <groupId>org.springframework.boot</groupId>
-        <version>2.1.1.RELEASE</version>
+        <version>2.1.5.RELEASE</version>
     </parent>
     <groupId>cn.org.faster</groupId>
     <artifactId>faster-framework-project</artifactId>
@@ -15,6 +15,7 @@
     <modules>
         <module>faster-framework</module>
         <module>spring-boot-starters</module>
+        <module>spring-cloud-starters</module>
     </modules>
     <packaging>pom</packaging>
     <url>https://github.com/faster-framework/faster-framework-project/#</url>
@@ -43,6 +44,7 @@
     <properties>
         <revision>1.0-SNAPSHOT</revision>
         <skipTests>true</skipTests>
+        <spring-cloud.version>Greenwich.SR1</spring-cloud.version>
         <jsonwebtoken-jjwt.version>0.9.0</jsonwebtoken-jjwt.version>
         <projectlombok-lombok.version>1.16.20</projectlombok-lombok.version>
         <fastjson.version>1.2.47</fastjson.version>
@@ -56,9 +58,22 @@
         <grpc.version>1.17.1</grpc.version>
         <guava.version>23.6-jre</guava.version>
         <io-protostuff.version>1.6.0</io-protostuff.version>
+        <hutool.version>4.5.14</hutool.version>
+        <boot-admin.version>2.1.4</boot-admin.version>
+        <logstash-logback.version>5.3</logstash-logback.version>
+        <qos-logback.version>1.2.3</qos-logback.version>
     </properties>
     <dependencyManagement>
         <dependencies>
+            <!--spring cloud-->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <!--基础包开始-->
             <dependency>
                 <groupId>cn.org.faster</groupId>
                 <artifactId>faster-core</artifactId>
@@ -104,6 +119,13 @@
                 <artifactId>faster-grpc</artifactId>
                 <version>${revision}</version>
             </dependency>
+            <dependency>
+                <groupId>cn.org.faster</groupId>
+                <artifactId>faster-cloud-client</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <!--基础包结束-->
+            <!--starter 开始-->
             <dependency>
                 <groupId>cn.org.faster</groupId>
                 <artifactId>spring-boot-starter-web</artifactId>
@@ -153,6 +175,44 @@
                 <groupId>cn.org.faster</groupId>
                 <artifactId>spring-boot-starter-amqp</artifactId>
                 <version>${revision}</version>
+            </dependency>
+            <!--starter 结束-->
+            <!--cloud starter开始-->
+            <dependency>
+                <groupId>cn.org.faster</groupId>
+                <artifactId>spring-cloud-starter-client</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.org.faster</groupId>
+                <artifactId>spring-cloud-starter-config-server</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.org.faster</groupId>
+                <artifactId>spring-cloud-starter-eureka-server</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.org.faster</groupId>
+                <artifactId>spring-cloud-starter-gateway</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.org.faster</groupId>
+                <artifactId>spring-cloud-starter-boot-admin</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <!--cloud starter结束-->
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-classic</artifactId>
+                <version>${qos-logback.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>net.logstash.logback</groupId>
+                <artifactId>logstash-logback-encoder</artifactId>
+                <version>${logstash-logback.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.jsonwebtoken</groupId>
@@ -229,6 +289,17 @@
                 <groupId>io.protostuff</groupId>
                 <artifactId>protostuff-runtime</artifactId>
                 <version>${io-protostuff.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>de.codecentric</groupId>
+                <artifactId>spring-boot-admin-starter-server</artifactId>
+                <version>${boot-admin.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
+                <version>${hutool.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

@@ -31,11 +31,3 @@ management:
   health:
     elasticsearch:
       enabled: false
----
-spring:
-  profiles: prod
-server:
-  tomcat:
-    accept-count: 250
-    max-threads: 500
-    max-connections: 1000

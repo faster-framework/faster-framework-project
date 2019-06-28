@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  cn.org.faster.framework.elasticsearch.spring.boot.autoconfigure.ElasticsearchAutoConfiguration

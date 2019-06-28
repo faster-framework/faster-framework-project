@@ -8,19 +8,15 @@
         <version>${revision}</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <packaging>pom</packaging>
-    <artifactId>faster-framework</artifactId>
 
+    <artifactId>spring-cloud-starters</artifactId>
+    <packaging>pom</packaging>
     <modules>
-        <module>faster-core</module>
-        <module>faster-web</module>
-        <module>faster-admin</module>
-        <module>faster-redis</module>
-        <module>faster-sms</module>
-        <module>faster-mybatis</module>
-        <module>faster-kafka</module>
-        <module>faster-shiro</module>
-        <module>faster-grpc</module>
-        <module>faster-cloud-client</module>
+        <module>spring-cloud-starter-client</module>
+        <module>spring-cloud-starter-gateway</module>
+        <module>spring-cloud-starter-boot-admin</module>
+        <module>spring-cloud-starter-config-server</module>
+        <module>spring-cloud-starter-eureka-server</module>
     </modules>
+
 </project>
