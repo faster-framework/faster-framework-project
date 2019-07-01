@@ -15,6 +15,7 @@ public class KafkaBatchErrorHandler implements BatchErrorHandler, KafkaLoggingEr
 
     @Override
     public void handle(Exception thrownException, ConsumerRecords<?, ?> data) {
-        log.info(handleLogMessage(thrownException));
+        thrownException.printStackTrace();
+        log.error(handleLogMessage(thrownException));
     }
 }

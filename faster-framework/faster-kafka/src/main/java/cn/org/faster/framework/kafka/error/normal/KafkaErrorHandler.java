@@ -16,6 +16,7 @@ public class KafkaErrorHandler implements ErrorHandler, KafkaLoggingErrorHandler
 
     @Override
     public void handle(Exception thrownException, ConsumerRecord<?, ?> data) {
-        log.info(handleLogMessage(thrownException));
+        thrownException.printStackTrace();
+        log.error(handleLogMessage(thrownException));
     }
 }

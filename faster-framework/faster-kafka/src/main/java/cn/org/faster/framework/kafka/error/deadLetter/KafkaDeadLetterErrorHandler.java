@@ -25,12 +25,13 @@ public class KafkaDeadLetterErrorHandler implements ErrorHandler, KafkaLoggingEr
 
     @Override
     public void handle(Exception thrownException, ConsumerRecord<?, ?> data) {
-        log.info(handleLogMessage(thrownException));
+        thrownException.printStackTrace();
+        log.error(handleLogMessage(thrownException));
         if (thrownException.getCause() instanceof MethodArgumentNotValidException) {
             return;
         }
-        log.info("send failed message to dead letter");
+        log.error("send failed message to dead letter");
         deadLetterPublishingRecoverer.accept(data, thrownException);
-        log.info("send failed message to dead letter successful");
+        log.error("send failed message to dead letter successful");
     }
 }

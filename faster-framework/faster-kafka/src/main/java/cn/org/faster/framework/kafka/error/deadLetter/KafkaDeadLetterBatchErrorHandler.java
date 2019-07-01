@@ -30,18 +30,19 @@ public class KafkaDeadLetterBatchErrorHandler implements BatchErrorHandler, Kafk
 
     @Override
     public void handle(Exception thrownException, ConsumerRecords<?, ?> data) {
-        log.info(handleLogMessage(thrownException));
+        thrownException.printStackTrace();
+        log.error(handleLogMessage(thrownException));
         if (thrownException.getCause() instanceof MethodArgumentNotValidException) {
             return;
         }
         Set<TopicPartition> topicPartitions = data.partitions();
-        log.info("send failed message to dead letter");
+        log.error("send failed message to dead letter");
         for (TopicPartition topicPartition : topicPartitions) {
             List<? extends ConsumerRecord<?, ?>> list = data.records(topicPartition);
             for (ConsumerRecord<?, ?> consumerRecord : list) {
                 deadLetterPublishingRecoverer.accept(consumerRecord, thrownException);
             }
         }
-        log.info("send failed message to dead letter successful");
+        log.error("send failed message to dead letter successful");
     }
 }
