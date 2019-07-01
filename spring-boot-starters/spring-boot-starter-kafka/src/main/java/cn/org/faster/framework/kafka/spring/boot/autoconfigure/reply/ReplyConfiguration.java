@@ -46,8 +46,6 @@ public class ReplyConfiguration {
     /**
      * @return replyContainer
      */
-    @Bean
-    @ConditionalOnMissingBean
     public KafkaMessageListenerContainer<Object, Object> replyContainer() {
         ContainerProperties containerProperties = new ContainerProperties(properties.getProducer().getReplyTopic());
         return new KafkaMessageListenerContainer<>(consumerFactory, containerProperties);
