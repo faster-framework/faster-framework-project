@@ -17,6 +17,7 @@
         <module>spring-cloud-starter-boot-admin</module>
         <module>spring-cloud-starter-config-server</module>
         <module>spring-cloud-starter-eureka-server</module>
+        <module>spring-cloud-starter-turbine</module>
     </modules>
 
 </project>

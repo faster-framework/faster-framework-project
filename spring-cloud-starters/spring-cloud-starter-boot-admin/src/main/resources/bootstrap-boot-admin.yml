@@ -40,7 +40,7 @@ eureka:
 
 ---
 spring:
-  profiles: preprod   #预生产环境
+  profiles: staging   #预生产环境
 
 #eureka配置
 eureka:

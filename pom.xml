@@ -171,11 +171,6 @@
                 <artifactId>spring-boot-starter-elasticsearch</artifactId>
                 <version>${revision}</version>
             </dependency>
-            <dependency>
-                <groupId>cn.org.faster</groupId>
-                <artifactId>spring-boot-starter-amqp</artifactId>
-                <version>${revision}</version>
-            </dependency>
             <!--starter 结束-->
             <!--cloud starter开始-->
             <dependency>
@@ -201,6 +196,11 @@
             <dependency>
                 <groupId>cn.org.faster</groupId>
                 <artifactId>spring-cloud-starter-boot-admin</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.org.faster</groupId>
+                <artifactId>spring-cloud-starter-turbine</artifactId>
                 <version>${revision}</version>
             </dependency>
             <!--cloud starter结束-->
