@@ -21,6 +21,5 @@
         <module>faster-kafka</module>
         <module>faster-shiro</module>
         <module>faster-grpc</module>
-        <module>faster-cloud-client</module>
     </modules>
 </project>

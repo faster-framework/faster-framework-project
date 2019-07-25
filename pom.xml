@@ -15,7 +15,6 @@
     <modules>
         <module>faster-framework</module>
         <module>spring-boot-starters</module>
-        <module>spring-cloud-starters</module>
     </modules>
     <packaging>pom</packaging>
     <url>https://github.com/faster-framework/faster-framework-project/#</url>
@@ -119,11 +118,6 @@
                 <artifactId>faster-grpc</artifactId>
                 <version>${revision}</version>
             </dependency>
-            <dependency>
-                <groupId>cn.org.faster</groupId>
-                <artifactId>faster-cloud-client</artifactId>
-                <version>${revision}</version>
-            </dependency>
             <!--基础包结束-->
             <!--starter 开始-->
             <dependency>
@@ -172,38 +166,6 @@
                 <version>${revision}</version>
             </dependency>
             <!--starter 结束-->
-            <!--cloud starter开始-->
-            <dependency>
-                <groupId>cn.org.faster</groupId>
-                <artifactId>spring-cloud-starter-client</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <groupId>cn.org.faster</groupId>
-                <artifactId>spring-cloud-starter-config-server</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <groupId>cn.org.faster</groupId>
-                <artifactId>spring-cloud-starter-eureka-server</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <groupId>cn.org.faster</groupId>
-                <artifactId>spring-cloud-starter-gateway</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <groupId>cn.org.faster</groupId>
-                <artifactId>spring-cloud-starter-boot-admin</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <groupId>cn.org.faster</groupId>
-                <artifactId>spring-cloud-starter-turbine</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <!--cloud starter结束-->
             <dependency>
                 <groupId>ch.qos.logback</groupId>
                 <artifactId>logback-classic</artifactId>

@@ -2,6 +2,7 @@ package cn.org.faster.framework.redis.spring.boot.autoconfigure;
 
 import cn.org.faster.framework.core.cache.service.ICacheService;
 import cn.org.faster.framework.redis.cache.RedisCacheService;
+import cn.org.faster.framework.redis.utils.RedisHelper;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -17,7 +18,7 @@ public class RedisCacheAutoConfiguration {
     @ConditionalOnProperty(prefix = "faster.cache", name = "mode", havingValue = "redis")
     @Bean
     @ConditionalOnMissingBean(ICacheService.class)
-    public ICacheService redisCache() {
-        return new RedisCacheService();
+    public ICacheService redisCache(RedisHelper redisHelper) {
+        return new RedisCacheService(redisHelper);
     }
 }

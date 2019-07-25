@@ -1,2 +1,0 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-cn.org.faster.framework.gateway.cloud.spring.boot.autoconfigure.RequestProxyForwardAutoConfiguration

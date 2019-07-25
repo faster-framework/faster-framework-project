@@ -20,13 +20,11 @@ import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 @ConditionalOnProperty(prefix = "faster.redis", name = "enabled", havingValue = "true", matchIfMissing = true)
 public class RedisAutoConfiguration {
     @Bean
-    @ConditionalOnMissingBean
     public static RedisListenerProcessor redisListenerProcessor(RedisMessageListenerContainer redisMessageListenerContainer) {
         return new RedisListenerProcessor(redisMessageListenerContainer);
     }
 
     @Bean
-    @ConditionalOnMissingBean
     public RedisMessageListenerContainer redisContainer(RedisConnectionFactory redisConnectionFactory) {
         RedisMessageListenerContainer container
                 = new RedisMessageListenerContainer();

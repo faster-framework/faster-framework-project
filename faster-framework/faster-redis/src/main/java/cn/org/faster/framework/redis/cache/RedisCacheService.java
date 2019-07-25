@@ -1,8 +1,8 @@
 package cn.org.faster.framework.redis.cache;
 
 import cn.org.faster.framework.core.cache.service.ICacheService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.StringRedisTemplate;
+import cn.org.faster.framework.redis.utils.RedisHelper;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
@@ -15,8 +15,11 @@ import java.util.concurrent.TimeUnit;
  * @author zhangbowen
  */
 public class RedisCacheService implements ICacheService {
-    @Autowired
-    private StringRedisTemplate redisTemplate;
+    private RedisTemplate<String, String> redisTemplate;
+
+    public RedisCacheService(RedisHelper redisHelper) {
+        redisTemplate = RedisHelper.template();
+    }
 
     @Override
     public void set(String key, String value, long exp) {
