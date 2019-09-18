@@ -21,5 +21,6 @@
         <module>faster-kafka</module>
         <module>faster-shiro</module>
         <module>faster-grpc</module>
+        <module>faster-elasticsearch</module>
     </modules>
 </project>

@@ -32,7 +32,7 @@ public class CacheAutoConfiguration {
 
     @Bean
     @ConditionalOnBean(ICacheService.class)
-    public CacheFacade initCache(ICacheService cacheService, ProjectProperties projectProperties) {
-        return CacheFacade.initCache(cacheService, cacheService instanceof LocalCacheService, projectProperties.getClusterName());
+    public CacheFacade initCache(ICacheService cacheService) {
+        return CacheFacade.initCache(cacheService, cacheService instanceof LocalCacheService);
     }
 }

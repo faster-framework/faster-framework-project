@@ -7,7 +7,7 @@ import cn.org.faster.framework.web.context.model.RequestContext;
 import cn.org.faster.framework.web.context.model.SpringAppContextFacade;
 import cn.org.faster.framework.web.context.model.WebContextFacade;
 import cn.org.faster.framework.web.exception.TokenValidException;
-import cn.org.faster.framework.web.exception.model.BasisErrorCode;
+import cn.org.faster.framework.web.exception.model.BasicErrorCode;
 import io.jsonwebtoken.Claims;
 import org.springframework.http.HttpHeaders;
 import org.springframework.util.StringUtils;
@@ -52,7 +52,7 @@ public class AppAuthInterceptor implements HandlerInterceptor {
             }
             //如果需要验证，验证appAuth是否为null
             if ((hasMethodLogin || loginClass != null) && requestContext.getUserId() == null) {
-                throw new TokenValidException(BasisErrorCode.TOKEN_INVALID);
+                throw new TokenValidException(BasicErrorCode.TOKEN_INVALID);
             } else {
                 //放入ThreadLocal中
                 WebContextFacade.setRequestContext(requestContext);

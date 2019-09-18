@@ -23,12 +23,17 @@ public class LocalCacheService implements ICacheService {
     }
 
     @Override
-    public String delete(String key) {
+    public String deleteAndGet(String key) {
         String value = get(key);
         if (value != null) {
             softHashMap.remove(key);
         }
         return value;
+    }
+
+    @Override
+    public void delete(String key) {
+        softHashMap.remove(key);
     }
 
     @Override
@@ -60,6 +65,11 @@ public class LocalCacheService implements ICacheService {
             }
         });
         return size.get();
+    }
+
+    @Override
+    public boolean existKey(String key) {
+        return softHashMap.containsKey(key);
     }
 
     @Override

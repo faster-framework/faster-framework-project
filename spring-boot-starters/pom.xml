@@ -17,7 +17,6 @@
         <module>spring-boot-starter-sms</module>
         <module>spring-boot-starter-redis</module>
         <module>spring-boot-starter-mybatis</module>
-        <module>spring-boot-starter-parent</module>
         <module>spring-boot-starter-kafka</module>
         <module>spring-boot-starter-shiro</module>
         <module>spring-boot-starter-grpc</module>

@@ -17,12 +17,19 @@ public interface ICacheService {
     void set(String key, String value, long exp);
 
     /**
-     * 删除缓存数据
+     * 删除缓存并获取值
      *
      * @param key 缓存键
      * @return V 泛型
      */
-    String delete(String key);
+    String deleteAndGet(String key);
+
+    /**
+     * 删除缓存
+     *
+     * @param key 缓存键
+     */
+    void delete(String key);
 
     /**
      * 获取缓存数据,如果关键字不存在返回null
@@ -46,6 +53,14 @@ public interface ICacheService {
      * @return 数量
      */
     int size(String cachePrefix);
+
+    /**
+     * 是否存在key
+     *
+     * @param key 键
+     * @return true/false
+     */
+    boolean existKey(String key);
 
     /**
      * 查询以cachePrefix开头的keys

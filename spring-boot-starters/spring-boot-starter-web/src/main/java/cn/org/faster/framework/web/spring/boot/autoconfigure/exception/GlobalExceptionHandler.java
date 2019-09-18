@@ -1,11 +1,12 @@
-package cn.org.faster.framework.web.exception;
+package cn.org.faster.framework.web.spring.boot.autoconfigure.exception;
 
 import cn.org.faster.framework.core.utils.error.BindingResultErrorUtils;
-import cn.org.faster.framework.web.exception.model.BasisErrorCode;
+import cn.org.faster.framework.web.exception.BusinessException;
+import cn.org.faster.framework.web.exception.TokenValidException;
+import cn.org.faster.framework.web.exception.model.BasicErrorCode;
 import cn.org.faster.framework.web.exception.model.ResponseErrorEntity;
 import cn.org.faster.framework.web.exception.model.ResultError;
 import cn.org.faster.framework.web.secret.HttpMessageDecryptException;
-import cn.org.faster.framework.web.utils.ResponseBuilder;
 import cn.org.faster.framework.web.version.ApiVersionDiscardException;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
@@ -24,13 +25,14 @@ import java.sql.SQLException;
 @ResponseBody
 @Configuration
 public class GlobalExceptionHandler {
+
     /**
      * @param exception 参数绑定异常拦截
      * @return 错误信息
      */
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     public Object handleException(MethodArgumentNotValidException exception) {
-        return ResponseBuilder.badArgument(BindingResultErrorUtils.resolveErrorMessage(exception.getBindingResult()));
+        return ResponseErrorEntity.error(BusinessException.build(BasicErrorCode.PARAM_ERROR, BindingResultErrorUtils.resolveErrorMessage(exception.getBindingResult())).getErrorCode(), HttpStatus.BAD_REQUEST);
     }
 
     /**
@@ -39,7 +41,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(BindException.class)
     public Object handleException(BindException exception) {
-        return ResponseBuilder.badArgument(BindingResultErrorUtils.resolveErrorMessage(exception.getBindingResult()));
+        return ResponseErrorEntity.error(BusinessException.build(BasicErrorCode.PARAM_ERROR, BindingResultErrorUtils.resolveErrorMessage(exception.getBindingResult())).getErrorCode(), HttpStatus.BAD_REQUEST);
     }
 
     /**
@@ -58,7 +60,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(SQLException.class)
     public Object handleException(SQLException exception) {
         exception.printStackTrace();
-        return ResponseErrorEntity.error(BasisErrorCode.SERVER_ERROR, HttpStatus.INTERNAL_SERVER_ERROR);
+        return ResponseErrorEntity.error(BasicErrorCode.SERVER_ERROR, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     /**
@@ -67,7 +69,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(value = ApiVersionDiscardException.class)
     public Object handleException(ApiVersionDiscardException exception) {
-        ResultError resultMsg = new ResultError(BasisErrorCode.DISCARD_ERROR.getValue(), exception.getMessage());
+        ResultError resultMsg = new ResultError(BasicErrorCode.DISCARD_ERROR.getValue(), exception.getMessage());
         return ResponseErrorEntity.error(resultMsg, HttpStatus.BAD_REQUEST);
     }
 
@@ -77,8 +79,27 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(value = HttpMessageDecryptException.class)
     public Object handleException(HttpMessageDecryptException exception) {
-        ResultError resultMsg = new ResultError(BasisErrorCode.VALIDATION_FAILED.getValue(), exception.getMessage());
+        ResultError resultMsg = new ResultError(BasicErrorCode.PARAM_ERROR.getValue(), exception.getMessage());
         return ResponseErrorEntity.error(resultMsg, HttpStatus.BAD_REQUEST);
+    }
+
+    /**
+     * RuntimeException 异常的拦截
+     */
+    @ExceptionHandler(RuntimeException.class)
+    public Object catchRuntimeException(RuntimeException e) {
+        e.printStackTrace();
+        return ResponseErrorEntity.error(BasicErrorCode.SERVER_ERROR, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    /**
+     * 业务异常
+     *
+     * @param e 业务异常
+     */
+    @ExceptionHandler(BusinessException.class)
+    public Object catchBusinessException(BusinessException e) {
+        return ResponseErrorEntity.error(e.getErrorCode(), HttpStatus.BAD_REQUEST);
     }
 
 }

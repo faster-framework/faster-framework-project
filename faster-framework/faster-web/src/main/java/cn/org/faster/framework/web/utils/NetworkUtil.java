@@ -50,7 +50,7 @@ public class NetworkUtil {
                     }
                 }
             }
-            if (ip.equals("0:0:0:0:0:0:0:1")) {
+            if ("0:0:0:0:0:0:0:1".equals(ip) || "127.0.0.1".equals(ip)) {
                 ip = InetAddress.getLocalHost().getHostAddress();
             }
             return ip;

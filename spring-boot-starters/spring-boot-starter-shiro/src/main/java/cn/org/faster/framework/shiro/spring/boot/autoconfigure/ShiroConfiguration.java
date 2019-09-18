@@ -2,7 +2,7 @@ package cn.org.faster.framework.shiro.spring.boot.autoconfigure;
 
 import cn.org.faster.framework.shiro.ShiroFilter;
 import cn.org.faster.framework.shiro.cache.ShiroCacheManager;
-import cn.org.faster.framework.web.exception.model.BasisErrorCode;
+import cn.org.faster.framework.web.exception.model.BasicErrorCode;
 import cn.org.faster.framework.web.exception.model.ResponseErrorEntity;
 import org.apache.shiro.authz.AuthorizationException;
 import org.apache.shiro.cache.CacheManager;
@@ -115,7 +115,7 @@ public class ShiroConfiguration {
         @ResponseBody
         @ExceptionHandler(value = AuthorizationException.class)
         public Object handleException(AuthorizationException exception) {
-            return ResponseErrorEntity.error(BasisErrorCode.PERMISSION_ERROR, HttpStatus.UNAUTHORIZED);
+            return ResponseErrorEntity.error(BasicErrorCode.PERMISSION_ERROR, HttpStatus.UNAUTHORIZED);
         }
     }
 }

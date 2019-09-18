@@ -1,8 +1,8 @@
 package cn.org.faster.framework.redis.cache;
 
 import cn.org.faster.framework.core.cache.service.ICacheService;
-import cn.org.faster.framework.redis.utils.RedisHelper;
-import org.springframework.data.redis.core.RedisTemplate;
+import lombok.Data;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
@@ -14,42 +14,45 @@ import java.util.concurrent.TimeUnit;
 /**
  * @author zhangbowen
  */
+@Data
 public class RedisCacheService implements ICacheService {
-    private RedisTemplate<String, String> redisTemplate;
+    private StringRedisTemplate stringRedisTemplate;
 
-    public RedisCacheService(RedisHelper redisHelper) {
-        redisTemplate = RedisHelper.template();
-    }
 
     @Override
     public void set(String key, String value, long exp) {
         if (exp > -1) {
-            redisTemplate.opsForValue().set(key, value, exp, TimeUnit.SECONDS);
+            stringRedisTemplate.opsForValue().set(key, value, exp, TimeUnit.SECONDS);
         } else {
-            redisTemplate.opsForValue().set(key, value);
+            stringRedisTemplate.opsForValue().set(key, value);
         }
     }
 
     @Override
-    public String delete(String key) {
+    public String deleteAndGet(String key) {
         String value = get(key);
         if (value != null) {
-            redisTemplate.opsForValue().getOperations().delete(key);
+            stringRedisTemplate.opsForValue().getOperations().delete(key);
         }
         return value;
+    }
+
+    @Override
+    public void delete(String key) {
+        stringRedisTemplate.opsForValue().getOperations().delete(key);
     }
 
 
     @Override
     public String get(String key) {
-        return redisTemplate.opsForValue().get(key);
+        return (String) stringRedisTemplate.opsForValue().get(key);
     }
 
     @Override
     public void clear(String cachePrefix) {
-        Set<String> keys = redisTemplate.keys(cachePrefix + "*");
+        Set<String> keys = stringRedisTemplate.keys(cachePrefix + "*");
         if (!CollectionUtils.isEmpty(keys)) {
-            redisTemplate.delete(keys);
+            stringRedisTemplate.delete(keys);
         }
     }
 
@@ -59,8 +62,13 @@ public class RedisCacheService implements ICacheService {
     }
 
     @Override
+    public boolean existKey(String key) {
+        return stringRedisTemplate.opsForValue().getOperations().hasKey(key);
+    }
+
+    @Override
     public Set<String> keys(String cachePrefix) {
-        return redisTemplate.keys(cachePrefix + "*");
+        return stringRedisTemplate.keys(cachePrefix + "*");
     }
 
     @Override

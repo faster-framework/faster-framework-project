@@ -17,7 +17,6 @@ import java.util.Set;
 public class CacheFacade {
     public static boolean local = true;
     private static ICacheService cacheService;
-    private static String prefix = "";
 
     /**
      * 设置缓存
@@ -28,37 +27,45 @@ public class CacheFacade {
      * @param <V>   泛型
      */
     public static <V> void set(String key, V value, long exp) {
-        cacheService.set(prefix + key, JSON.toJSONString(value), exp);
+        cacheService.set(key, JSON.toJSONString(value), exp);
     }
 
     /**
      * 删除缓存数据
      *
      * @param key 缓存键
+     */
+    public static void delete(String key) {
+        cacheService.delete(key);
+    }
+
+    /**
+     * 删除缓存并获取值
+     *
+     * @param key 缓存键
      * @return V 泛型
      */
-    public static String delete(String key) {
-        String value = cacheService.delete(prefix + key);
+    public static String deleteAndGet(String key) {
+        String value = cacheService.deleteAndGet(key);
         if (StringUtils.isEmpty(value)) {
             return null;
         }
-        return JSON.parseObject(value, String.class);
+        return JSON.parseObject(key, String.class);
     }
 
     /**
      * 删除缓存数据
      *
-     * @param <V>           泛型
-     * @param key           缓存键
-     * @param typeReference 类型
+     * @param typeReference 泛型
+     * @param key 缓存键
      * @return V 泛型
      */
-    public static <V> V delete(String key, TypeReference typeReference) {
-        String value = cacheService.delete(prefix + key);
+    public static <V> V delete(String key, TypeReference<V> typeReference) {
+        String value = cacheService.deleteAndGet(key);
         if (StringUtils.isEmpty(value)) {
             return null;
         }
-        return JSON.parseObject(value, typeReference.getType());
+        return JSON.parseObject(value, typeReference);
     }
 
     /**
@@ -68,7 +75,7 @@ public class CacheFacade {
      * @return 返回缓存实体
      */
     public static String get(String key) {
-        String value = cacheService.get(prefix + key);
+        String value = cacheService.get(key);
         if (StringUtils.isEmpty(value)) {
             return null;
         }
@@ -84,20 +91,17 @@ public class CacheFacade {
      * @param typeReference 类型
      * @return 返回缓存实体
      */
-    public static <V> V get(String key, TypeReference typeReference) {
-        String value = cacheService.get(prefix + key);
+    public static <V> V get(String key, TypeReference<V> typeReference) {
+        String value = cacheService.get(key);
         if (StringUtils.isEmpty(value)) {
             return null;
         }
-        return JSON.parseObject(value, typeReference.getType());
+        return JSON.parseObject(value, typeReference);
     }
 
-    public static CacheFacade initCache(ICacheService cacheService, boolean local, String prefix) {
+    public static CacheFacade initCache(ICacheService cacheService, boolean local) {
         CacheFacade.cacheService = cacheService;
         CacheFacade.local = local;
-        if (!StringUtils.isEmpty(prefix)) {
-            CacheFacade.prefix = prefix + ":";
-        }
         return new CacheFacade();
     }
 
@@ -107,7 +111,7 @@ public class CacheFacade {
      * @param cachePrefix 缓存前缀
      */
     public static void clear(String cachePrefix) {
-        cacheService.clear(prefix + cachePrefix);
+        cacheService.clear(cachePrefix);
     }
 
     /**
@@ -117,7 +121,18 @@ public class CacheFacade {
      * @return 缓存数量
      */
     public static int size(String cachePrefix) {
-        return cacheService.size(prefix + cachePrefix);
+        return cacheService.size(cachePrefix);
+    }
+
+
+    /**
+     * 判断是否存在某个key
+     *
+     * @param key 缓存键
+     * @return true/false
+     */
+    public static boolean existKey(String key) {
+        return cacheService.existKey(key);
     }
 
     /**
@@ -127,7 +142,7 @@ public class CacheFacade {
      * @return 返回缓存列表
      */
     public static Set<String> keys(String cachePrefix) {
-        return cacheService.keys(prefix + cachePrefix);
+        return cacheService.keys(cachePrefix);
     }
 
     /**
@@ -138,7 +153,7 @@ public class CacheFacade {
      */
     public static Collection<String> values(String cachePrefix) {
         List<String> resultList = new ArrayList<>();
-        Collection<String> values = cacheService.values(prefix + cachePrefix);
+        Collection<String> values = cacheService.values(cachePrefix);
         values.forEach(item -> {
             resultList.add(JSON.parseObject(item, String.class));
         });
@@ -155,9 +170,9 @@ public class CacheFacade {
      */
     public static <V> Collection<V> values(String cachePrefix, TypeReference<V> typeReference) {
         List<V> resultList = new ArrayList<>();
-        Collection<String> values = cacheService.values(prefix + cachePrefix);
+        Collection<String> values = cacheService.values(cachePrefix);
         values.forEach(item -> {
-            resultList.add(JSON.parseObject(item, typeReference.getType()));
+            resultList.add(JSON.parseObject(item, typeReference));
         });
         return resultList;
     }

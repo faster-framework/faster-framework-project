@@ -2,6 +2,7 @@ package cn.org.faster.framework.kafka.spring.boot.autoconfigure;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
 
 /**
  * @author zhangbowen
@@ -9,6 +10,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  */
 @ConfigurationProperties(prefix = "faster.kafka")
 @Data
+@Component
 public class KafkaProperties {
     /**
      * kafka额外配置开关，true or false
@@ -28,6 +30,7 @@ public class KafkaProperties {
      */
     @ConfigurationProperties(prefix = "faster.kafka.producer")
     @Data
+    @Component
     public static class Producer {
         /**
          * 是否支持消息回复
@@ -44,6 +47,7 @@ public class KafkaProperties {
      */
     @ConfigurationProperties(prefix = "faster.kafka.error")
     @Data
+    @Component
     public static class ErrorHandler {
         /**
          * 错误处理器配置开关，true or false

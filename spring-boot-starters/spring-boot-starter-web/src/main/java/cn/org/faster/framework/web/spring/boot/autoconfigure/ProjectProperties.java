@@ -10,8 +10,4 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @Data
 public class ProjectProperties {
     private String base64Secret = "ZmFzdGVyLWZyYW1ld29yaw==";
-    /**
-     * 集群名称
-     */
-    private String clusterName = "";
 }

@@ -25,9 +25,9 @@ public class MybatisAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public PaginationInterceptor paginationInterceptor() {
-        return new PaginationInterceptor();
+        PaginationInterceptor paginationInterceptor = new PaginationInterceptor();
+        return paginationInterceptor;
     }
-
     /**
      * 逻辑删除
      *

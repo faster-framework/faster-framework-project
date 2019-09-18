@@ -118,6 +118,11 @@
                 <artifactId>faster-grpc</artifactId>
                 <version>${revision}</version>
             </dependency>
+            <dependency>
+                <groupId>cn.org.faster</groupId>
+                <artifactId>faster-elasticsearch</artifactId>
+                <version>${revision}</version>
+            </dependency>
             <!--基础包结束-->
             <!--starter 开始-->
             <dependency>

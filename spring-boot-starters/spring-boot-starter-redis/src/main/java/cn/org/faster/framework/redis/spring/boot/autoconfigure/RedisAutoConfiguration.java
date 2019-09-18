@@ -9,6 +9,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 
 /**
@@ -31,6 +33,14 @@ public class RedisAutoConfiguration {
         container.setConnectionFactory(redisConnectionFactory);
         return container;
     }
+    /**
+     * RedisTemplate配置
+     */
+    @Bean
+    public RedisTemplate redisTemplate(RedisConnectionFactory factory) {
+        return new StringRedisTemplate(factory);
+    }
+
     @Bean
     public RedisHelper redisHelper(RedisConnectionFactory factory, ObjectMapper objectMapper) {
         return new RedisHelper(factory, objectMapper);

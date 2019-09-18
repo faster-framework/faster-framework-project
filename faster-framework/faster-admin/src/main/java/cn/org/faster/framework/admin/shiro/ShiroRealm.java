@@ -12,7 +12,7 @@ import cn.org.faster.framework.core.cache.context.CacheFacade;
 import cn.org.faster.framework.web.auth.app.service.AuthService;
 import cn.org.faster.framework.web.context.model.RequestContext;
 import cn.org.faster.framework.web.context.model.WebContextFacade;
-import cn.org.faster.framework.web.exception.model.BasisErrorCode;
+import cn.org.faster.framework.web.exception.model.BasicErrorCode;
 import io.jsonwebtoken.Claims;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
@@ -61,7 +61,7 @@ public class ShiroRealm extends AuthorizingRealm {
         String jwtToken = (String) super.getAvailablePrincipal(principalCollection);
         Claims claims = authService.parseToken(jwtToken);
         if (claims == null) {
-            throw new AuthenticationException(BasisErrorCode.TOKEN_INVALID.getDescription());
+            throw new AuthenticationException(BasicErrorCode.TOKEN_INVALID.getDescription());
         }
         SysUser user = sysUserService.info(Long.parseLong(claims.getAudience()));
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
@@ -104,20 +104,20 @@ public class ShiroRealm extends AuthorizingRealm {
             String token = (String) authenticationToken.getCredentials();
             Claims claims = authService.parseToken(token);
             if (claims == null) {
-                throw new AuthenticationException(BasisErrorCode.TOKEN_INVALID.getDescription());
+                throw new AuthenticationException(BasicErrorCode.TOKEN_INVALID.getDescription());
             }
             String userId = claims.getAudience();
             if (!authService.isMultipartTerminal()) {
                 String cacheToken = CacheFacade.get(AuthService.AUTH_TOKEN_PREFIX + userId);
                 if (StringUtils.isEmpty(cacheToken) || !token.equals(cacheToken)) {
-                    throw new AuthenticationException(BasisErrorCode.TOKEN_INVALID.getDescription());
+                    throw new AuthenticationException(BasicErrorCode.TOKEN_INVALID.getDescription());
                 }
             }
             RequestContext requestContext = WebContextFacade.getRequestContext();
             requestContext.setUserId(Long.parseLong(userId));
             WebContextFacade.setRequestContext(requestContext);
         } catch (Exception e) {
-            throw new AuthenticationException(BasisErrorCode.TOKEN_INVALID.getDescription());
+            throw new AuthenticationException(BasicErrorCode.TOKEN_INVALID.getDescription());
         }
         return new SimpleAuthenticationInfo(authenticationToken.getPrincipal(), authenticationToken.getCredentials(), getName());
     }

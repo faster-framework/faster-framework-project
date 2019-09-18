@@ -13,12 +13,7 @@ spring:
       testOnReturn: false
       poolPreparedStatements: false
       filters: stat,slf4j
-      # 配置 connection-properties，启用加密，配置公钥。
-      connection-properties: config.decrypt=true;config.decrypt.key=${spring.datasource.druid.public-key}
-      # 启动ConfigFilter
-      filter:
-        config:
-          enabled: true
+      maxWait: 60000
 
 mybatis-plus:
   mapper-locations: classpath*:**/mapper/xml/*Mapper.xml
