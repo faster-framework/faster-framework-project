@@ -3,12 +3,14 @@ package cn.org.faster.framework.admin.auth.service;
 import cn.org.faster.framework.admin.auth.error.AuthError;
 import cn.org.faster.framework.admin.auth.model.LoginReq;
 import cn.org.faster.framework.admin.auth.model.LoginRes;
+import cn.org.faster.framework.admin.auth.model.UserInfoRes;
 import cn.org.faster.framework.admin.shiro.ShiroRealm;
 import cn.org.faster.framework.admin.user.entity.SysUser;
 import cn.org.faster.framework.admin.user.service.SysUserService;
 import cn.org.faster.framework.core.utils.Utils;
 import cn.org.faster.framework.web.captcha.service.ICaptchaService;
 import cn.org.faster.framework.web.context.model.SpringAppContextFacade;
+import cn.org.faster.framework.web.context.model.WebContextFacade;
 import cn.org.faster.framework.web.exception.model.ResponseErrorEntity;
 import cn.org.faster.framework.web.jwt.service.JwtService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -72,7 +74,6 @@ public class AuthService {
         });
         LoginRes loginRes = new LoginRes();
         loginRes.setToken(token);
-        loginRes.setName(existUser.getName());
         return ResponseEntity.ok(loginRes);
     }
 
@@ -89,7 +90,7 @@ public class AuthService {
     /**
      * @return 获取当前用户所有权限code
      */
-    public Collection<String> permissions() {
+    private Collection<String> permissions() {
         Cache<Object, AuthorizationInfo> cache = SpringAppContextFacade.applicationContext.getBean(ShiroRealm.class).getAuthorizationCache();
         AuthorizationInfo authorizationInfo = cache.get(SecurityUtils.getSubject().getPrincipals());
         //说明没有缓存，刷新缓存
@@ -98,5 +99,20 @@ public class AuthService {
             authorizationInfo = cache.get(SecurityUtils.getSubject().getPrincipals());
         }
         return authorizationInfo == null ? Collections.emptyList() : authorizationInfo.getStringPermissions();
+    }
+
+    /**
+     * @return 用户信息
+     */
+    public UserInfoRes userInfo() {
+        Long userId = WebContextFacade.getRequestContext().getUserId();
+        SysUser sysUser = sysUserService.getById(userId);
+        if (sysUser == null) {
+            return new UserInfoRes();
+        }
+        UserInfoRes userInfoRes = new UserInfoRes();
+        userInfoRes.setName(sysUser.getName());
+        userInfoRes.setPermissions(permissions());
+        return userInfoRes;
     }
 }

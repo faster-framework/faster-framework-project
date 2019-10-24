@@ -6,8 +6,6 @@ spring:
     default-property-inclusion: non_null
     time-zone: GMT+8
     date-format: yyyy-MM-dd HH:mm:ss
-    generator:
-      WRITE_NUMBERS_AS_STRINGS: true
     deserialization:
       FAIL_ON_UNKNOWN_PROPERTIES: false
     serialization:

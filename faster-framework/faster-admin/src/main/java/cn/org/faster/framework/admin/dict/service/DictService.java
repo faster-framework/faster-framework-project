@@ -17,7 +17,7 @@ import java.util.List;
 
 /**
  * @author faster-builder
- * 字典表(帮助中心、公告、关于我们、客服电话、ios是否上架、android是否上架、提成比例) Service
+ * 字典Service
  */
 @Service
 @Transactional
@@ -28,7 +28,7 @@ public class DictService extends ServiceImpl<DictMapper, Dict> {
      * 分页查询
      *
      * @param dict 请求参数
-     * @return 字典表(帮助中心 、 公告 、 关于我们 、 客服电话 、 ios是否上架 、 android是否上架 、 提成比例)分页列表
+     * @return 字典分页列表
      */
     public IPage<Dict> list(Dict dict) {
         LambdaQueryWrapper<Dict> queryWrapper = new LambdaQueryWrapper<>();
@@ -52,7 +52,7 @@ public class DictService extends ServiceImpl<DictMapper, Dict> {
      * 分页查询
      *
      * @param dict 请求参数
-     * @return 字典表(帮助中心 、 公告 、 关于我们 、 客服电话 、 ios是否上架 、 android是否上架 、 提成比例)分页列表
+     * @return 字典分页列表
      */
     public List<Dict> listAll(Dict dict) {
         LambdaQueryWrapper<Dict> queryWrapper = new LambdaQueryWrapper<>();
@@ -75,8 +75,8 @@ public class DictService extends ServiceImpl<DictMapper, Dict> {
     /**
      * 根据主键id查询详情
      *
-     * @param id 字典表(帮助中心、公告、关于我们、客服电话、ios是否上架、android是否上架、提成比例)id
-     * @return 字典表(帮助中心 、 公告 、 关于我们 、 客服电话 、 ios是否上架 、 android是否上架 、 提成比例)详情
+     * @param id 字典id
+     * @return 字典详情
      */
     public Dict queryById(Long id) {
         return super.baseMapper.selectById(id);
@@ -86,7 +86,7 @@ public class DictService extends ServiceImpl<DictMapper, Dict> {
      * 根据条件查询详情
      *
      * @param dict 请求参数
-     * @return 字典表(帮助中心 、 公告 、 关于我们 、 客服电话 、 ios是否上架 、 android是否上架 、 提成比例)详情
+     * @return 字典详情
      */
     public Dict query(Dict dict) {
         LambdaQueryWrapper<Dict> queryWrapper = new LambdaQueryWrapper<>();
@@ -106,7 +106,7 @@ public class DictService extends ServiceImpl<DictMapper, Dict> {
     }
 
     /**
-     * 添加字典表(帮助中心、公告、关于我们、客服电话、ios是否上架、android是否上架、提成比例)
+     * 添加字典表
      *
      * @param dict 实体
      * @return ResponseEntity
@@ -118,7 +118,7 @@ public class DictService extends ServiceImpl<DictMapper, Dict> {
     }
 
     /**
-     * 修改字典表(帮助中心、公告、关于我们、客服电话、ios是否上架、android是否上架、提成比例)
+     * 修改字典表
      *
      * @param dict 实体
      * @return ResponseEntity
@@ -130,7 +130,7 @@ public class DictService extends ServiceImpl<DictMapper, Dict> {
     }
 
     /**
-     * 删除字典表(帮助中心、公告、关于我们、客服电话、ios是否上架、android是否上架、提成比例)
+     * 删除字典表
      *
      * @param id 主键id
      * @return ResponseEntity

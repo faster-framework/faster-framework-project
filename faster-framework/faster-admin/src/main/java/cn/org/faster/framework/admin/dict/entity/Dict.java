@@ -7,7 +7,7 @@ import lombok.EqualsAndHashCode;
 
 /**
  * @author faster-builder
- * 字典表(帮助中心、公告、关于我们、客服电话、ios是否上架、android是否上架、提成比例) 实体
+ * 字典实体
  */
 @Data
 @EqualsAndHashCode(callSuper = true)

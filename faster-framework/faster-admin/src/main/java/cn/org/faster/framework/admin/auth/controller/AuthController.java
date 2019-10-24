@@ -28,11 +28,11 @@ public class AuthController {
     }
 
     /**
-     * @return 获取权限列表
+     * @return 获取用户信息
      */
-    @GetMapping("/permissions")
-    public ResponseEntity permissions() {
-        return ResponseEntity.ok(authService.permissions());
+    @GetMapping("/userInfo")
+    public ResponseEntity userInfo() {
+        return ResponseEntity.ok(authService.userInfo());
     }
 
     /**

@@ -19,7 +19,7 @@ public class ApiRequestMappingHandlerMapping extends RequestMappingHandlerMappin
     //自动解析包名，获取版本号
     private boolean parsePackageVersion;
     private static final String VERSION_FLAG = "{version}";
-    private final static Pattern PACKAGE_VERSION_PREFIX_PATTERN = Pattern.compile("\\.v(\\d+).*");
+    private final static Pattern PACKAGE_VERSION_PREFIX_PATTERN = Pattern.compile(".*v(\\d+).*");
 
     private RequestCondition<ApiVersionCondition> createCondition(Class<?> clazz) {
         RequestMapping classRequestMapping = clazz.getAnnotation(RequestMapping.class);

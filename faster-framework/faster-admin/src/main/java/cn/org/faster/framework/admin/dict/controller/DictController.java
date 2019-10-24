@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 /**
  * @author faster-builder
- * 字典表(帮助中心、公告、关于我们、客服电话、ios是否上架、android是否上架、提成比例) Controller
+ * 字典Controller
  */
 @RestController
 @RequestMapping("/sys/dict")
@@ -19,9 +19,9 @@ public class DictController {
     private DictService dictService;
 
     /**
-     * 字典表(帮助中心、公告、关于我们、客服电话、ios是否上架、android是否上架、提成比例)分页列表
+     * 字典分页列表
      *
-     * @param dict 字典表(帮助中心、公告、关于我们、客服电话、ios是否上架、android是否上架、提成比例)实体
+     * @param dict 字典实体
      * @return ResponseEntity
      */
     @GetMapping
@@ -31,7 +31,7 @@ public class DictController {
     }
 
     /**
-     * 字典表(帮助中心、公告、关于我们、客服电话、ios是否上架、android是否上架、提成比例)根据id查询详情
+     * 字典根据id查询详情
      *
      * @param id 主键id
      * @return ResponseEntity
@@ -43,7 +43,7 @@ public class DictController {
     }
 
     /**
-     * 字典表(帮助中心、公告、关于我们、客服电话、ios是否上架、android是否上架、提成比例)根据条件查询详情
+     * 字典根据条件查询详情
      *
      * @return ResponseEntity
      */
@@ -54,7 +54,7 @@ public class DictController {
     }
 
     /**
-     * 新增字典表(帮助中心、公告、关于我们、客服电话、ios是否上架、android是否上架、提成比例)
+     * 新增字典
      *
      * @param request 请求参数
      * @return ResponseEntity
@@ -66,7 +66,7 @@ public class DictController {
     }
 
     /**
-     * 更新字典表(帮助中心、公告、关于我们、客服电话、ios是否上架、android是否上架、提成比例)
+     * 更新字典
      *
      * @param request 请求参数
      * @return ResponseEntity
@@ -78,7 +78,7 @@ public class DictController {
     }
 
     /**
-     * 删除字典表(帮助中心、公告、关于我们、客服电话、ios是否上架、android是否上架、提成比例)
+     * 删除字典
      *
      * @param id 主键id
      * @return ResponseEntity
