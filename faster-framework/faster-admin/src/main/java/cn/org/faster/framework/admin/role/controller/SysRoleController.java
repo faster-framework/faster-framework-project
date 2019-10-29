@@ -17,6 +17,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * @author zhangbowen
  */
@@ -86,18 +88,19 @@ public class SysRoleController {
     /**
      * 删除角色
      *
-     * @param roleId 角色id
+     * @param roleIds 角色id列表
      * @return ResponseEntity
      */
-    @DeleteMapping("/{roleId}")
+    @DeleteMapping("/delete")
     @RequiresPermissions("roles:delete")
-    public ResponseEntity delete(@PathVariable Long roleId) {
-        //超级管理员不可删除
-        if (roleId == 0L) {
-            return ResponseErrorEntity.error(RoleError.ADMIN_CANNOT_DELETE, HttpStatus.BAD_REQUEST);
-        }
-        sysRoleService.delete(roleId);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    public ResponseEntity delete(@RequestBody List<Long> roleIds) {
+        roleIds.forEach(item -> {
+            if (item == 0L) {
+                return;
+            }
+            sysRoleService.delete(item);
+        });
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
     /**

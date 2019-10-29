@@ -4,9 +4,12 @@ import cn.org.faster.framework.admin.dict.entity.Dict;
 import cn.org.faster.framework.admin.dict.service.DictService;
 import lombok.AllArgsConstructor;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @author faster-builder
@@ -80,12 +83,18 @@ public class DictController {
     /**
      * 删除字典
      *
-     * @param id 主键id
+     * @param ids 主键id列表
      * @return ResponseEntity
      */
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete")
     @RequiresPermissions("dict:delete")
-    public ResponseEntity delete(@PathVariable Long id) {
-        return dictService.delete(id);
+    public ResponseEntity delete(@RequestBody List<Long>  ids) {
+        ids.forEach(item -> {
+            if (item == 0L) {
+                return;
+            }
+            dictService.delete(item);
+        });
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 }

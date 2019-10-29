@@ -18,6 +18,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * @author zhangbowen
  */
@@ -82,18 +84,21 @@ public class SysUserController {
     /**
      * 删除用户
      *
-     * @param userId 用户id
+     * @param userIds 用户id列表
      * @return ResponseEntity
      */
-    @DeleteMapping("/{userId}")
+    @DeleteMapping("/delete")
     @RequiresPermissions("users:delete")
-    public ResponseEntity delete(@PathVariable Long userId) {
-        if (userId == 0L) {
-            return ResponseErrorEntity.error(UserError.ADMIN_CANNOT_DELETE, HttpStatus.BAD_REQUEST);
-        }
-        sysUserService.delete(userId);
+    public ResponseEntity delete(@RequestBody List<Long> userIds) {
+        userIds.forEach(item->{
+            if (item == 0L) {
+                return;
+            }
+            sysUserService.delete(item);
+        });
         return new ResponseEntity(HttpStatus.CREATED);
     }
+
 
     /**
      * 修改密码

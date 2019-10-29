@@ -12,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * @author zhangbowen
  */
@@ -80,13 +82,13 @@ public class SysPermissionController {
     /**
      * 删除权限
      *
-     * @param permissionId 权限id
+     * @param permissionIds 权限id列表
      * @return ResponseEntity
      */
-    @DeleteMapping("/{permissionId}")
+    @DeleteMapping("/delete")
     @RequiresPermissions("permissions:delete")
-    public ResponseEntity delete(@PathVariable Long permissionId) {
-        sysPermissionService.delete(permissionId);
+    public ResponseEntity delete(@RequestBody List<Long> permissionIds) {
+        permissionIds.forEach(item-> sysPermissionService.delete(item));
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
