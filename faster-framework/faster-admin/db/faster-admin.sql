@@ -162,4 +162,28 @@ BEGIN;
 INSERT INTO `sys_user_role` VALUES (0, 0, 0, NULL, NULL, '2018-06-11 17:47:05', '2018-06-11 17:47:08', 0, NULL, 0);
 COMMIT;
 
+
+-- ----------------------------
+-- Table structure for sys_dict
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_dict`;
+CREATE TABLE `sys_dict` (
+  `id` bigint(20) NOT NULL,
+  `name` varchar(128) DEFAULT NULL COMMENT '字典key',
+  `type` varchar(128) DEFAULT NULL COMMENT '类型',
+  `dict_value` longtext COMMENT '字典值',
+  `show_status` tinyint(4) NOT NULL DEFAULT '1' COMMENT '展示状态（0.不展示 1.展示）',
+  `create_by` bigint(20) DEFAULT NULL COMMENT '创建人',
+  `update_by` bigint(20) DEFAULT NULL COMMENT '最后更新人',
+  `create_date` datetime NOT NULL COMMENT '创建时间',
+  `update_date` datetime NOT NULL COMMENT '最后更新时间',
+  `sort` int(11) NOT NULL DEFAULT '0' COMMENT '排序',
+  `remark` varchar(1024) DEFAULT NULL COMMENT '备注',
+  `deleted` tinyint(4) NOT NULL DEFAULT '0' COMMENT '是否删除（0.,否 1.是）',
+  PRIMARY KEY (`id`),
+  KEY `idx_type` (`type`) USING BTREE,
+  KEY `idx_name` (`name`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='字典表';
+
+
 SET FOREIGN_KEY_CHECKS = 1;

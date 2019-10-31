@@ -12,6 +12,7 @@ import cn.org.faster.framework.web.spring.boot.autoconfigure.version.VersionProp
 import cn.org.faster.framework.web.version.ApiRequestMappingHandlerMapping;
 import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -112,6 +113,7 @@ public class WebAutoConfiguration implements WebMvcConfigurer, WebMvcRegistratio
         module.addDeserializer(LocalDateTime.class, new LocalDatetimeFormatter.LocalDateTimeDeserializer());
         module.addSerializer(LocalDate.class, new LocalDateFormatter.LocalDateSerializer());
         module.addDeserializer(LocalDate.class, new LocalDateFormatter.LocalDateDeserializer());
+        module.addSerializer(Long.class, ToStringSerializer.instance);
         return module;
     }
 

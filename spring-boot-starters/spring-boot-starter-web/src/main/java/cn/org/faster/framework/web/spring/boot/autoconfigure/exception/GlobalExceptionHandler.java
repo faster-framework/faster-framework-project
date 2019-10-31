@@ -84,7 +84,9 @@ public class GlobalExceptionHandler {
     }
 
     /**
-     * RuntimeException 异常的拦截
+     *
+     * @param e 运行时异常
+     * @return 错误信息
      */
     @ExceptionHandler(RuntimeException.class)
     public Object catchRuntimeException(RuntimeException e) {
@@ -93,9 +95,8 @@ public class GlobalExceptionHandler {
     }
 
     /**
-     * 业务异常
-     *
      * @param e 业务异常
+     * @return 错误信息
      */
     @ExceptionHandler(BusinessException.class)
     public Object catchBusinessException(BusinessException e) {
