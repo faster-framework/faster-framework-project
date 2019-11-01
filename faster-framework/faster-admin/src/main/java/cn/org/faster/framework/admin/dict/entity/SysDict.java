@@ -12,7 +12,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @TableName("sys_dict")
-public class Dict extends BaseEntity {
+public class SysDict extends BaseEntity {
     /**
      * 字典key
      */

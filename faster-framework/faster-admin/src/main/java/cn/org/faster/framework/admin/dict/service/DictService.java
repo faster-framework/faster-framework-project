@@ -1,6 +1,6 @@
 package cn.org.faster.framework.admin.dict.service;
 
-import cn.org.faster.framework.admin.dict.entity.Dict;
+import cn.org.faster.framework.admin.dict.entity.SysDict;
 import cn.org.faster.framework.admin.dict.mapper.DictMapper;
 import cn.org.faster.framework.mybatis.entity.BaseEntity;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -22,51 +22,54 @@ import java.util.List;
 @Service
 @Transactional
 @AllArgsConstructor
-public class DictService extends ServiceImpl<DictMapper, Dict> {
+public class DictService extends ServiceImpl<DictMapper, SysDict> {
 
     /**
      * 分页查询
      *
-     * @param dict 请求参数
+     * @param sysDict 请求参数
      * @return 字典分页列表
      */
-    public IPage<Dict> list(Dict dict) {
-        LambdaQueryWrapper<Dict> queryWrapper = new LambdaQueryWrapper<>();
-        if (!StringUtils.isEmpty(dict.getName())) {
-            queryWrapper.like(Dict::getName, dict.getName());
+    public IPage<SysDict> list(SysDict sysDict) {
+        LambdaQueryWrapper<SysDict> queryWrapper = new LambdaQueryWrapper<>();
+        if (!StringUtils.isEmpty(sysDict.getName())) {
+            queryWrapper.likeRight(SysDict::getName, sysDict.getName());
         }
-        if (!StringUtils.isEmpty(dict.getType())) {
-            queryWrapper.like(Dict::getType, dict.getType());
+        if (!StringUtils.isEmpty(sysDict.getType())) {
+            queryWrapper.likeRight(SysDict::getType, sysDict.getType());
         }
-        if (!StringUtils.isEmpty(dict.getDictValue())) {
-            queryWrapper.eq(Dict::getDictValue, dict.getDictValue());
+        if (!StringUtils.isEmpty(sysDict.getRemark())) {
+            queryWrapper.likeRight(SysDict::getRemark, sysDict.getRemark());
         }
-        if (dict.getShowStatus() != null) {
-            queryWrapper.eq(Dict::getShowStatus, dict.getShowStatus());
+        if (!StringUtils.isEmpty(sysDict.getDictValue())) {
+            queryWrapper.eq(SysDict::getDictValue, sysDict.getDictValue());
+        }
+        if (sysDict.getShowStatus() != null) {
+            queryWrapper.eq(SysDict::getShowStatus, sysDict.getShowStatus());
         }
         queryWrapper.orderByAsc(BaseEntity::getSort);
-        return super.baseMapper.selectPage(dict.toPage(), queryWrapper);
+        return super.baseMapper.selectPage(sysDict.toPage(), queryWrapper);
     }
 
     /**
      * 分页查询
      *
-     * @param dict 请求参数
+     * @param sysDict 请求参数
      * @return 字典分页列表
      */
-    public List<Dict> listAll(Dict dict) {
-        LambdaQueryWrapper<Dict> queryWrapper = new LambdaQueryWrapper<>();
-        if (!StringUtils.isEmpty(dict.getName())) {
-            queryWrapper.eq(Dict::getName, dict.getName());
+    public List<SysDict> listAll(SysDict sysDict) {
+        LambdaQueryWrapper<SysDict> queryWrapper = new LambdaQueryWrapper<>();
+        if (!StringUtils.isEmpty(sysDict.getName())) {
+            queryWrapper.eq(SysDict::getName, sysDict.getName());
         }
-        if (!StringUtils.isEmpty(dict.getType())) {
-            queryWrapper.eq(Dict::getType, dict.getType());
+        if (!StringUtils.isEmpty(sysDict.getType())) {
+            queryWrapper.eq(SysDict::getType, sysDict.getType());
         }
-        if (!StringUtils.isEmpty(dict.getDictValue())) {
-            queryWrapper.eq(Dict::getDictValue, dict.getDictValue());
+        if (!StringUtils.isEmpty(sysDict.getDictValue())) {
+            queryWrapper.eq(SysDict::getDictValue, sysDict.getDictValue());
         }
-        if (dict.getShowStatus() != null) {
-            queryWrapper.eq(Dict::getShowStatus, dict.getShowStatus());
+        if (sysDict.getShowStatus() != null) {
+            queryWrapper.eq(SysDict::getShowStatus, sysDict.getShowStatus());
         }
         queryWrapper.orderByAsc(BaseEntity::getSort);
         return super.baseMapper.selectList(queryWrapper);
@@ -78,29 +81,29 @@ public class DictService extends ServiceImpl<DictMapper, Dict> {
      * @param id 字典id
      * @return 字典详情
      */
-    public Dict queryById(Long id) {
+    public SysDict queryById(Long id) {
         return super.baseMapper.selectById(id);
     }
 
     /**
      * 根据条件查询详情
      *
-     * @param dict 请求参数
+     * @param sysDict 请求参数
      * @return 字典详情
      */
-    public Dict query(Dict dict) {
-        LambdaQueryWrapper<Dict> queryWrapper = new LambdaQueryWrapper<>();
-        if (!StringUtils.isEmpty(dict.getName())) {
-            queryWrapper.eq(Dict::getName, dict.getName());
+    public SysDict query(SysDict sysDict) {
+        LambdaQueryWrapper<SysDict> queryWrapper = new LambdaQueryWrapper<>();
+        if (!StringUtils.isEmpty(sysDict.getName())) {
+            queryWrapper.eq(SysDict::getName, sysDict.getName());
         }
-        if (!StringUtils.isEmpty(dict.getType())) {
-            queryWrapper.eq(Dict::getType, dict.getType());
+        if (!StringUtils.isEmpty(sysDict.getType())) {
+            queryWrapper.eq(SysDict::getType, sysDict.getType());
         }
-        if (!StringUtils.isEmpty(dict.getDictValue())) {
-            queryWrapper.eq(Dict::getDictValue, dict.getDictValue());
+        if (!StringUtils.isEmpty(sysDict.getDictValue())) {
+            queryWrapper.eq(SysDict::getDictValue, sysDict.getDictValue());
         }
-        if (dict.getShowStatus() != null) {
-            queryWrapper.eq(Dict::getShowStatus, dict.getShowStatus());
+        if (sysDict.getShowStatus() != null) {
+            queryWrapper.eq(SysDict::getShowStatus, sysDict.getShowStatus());
         }
         return this.getOne(queryWrapper);
     }
@@ -108,24 +111,24 @@ public class DictService extends ServiceImpl<DictMapper, Dict> {
     /**
      * 添加字典表
      *
-     * @param dict 实体
+     * @param sysDict 实体
      * @return ResponseEntity
      */
-    public ResponseEntity add(Dict dict) {
-        dict.preInsert();
-        super.baseMapper.insert(dict);
+    public ResponseEntity add(SysDict sysDict) {
+        sysDict.preInsert();
+        super.baseMapper.insert(sysDict);
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
     /**
      * 修改字典表
      *
-     * @param dict 实体
+     * @param sysDict 实体
      * @return ResponseEntity
      */
-    public ResponseEntity update(Dict dict) {
-        dict.preUpdate();
-        super.baseMapper.updateById(dict);
+    public ResponseEntity update(SysDict sysDict) {
+        sysDict.preUpdate();
+        super.baseMapper.updateById(sysDict);
         return new ResponseEntity(HttpStatus.CREATED);
     }
 

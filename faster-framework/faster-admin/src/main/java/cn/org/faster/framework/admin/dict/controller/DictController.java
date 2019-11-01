@@ -1,9 +1,12 @@
 package cn.org.faster.framework.admin.dict.controller;
 
-import cn.org.faster.framework.admin.dict.entity.Dict;
+import cn.org.faster.framework.admin.dict.entity.SysDict;
+import cn.org.faster.framework.admin.dict.model.SysDictReq;
 import cn.org.faster.framework.admin.dict.service.DictService;
+import cn.org.faster.framework.admin.role.entity.SysRole;
 import lombok.AllArgsConstructor;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -24,13 +27,13 @@ public class DictController {
     /**
      * 字典分页列表
      *
-     * @param dict 字典实体
+     * @param sysDict 字典实体
      * @return ResponseEntity
      */
     @GetMapping
     @RequiresPermissions("dict:list")
-    public ResponseEntity list(Dict dict) {
-        return ResponseEntity.ok(dictService.list(dict));
+    public ResponseEntity list(SysDict sysDict) {
+        return ResponseEntity.ok(dictService.list(sysDict));
     }
 
     /**
@@ -52,8 +55,8 @@ public class DictController {
      */
     @GetMapping("/query")
     @RequiresPermissions("dict:info")
-    public ResponseEntity query(Dict dict) {
-        return ResponseEntity.ok(dictService.query(dict));
+    public ResponseEntity query(SysDict sysDict) {
+        return ResponseEntity.ok(dictService.query(sysDict));
     }
 
     /**
@@ -64,8 +67,10 @@ public class DictController {
      */
     @PostMapping
     @RequiresPermissions("dict:add")
-    public ResponseEntity add(@Validated @RequestBody Dict request) {
-        return dictService.add(request);
+    public ResponseEntity add(@Validated @RequestBody SysDictReq request) {
+        SysDict insert = new SysDict();
+        BeanUtils.copyProperties(request, insert);
+        return dictService.add(insert);
     }
 
     /**
@@ -76,8 +81,11 @@ public class DictController {
      */
     @PutMapping("/{id}")
     @RequiresPermissions("dict:modify")
-    public ResponseEntity update(@RequestBody Dict request) {
-        return dictService.update(request);
+    public ResponseEntity update(@RequestBody SysDictReq request, @PathVariable Long id) {
+        SysDict update = new SysDict();
+        BeanUtils.copyProperties(request, update);
+        update.setId(id);
+        return dictService.update(update);
     }
 
     /**

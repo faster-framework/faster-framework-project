@@ -128,6 +128,8 @@ public class SysPermissionService extends ServiceImpl<SysPermissionMapper, SysPe
         }
         sysPermission.preUpdate();
         super.baseMapper.updateById(sysPermission);
+        //清空缓存
+        SpringAppContextFacade.applicationContext.getBean(ShiroRealm.class).getAuthorizationCache().clear();
         return new ResponseEntity(HttpStatus.CREATED);
     }
 

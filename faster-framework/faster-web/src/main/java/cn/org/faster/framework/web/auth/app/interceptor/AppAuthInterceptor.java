@@ -1,6 +1,8 @@
 package cn.org.faster.framework.web.auth.app.interceptor;
 
+import cn.hutool.extra.servlet.ServletUtil;
 import cn.org.faster.framework.core.cache.context.CacheFacade;
+import cn.org.faster.framework.core.constants.HeaderConstants;
 import cn.org.faster.framework.web.auth.app.annotation.Login;
 import cn.org.faster.framework.web.auth.app.service.AuthService;
 import cn.org.faster.framework.web.context.model.RequestContext;
@@ -9,11 +11,11 @@ import cn.org.faster.framework.web.context.model.WebContextFacade;
 import cn.org.faster.framework.web.exception.TokenValidException;
 import cn.org.faster.framework.web.exception.model.BasicErrorCode;
 import io.jsonwebtoken.Claims;
-import org.springframework.http.HttpHeaders;
 import org.springframework.util.StringUtils;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -29,7 +31,13 @@ public class AppAuthInterceptor implements HandlerInterceptor {
             HandlerMethod handlerMethod = (HandlerMethod) handler;
             boolean hasMethodLogin = handlerMethod.hasMethodAnnotation(Login.class);
             Login loginClass = handlerMethod.getBeanType().getAnnotation(Login.class);
-            String jwtToken = request.getHeader(HttpHeaders.AUTHORIZATION);
+            String jwtToken = request.getHeader(HeaderConstants.AUTH_TOKEN);
+            if (StringUtils.isEmpty(jwtToken)) {
+                Cookie cookie = ServletUtil.getCookie(request, HeaderConstants.AUTH_TOKEN);
+                if (cookie != null) {
+                    jwtToken = cookie.getValue();
+                }
+            }
             RequestContext requestContext = WebContextFacade.getRequestContext();
             //解码,设置appAuthContext
             if (!StringUtils.isEmpty(jwtToken) && jwtToken.length() > 7) {

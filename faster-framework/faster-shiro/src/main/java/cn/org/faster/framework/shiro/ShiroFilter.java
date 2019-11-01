@@ -1,5 +1,7 @@
 package cn.org.faster.framework.shiro;
 
+import cn.hutool.extra.servlet.ServletUtil;
+import cn.org.faster.framework.core.constants.HeaderConstants;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.web.filter.authc.AuthenticatingFilter;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -22,16 +25,23 @@ public class ShiroFilter extends AuthenticatingFilter {
     @Override
     protected AuthenticationToken createToken(ServletRequest servletRequest, ServletResponse servletResponse) {
         HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
-        String jwtToken = httpServletRequest.getHeader(HttpHeaders.AUTHORIZATION);
+        String jwtToken = httpServletRequest.getHeader(HeaderConstants.AUTH_TOKEN);
+        if (StringUtils.isEmpty(jwtToken)) {
+            Cookie cookie = ServletUtil.getCookie((HttpServletRequest) servletRequest, HeaderConstants.AUTH_TOKEN);
+            if (cookie != null) {
+                jwtToken = cookie.getValue();
+            }
+        }
+        String finalJwtToken = jwtToken;
         return new AuthenticationToken() {
             @Override
             public Object getPrincipal() {
-                return jwtToken;
+                return finalJwtToken;
             }
 
             @Override
             public Object getCredentials() {
-                return jwtToken;
+                return finalJwtToken;
             }
         };
     }
