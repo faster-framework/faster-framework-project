@@ -11,7 +11,7 @@ import java.util.Map;
  * @author zhangbowen
  * @since 2019/1/15
  */
-@ConfigurationProperties(prefix = "faster.grpc")
+@ConfigurationProperties(prefix = "app.grpc")
 @Data
 public class GRpcProperties {
     /**
@@ -31,7 +31,7 @@ public class GRpcProperties {
      */
     private Server server = new Server();
 
-    @ConfigurationProperties(prefix = "faster.grpc.client")
+    @ConfigurationProperties(prefix = "app.grpc.client")
     @Data
     public static class Client {
         /**
@@ -44,7 +44,7 @@ public class GRpcProperties {
         private Map<String, ChannelProperty> services = new HashMap<>();
     }
 
-    @ConfigurationProperties(prefix = "faster.grpc.server")
+    @ConfigurationProperties(prefix = "app.grpc.server")
     @Data
     public static class Server {
 

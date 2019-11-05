@@ -110,7 +110,7 @@ public class RedisCacheAutoConfiguration extends CachingConfigurerSupport {
      * @return redis缓存
      */
     @Bean
-    @ConditionalOnProperty(prefix = "faster.cache", name = "mode", havingValue = "redis")
+    @ConditionalOnProperty(prefix = "app.cache", name = "mode", havingValue = "redis")
     @ConditionalOnMissingBean(ICacheService.class)
     public ICacheService redisCache(StringRedisTemplate stringRedisTemplate) {
         RedisCacheService redisCacheService = new RedisCacheService();

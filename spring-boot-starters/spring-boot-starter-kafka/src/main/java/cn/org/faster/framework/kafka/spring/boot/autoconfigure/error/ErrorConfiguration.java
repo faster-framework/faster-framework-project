@@ -18,7 +18,7 @@ import org.springframework.kafka.listener.GenericErrorHandler;
  * @author zhangbowen
  * @since 2019/1/3
  */
-@ConditionalOnProperty(prefix = "faster.kafka.error", name = "enabled", havingValue = "true", matchIfMissing = true)
+@ConditionalOnProperty(prefix = "app.kafka.error", name = "enabled", havingValue = "true", matchIfMissing = true)
 public class ErrorConfiguration {
 
     /**
@@ -27,7 +27,7 @@ public class ErrorConfiguration {
      * @return 死信批量处理器
      */
     @Bean
-    @ConditionalOnProperty(prefix = "faster.kafka.error", name = "dead-letter", havingValue = "true")
+    @ConditionalOnProperty(prefix = "app.kafka.error", name = "dead-letter", havingValue = "true")
     @ConditionalOnMissingBean
     public GenericErrorHandler kafkaDeadLetterBatchErrorHandler(KafkaTemplate<Object, Object> kafkaTemplate,
                                                                 ConcurrentKafkaListenerContainerFactory concurrentKafkaListenerContainerFactory) {

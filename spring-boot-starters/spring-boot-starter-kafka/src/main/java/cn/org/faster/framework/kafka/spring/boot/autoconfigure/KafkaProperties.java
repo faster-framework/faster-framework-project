@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
  * @author zhangbowen
  * @since 2018/12/27
  */
-@ConfigurationProperties(prefix = "faster.kafka")
+@ConfigurationProperties(prefix = "app.kafka")
 @Data
 @Component
 public class KafkaProperties {
@@ -28,7 +28,7 @@ public class KafkaProperties {
     /**
      * 生产者配置
      */
-    @ConfigurationProperties(prefix = "faster.kafka.producer")
+    @ConfigurationProperties(prefix = "app.kafka.producer")
     @Data
     @Component
     public static class Producer {
@@ -45,7 +45,7 @@ public class KafkaProperties {
     /**
      * 错误处理器配置
      */
-    @ConfigurationProperties(prefix = "faster.kafka.error")
+    @ConfigurationProperties(prefix = "app.kafka.error")
     @Data
     @Component
     public static class ErrorHandler {

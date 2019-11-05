@@ -6,7 +6,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 /**
  * @author zhangbowen
  */
-@ConfigurationProperties(prefix = "faster")
+@ConfigurationProperties(prefix = "app")
 @Data
 public class ProjectProperties {
     private String base64Secret = "ZmFzdGVyLWZyYW1ld29yaw==";

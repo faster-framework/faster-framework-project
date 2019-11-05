@@ -13,11 +13,11 @@ import org.springframework.context.annotation.Configuration;
  * @author zhangbowen
  */
 @Configuration
-@ConditionalOnProperty(prefix = "faster.upload", name = "enabled", havingValue = "true", matchIfMissing = true)
+@ConditionalOnProperty(prefix = "app.upload", name = "enabled", havingValue = "true", matchIfMissing = true)
 public class UploadAutoConfiguration {
 
     @Configuration
-    @ConditionalOnProperty(prefix = "faster.upload", name = "mode", havingValue = "local", matchIfMissing = true)
+    @ConditionalOnProperty(prefix = "app.upload", name = "mode", havingValue = "local", matchIfMissing = true)
     @EnableConfigurationProperties({ProjectProperties.class, UploadProperties.LocalUploadProperties.class})
     public static class LocalUploadConfiguration {
 

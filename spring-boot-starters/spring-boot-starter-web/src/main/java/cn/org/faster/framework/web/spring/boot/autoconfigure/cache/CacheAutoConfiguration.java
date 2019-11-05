@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Configuration;
  * @author zhangbowen
  */
 @Configuration
-@ConditionalOnProperty(prefix = "faster.cache", name = "enabled", havingValue = "true", matchIfMissing = true)
+@ConditionalOnProperty(prefix = "app.cache", name = "enabled", havingValue = "true", matchIfMissing = true)
 @EnableConfigurationProperties({CacheProperties.class, ProjectProperties.class})
 public class CacheAutoConfiguration {
 
@@ -23,7 +23,7 @@ public class CacheAutoConfiguration {
     /**
      * @return 本地缓存
      */
-    @ConditionalOnProperty(prefix = "faster.cache", name = "mode", havingValue = "local", matchIfMissing = true)
+    @ConditionalOnProperty(prefix = "app.cache", name = "mode", havingValue = "local", matchIfMissing = true)
     @Bean
     @ConditionalOnMissingBean
     public ICacheService localCacheService() {

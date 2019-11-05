@@ -27,7 +27,7 @@ import org.springframework.context.annotation.Import;
  */
 @Configuration
 @EnableConfigurationProperties(GRpcProperties.class)
-@ConditionalOnProperty(prefix = "faster.grpc", name = "enabled", havingValue = "true", matchIfMissing = true)
+@ConditionalOnProperty(prefix = "app.grpc", name = "enabled", havingValue = "true", matchIfMissing = true)
 @Import({GRpcAutoConfiguration.GrpcClientAutoConfiguration.class, GRpcAutoConfiguration.GrpcServerAutoConfiguration.class})
 public class GRpcAutoConfiguration {
 
@@ -37,7 +37,7 @@ public class GRpcAutoConfiguration {
      */
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnProperty(prefix = "faster.grpc", name = "marshaller", havingValue = "json",matchIfMissing = true)
+    @ConditionalOnProperty(prefix = "app.grpc", name = "marshaller", havingValue = "json",matchIfMissing = true)
     public MarshallerFactory jsonMarshallerFactory(ObjectMapper objectMapper) {
         if (objectMapper == null) {
             throw new CreateMarshallerException("Object mapper is no inject in spring.Please check your configuration.");
@@ -50,7 +50,7 @@ public class GRpcAutoConfiguration {
      */
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnProperty(prefix = "faster.grpc", name = "marshaller", havingValue = "proto")
+    @ConditionalOnProperty(prefix = "app.grpc", name = "marshaller", havingValue = "proto")
     public MarshallerFactory protoMarshallerFactory() {
         return new ProtoMarshallerFactory();
     }
@@ -58,7 +58,7 @@ public class GRpcAutoConfiguration {
     /**
      * 客户端配置
      */
-    @ConditionalOnProperty(prefix = "faster.grpc.client", name = "enabled", havingValue = "true", matchIfMissing = true)
+    @ConditionalOnProperty(prefix = "app.grpc.client", name = "enabled", havingValue = "true", matchIfMissing = true)
     @GRpcClientScan
     public static class GrpcClientAutoConfiguration {
         @Autowired
@@ -76,7 +76,7 @@ public class GRpcAutoConfiguration {
     /**
      * 服务端配置
      */
-    @ConditionalOnProperty(prefix = "faster.grpc.server", name = "enabled", havingValue = "true", matchIfMissing = true)
+    @ConditionalOnProperty(prefix = "app.grpc.server", name = "enabled", havingValue = "true", matchIfMissing = true)
     @GRpcServerScan
     public static class GrpcServerAutoConfiguration {
         @Autowired

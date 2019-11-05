@@ -7,7 +7,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * @author zhangbowen
  * @since 2019/1/8
  */
-@ConfigurationProperties(prefix = "faster.version")
+@ConfigurationProperties(prefix = "app.version")
 @Data
 public class VersionProperties {
     /**

@@ -44,7 +44,7 @@ import java.util.TreeSet;
 @ControllerAdvice
 @EnableConfigurationProperties({SecretProperties.class})
 @Order(1)
-@ConditionalOnProperty(prefix = "faster.secret", name = "enabled", havingValue = "true")
+@ConditionalOnProperty(prefix = "app.secret", name = "enabled", havingValue = "true")
 public class SecretRequestAdvice extends RequestBodyAdviceAdapter {
     @Autowired
     private SecretProperties secretProperties;

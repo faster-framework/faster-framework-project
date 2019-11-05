@@ -14,7 +14,7 @@ import java.util.List;
  * @author zhangbowen
  * @since 2018/12/13
  */
-@ConfigurationProperties(prefix = "faster.secret")
+@ConfigurationProperties(prefix = "app.secret")
 @Data
 public class SecretProperties {
     /**

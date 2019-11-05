@@ -18,6 +18,10 @@ spring:
       max-request-size: 100MB
   main:
     allow-bean-definition-overriding: true
+  freemarker:
+    expose-request-attributes: true
+    expose-session-attributes: true
+    request-context-attribute: request
 management:
   endpoints:
     web:

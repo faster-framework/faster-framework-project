@@ -6,7 +6,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 /**
  * @author zhangbowen
  */
-@ConfigurationProperties(prefix = "faster.cache")
+@ConfigurationProperties(prefix = "app.cache")
 @Data
 public class CacheProperties {
     /**

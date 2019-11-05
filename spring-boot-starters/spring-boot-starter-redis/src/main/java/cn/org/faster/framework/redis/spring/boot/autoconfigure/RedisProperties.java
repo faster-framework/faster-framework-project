@@ -7,7 +7,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * @author zhangbowen
  * @since 2019/1/11
  */
-@ConfigurationProperties(prefix = "faster.redis")
+@ConfigurationProperties(prefix = "app.redis")
 @Data
 public class RedisProperties {
     /**

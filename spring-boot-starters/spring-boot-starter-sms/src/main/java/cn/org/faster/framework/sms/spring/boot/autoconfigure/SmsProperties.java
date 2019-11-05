@@ -8,7 +8,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * @since 2018/8/27
  */
 @Data
-@ConfigurationProperties(prefix = "faster.sms")
+@ConfigurationProperties(prefix = "app.sms")
 public class SmsProperties {
     /**
      * 是否开启
@@ -32,7 +32,7 @@ public class SmsProperties {
     private SmsCaptchaProperties captcha = new SmsCaptchaProperties();
 
     @Data
-    @ConfigurationProperties(prefix = "faster.sms.ali")
+    @ConfigurationProperties(prefix = "app.sms.ali")
     public static class AliProperties {
         /**
          * 阿里key
@@ -45,7 +45,7 @@ public class SmsProperties {
     }
 
     @Data
-    @ConfigurationProperties(prefix = "faster.sms.captcha")
+    @ConfigurationProperties(prefix = "app.sms.captcha")
     public static class SmsCaptchaProperties {
         /**
          * 超时时间（秒），默认15分钟

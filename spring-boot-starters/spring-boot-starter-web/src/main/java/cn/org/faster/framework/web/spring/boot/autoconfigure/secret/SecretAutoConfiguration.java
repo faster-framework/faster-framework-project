@@ -13,6 +13,6 @@ import org.springframework.context.annotation.Import;
  */
 @Configuration
 @Import({SecretRequestAdvice.class})
-@ConditionalOnProperty(prefix = "faster.secret", name = "enabled", havingValue = "true")
+@ConditionalOnProperty(prefix = "app.secret", name = "enabled", havingValue = "true")
 public class SecretAutoConfiguration {
 }

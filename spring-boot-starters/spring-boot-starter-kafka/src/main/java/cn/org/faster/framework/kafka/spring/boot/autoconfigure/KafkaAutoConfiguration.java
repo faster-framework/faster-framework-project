@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Import;
  */
 @Configuration
 @EnableConfigurationProperties(KafkaProperties.class)
-@ConditionalOnProperty(prefix = "faster.kafka", name = "enabled", havingValue = "true", matchIfMissing = true)
+@ConditionalOnProperty(prefix = "app.kafka", name = "enabled", havingValue = "true", matchIfMissing = true)
 @Import({ValidationConfiguration.class, ReplyConfiguration.class, ErrorConfiguration.class})
 public class KafkaAutoConfiguration {
 }

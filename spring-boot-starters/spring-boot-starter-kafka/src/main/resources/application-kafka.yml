@@ -1,10 +1,11 @@
 spring:
   kafka:
+    bootstrap-servers: ${app.kafka.url:${app.kafka.host}:${app.kafka.port:9092}
     consumer:
       auto-offset-reset: earliest
       group-id: ${app.group}
       enable-auto-commit: false
-#      max-poll-records: 20 #listener.type=batch时生效，默认500，可根据实际需要设定
+    #      max-poll-records: 20 #listener.type=batch时生效，默认500，可根据实际需要设定
     producer:
       retries: 0
       acks: 1

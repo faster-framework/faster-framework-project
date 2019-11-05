@@ -6,7 +6,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 /**
  * @author zhangbowen
  */
-@ConfigurationProperties(prefix = "faster.auth")
+@ConfigurationProperties(prefix = "app.auth")
 @Data
 public class AuthProperties {
     /**

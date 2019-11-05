@@ -11,7 +11,7 @@ import java.util.Map;
  * @since 2019/1/9
  */
 @Data
-@ConfigurationProperties(prefix = "faster.shiro")
+@ConfigurationProperties(prefix = "app.shiro")
 public class ShiroProperties {
     /**
      * 是否开启shiro配置

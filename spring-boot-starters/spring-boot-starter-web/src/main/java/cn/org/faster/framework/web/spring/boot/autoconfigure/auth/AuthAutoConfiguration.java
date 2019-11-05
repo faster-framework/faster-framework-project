@@ -17,7 +17,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * @author zhangbowen
  */
 @Configuration
-@ConditionalOnProperty(prefix = "faster.auth", name = "enabled", havingValue = "true", matchIfMissing = true)
+@ConditionalOnProperty(prefix = "app.auth", name = "enabled", havingValue = "true", matchIfMissing = true)
 @EnableConfigurationProperties({AuthProperties.class, ProjectProperties.class})
 public class AuthAutoConfiguration {
     @Autowired
@@ -32,7 +32,7 @@ public class AuthAutoConfiguration {
     }
 
     @Configuration
-    @ConditionalOnProperty(prefix = "faster.auth", name = "mode", havingValue = "app", matchIfMissing = true)
+    @ConditionalOnProperty(prefix = "app.auth", name = "mode", havingValue = "app", matchIfMissing = true)
     public static class AppAuthConfiguration {
         @Configuration
         public static class InterceptorConfiguration implements WebMvcConfigurer {

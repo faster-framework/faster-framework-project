@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Import;
  * @author zhangbowen
  */
 @Configuration
-@ConditionalOnProperty(prefix = "faster.auth", name = "mode", havingValue = "admin")
+@ConditionalOnProperty(prefix = "app.auth", name = "mode", havingValue = "admin")
 @Import({ScanConfiguration.class})
 public class AdminScanConfiguration {
 }

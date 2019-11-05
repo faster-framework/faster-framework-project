@@ -20,7 +20,7 @@ import org.springframework.kafka.support.converter.RecordMessageConverter;
  * @author zhangbowen
  * @since 2019/1/3
  */
-@ConditionalOnProperty(prefix = "faster.kafka.producer", name = "reply", havingValue = "true")
+@ConditionalOnProperty(prefix = "app.kafka.producer", name = "reply", havingValue = "true")
 public class ReplyConfiguration {
     private final KafkaProperties properties;
     private final org.springframework.boot.autoconfigure.kafka.KafkaProperties kafkaProperties;

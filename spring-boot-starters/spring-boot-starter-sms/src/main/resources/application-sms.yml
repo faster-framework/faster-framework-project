@@ -1,9 +1,9 @@
-faster:
+app:
   sms:
     debug: true
 ---
 spring:
   profiles: prod
-faster:
+app:
   sms:
     debug: false

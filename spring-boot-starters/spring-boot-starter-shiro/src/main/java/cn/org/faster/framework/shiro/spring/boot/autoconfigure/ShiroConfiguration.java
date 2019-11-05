@@ -32,7 +32,7 @@ import java.util.Map;
  * @author zhangbowen
  */
 @Configuration
-@ConditionalOnProperty(prefix = "faster.shiro", name = "enabled", havingValue = "true", matchIfMissing = true)
+@ConditionalOnProperty(prefix = "app.shiro", name = "enabled", havingValue = "true", matchIfMissing = true)
 @EnableConfigurationProperties(ShiroProperties.class)
 public class ShiroConfiguration {
 

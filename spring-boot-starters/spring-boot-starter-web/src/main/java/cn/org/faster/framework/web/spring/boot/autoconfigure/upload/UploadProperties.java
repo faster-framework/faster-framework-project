@@ -8,7 +8,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * @author zhangbowen
  */
 @Data
-@ConfigurationProperties(prefix = "faster.upload")
+@ConfigurationProperties(prefix = "app.upload")
 public class UploadProperties {
     /**
      * 是否开启
@@ -24,7 +24,7 @@ public class UploadProperties {
     private LocalUploadProperties local = new LocalUploadProperties();
 
 
-    @ConfigurationProperties(prefix = "faster.upload.local")
+    @ConfigurationProperties(prefix = "app.upload.local")
     @Data
     public static class LocalUploadProperties {
         /**

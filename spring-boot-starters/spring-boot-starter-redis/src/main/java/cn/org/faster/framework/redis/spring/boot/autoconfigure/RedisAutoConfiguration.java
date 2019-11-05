@@ -19,7 +19,7 @@ import org.springframework.data.redis.listener.RedisMessageListenerContainer;
  */
 @Configuration
 @Import(RedisCacheAutoConfiguration.class)
-@ConditionalOnProperty(prefix = "faster.redis", name = "enabled", havingValue = "true", matchIfMissing = true)
+@ConditionalOnProperty(prefix = "app.redis", name = "enabled", havingValue = "true", matchIfMissing = true)
 public class RedisAutoConfiguration {
     @Bean
     public static RedisListenerProcessor redisListenerProcessor(RedisMessageListenerContainer redisMessageListenerContainer) {
