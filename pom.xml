@@ -123,6 +123,11 @@
                 <artifactId>faster-elasticsearch</artifactId>
                 <version>${revision}</version>
             </dependency>
+            <dependency>
+                <groupId>cn.org.faster</groupId>
+                <artifactId>faster-dict</artifactId>
+                <version>${revision}</version>
+            </dependency>
             <!--基础包结束-->
             <!--starter 开始-->
             <dependency>
@@ -168,6 +173,11 @@
             <dependency>
                 <groupId>cn.org.faster</groupId>
                 <artifactId>spring-boot-starter-elasticsearch</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.org.faster</groupId>
+                <artifactId>spring-boot-starter-dict</artifactId>
                 <version>${revision}</version>
             </dependency>
             <!--starter 结束-->

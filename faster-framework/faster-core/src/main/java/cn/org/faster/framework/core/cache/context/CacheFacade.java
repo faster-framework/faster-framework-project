@@ -58,6 +58,7 @@ public class CacheFacade {
      *
      * @param typeReference 泛型
      * @param key 缓存键
+     * @param <V> 泛型
      * @return V 泛型
      */
     public static <V> V delete(String key, TypeReference<V> typeReference) {

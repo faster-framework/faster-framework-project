@@ -2,6 +2,7 @@ package cn.org.faster.framework.web.spring.boot.autoconfigure.version;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
 
 /**
  * @author zhangbowen
@@ -9,6 +10,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  */
 @ConfigurationProperties(prefix = "app.version")
 @Data
+@Component
 public class VersionProperties {
     /**
      * 是否开启版本控制

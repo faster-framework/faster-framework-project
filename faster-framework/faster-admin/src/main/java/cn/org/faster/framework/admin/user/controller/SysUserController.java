@@ -1,18 +1,16 @@
 package cn.org.faster.framework.admin.user.controller;
 
 import cn.org.faster.framework.admin.user.entity.SysUser;
-import cn.org.faster.framework.admin.user.error.UserError;
 import cn.org.faster.framework.admin.user.model.SysUserAddReq;
 import cn.org.faster.framework.admin.user.model.SysUserChangePwdReq;
 import cn.org.faster.framework.admin.user.model.SysUserUpdateReq;
 import cn.org.faster.framework.admin.user.service.SysUserService;
 import cn.org.faster.framework.admin.userRole.entity.SysUserRole;
 import cn.org.faster.framework.admin.userRole.service.SysUserRoleService;
-import cn.org.faster.framework.web.exception.model.ResponseErrorEntity;
 import cn.org.faster.framework.web.model.ListWrapper;
-import lombok.AllArgsConstructor;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -25,9 +23,10 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/sys/users")
-@AllArgsConstructor
 public class SysUserController {
+    @Autowired
     private SysUserService sysUserService;
+    @Autowired
     private SysUserRoleService sysUserRoleService;
 
     /**
@@ -90,7 +89,7 @@ public class SysUserController {
     @DeleteMapping("/delete")
     @RequiresPermissions("users:delete")
     public ResponseEntity delete(@RequestBody List<Long> userIds) {
-        userIds.forEach(item->{
+        userIds.forEach(item -> {
             if (item == 0L) {
                 return;
             }
@@ -142,6 +141,7 @@ public class SysUserController {
 
     /**
      * 获取用户的角色id列表
+     *
      * @param userId 用户id
      * @return 角色ids列表
      */

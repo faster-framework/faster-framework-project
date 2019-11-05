@@ -3,6 +3,7 @@ package cn.org.faster.framework.grpc.spring.boot.autoconfigure.properties;
 import cn.org.faster.framework.grpc.client.model.ChannelProperty;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,6 +14,7 @@ import java.util.Map;
  */
 @ConfigurationProperties(prefix = "app.grpc")
 @Data
+@Component
 public class GRpcProperties {
     /**
      * 是否开启grpc：true/false
@@ -33,6 +35,7 @@ public class GRpcProperties {
 
     @ConfigurationProperties(prefix = "app.grpc.client")
     @Data
+    @Component
     public static class Client {
         /**
          * 是否开启客户端：true/false
@@ -46,6 +49,7 @@ public class GRpcProperties {
 
     @ConfigurationProperties(prefix = "app.grpc.server")
     @Data
+    @Component
     public static class Server {
 
         /**

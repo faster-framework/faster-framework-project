@@ -2,6 +2,7 @@ package cn.org.faster.framework.web.spring.boot.autoconfigure.upload;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
 
 
 /**
@@ -9,6 +10,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  */
 @Data
 @ConfigurationProperties(prefix = "app.upload")
+@Component
 public class UploadProperties {
     /**
      * 是否开启
@@ -26,6 +28,7 @@ public class UploadProperties {
 
     @ConfigurationProperties(prefix = "app.upload.local")
     @Data
+    @Component
     public static class LocalUploadProperties {
         /**
          * 文件的存储目录

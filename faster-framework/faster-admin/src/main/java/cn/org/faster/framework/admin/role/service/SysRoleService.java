@@ -12,7 +12,7 @@ import cn.org.faster.framework.web.context.model.SpringAppContextFacade;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -26,10 +26,12 @@ import java.util.stream.Collectors;
  */
 @Service
 @Transactional
-@AllArgsConstructor
 public class SysRoleService extends ServiceImpl<SysRoleMapper, SysRole> {
+    @Autowired
     private SysUserRoleService sysUserRoleService;
+    @Autowired
     private SysRolePermissionService sysRolePermissionService;
+    @Autowired
     private SysPermissionService sysPermissionService;
 
     /**

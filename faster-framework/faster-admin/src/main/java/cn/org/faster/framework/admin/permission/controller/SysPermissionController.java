@@ -4,9 +4,9 @@ import cn.org.faster.framework.admin.permission.entity.SysPermission;
 import cn.org.faster.framework.admin.permission.model.SysPermissionAddReq;
 import cn.org.faster.framework.admin.permission.model.SysPermissionUpdateReq;
 import cn.org.faster.framework.admin.permission.service.SysPermissionService;
-import lombok.AllArgsConstructor;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -19,8 +19,8 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/sys/permissions")
-@AllArgsConstructor
 public class SysPermissionController {
+    @Autowired
     private SysPermissionService sysPermissionService;
 
     /**
@@ -88,7 +88,7 @@ public class SysPermissionController {
     @DeleteMapping("/delete")
     @RequiresPermissions("permissions:delete")
     public ResponseEntity delete(@RequestBody List<Long> permissionIds) {
-        permissionIds.forEach(item-> sysPermissionService.delete(item));
+        permissionIds.forEach(item -> sysPermissionService.delete(item));
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

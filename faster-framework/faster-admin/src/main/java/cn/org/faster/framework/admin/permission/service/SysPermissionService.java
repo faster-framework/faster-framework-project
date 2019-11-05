@@ -12,7 +12,7 @@ import cn.org.faster.framework.web.context.model.SpringAppContextFacade;
 import cn.org.faster.framework.web.exception.model.ResponseErrorEntity;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -30,8 +30,8 @@ import java.util.stream.Collectors;
  */
 @Service
 @Transactional
-@AllArgsConstructor
 public class SysPermissionService extends ServiceImpl<SysPermissionMapper, SysPermission> {
+    @Autowired
     private SysRolePermissionService sysRolePermissionService;
 
     /**

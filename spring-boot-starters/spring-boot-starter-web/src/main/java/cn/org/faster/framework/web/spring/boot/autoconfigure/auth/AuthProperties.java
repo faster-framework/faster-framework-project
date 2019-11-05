@@ -2,10 +2,12 @@ package cn.org.faster.framework.web.spring.boot.autoconfigure.auth;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
 
 /**
  * @author zhangbowen
  */
+@Component
 @ConfigurationProperties(prefix = "app.auth")
 @Data
 public class AuthProperties {

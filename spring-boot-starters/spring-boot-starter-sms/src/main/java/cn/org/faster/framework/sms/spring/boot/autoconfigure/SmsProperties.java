@@ -2,6 +2,7 @@ package cn.org.faster.framework.sms.spring.boot.autoconfigure;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
 
 /**
  * @author zhangbowen
@@ -9,6 +10,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  */
 @Data
 @ConfigurationProperties(prefix = "app.sms")
+@Component
 public class SmsProperties {
     /**
      * 是否开启
@@ -33,6 +35,7 @@ public class SmsProperties {
 
     @Data
     @ConfigurationProperties(prefix = "app.sms.ali")
+    @Component
     public static class AliProperties {
         /**
          * 阿里key
@@ -46,6 +49,7 @@ public class SmsProperties {
 
     @Data
     @ConfigurationProperties(prefix = "app.sms.captcha")
+    @Component
     public static class SmsCaptchaProperties {
         /**
          * 超时时间（秒），默认15分钟

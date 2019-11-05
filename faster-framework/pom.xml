@@ -22,5 +22,6 @@
         <module>faster-shiro</module>
         <module>faster-grpc</module>
         <module>faster-elasticsearch</module>
+        <module>faster-dict</module>
     </modules>
 </project>

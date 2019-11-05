@@ -3,6 +3,7 @@ package cn.org.faster.framework.web.spring.boot.autoconfigure.secret.properties;
 import cn.org.faster.framework.web.secret.annotation.SecretBody;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
 
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ import java.util.List;
  */
 @ConfigurationProperties(prefix = "app.secret")
 @Data
+@Component
 public class SecretProperties {
     /**
      * 是否开启

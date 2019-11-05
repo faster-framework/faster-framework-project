@@ -3,10 +3,9 @@ package cn.org.faster.framework.admin.dict.controller;
 import cn.org.faster.framework.admin.dict.entity.SysDict;
 import cn.org.faster.framework.admin.dict.model.SysDictReq;
 import cn.org.faster.framework.admin.dict.service.DictService;
-import cn.org.faster.framework.admin.role.entity.SysRole;
-import lombok.AllArgsConstructor;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -20,8 +19,8 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/sys/dict")
-@AllArgsConstructor
 public class DictController {
+    @Autowired
     private DictService dictService;
 
     /**
@@ -50,7 +49,7 @@ public class DictController {
 
     /**
      * 字典根据条件查询详情
-     *
+     * @param sysDict 请求
      * @return ResponseEntity
      */
     @GetMapping("/query")
@@ -77,6 +76,7 @@ public class DictController {
      * 更新字典
      *
      * @param request 请求参数
+     * @param id 主键id
      * @return ResponseEntity
      */
     @PutMapping("/{id}")
@@ -96,7 +96,7 @@ public class DictController {
      */
     @DeleteMapping("/delete")
     @RequiresPermissions("dict:delete")
-    public ResponseEntity delete(@RequestBody List<Long>  ids) {
+    public ResponseEntity delete(@RequestBody List<Long> ids) {
         ids.forEach(item -> {
             if (item == 0L) {
                 return;

@@ -1,7 +1,6 @@
 package cn.org.faster.framework.admin.role.controller;
 
 import cn.org.faster.framework.admin.role.entity.SysRole;
-import cn.org.faster.framework.admin.role.error.RoleError;
 import cn.org.faster.framework.admin.role.model.SysRoleReq;
 import cn.org.faster.framework.admin.role.service.SysRoleService;
 import cn.org.faster.framework.admin.rolePermission.entity.SysRolePermission;
@@ -9,9 +8,9 @@ import cn.org.faster.framework.admin.rolePermission.error.RolePermissionError;
 import cn.org.faster.framework.admin.rolePermission.service.SysRolePermissionService;
 import cn.org.faster.framework.web.exception.model.ResponseErrorEntity;
 import cn.org.faster.framework.web.model.ListWrapper;
-import lombok.AllArgsConstructor;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -24,9 +23,10 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/sys/roles")
-@AllArgsConstructor
 public class SysRoleController {
+    @Autowired
     private SysRoleService sysRoleService;
+    @Autowired
     private SysRolePermissionService sysRolePermissionService;
 
     /**
@@ -122,12 +122,13 @@ public class SysRoleController {
 
     /**
      * 获取角色的权限id列表
+     *
      * @param roleId 角色id
      * @return 权限ids列表
      */
     @GetMapping("/{roleId}/permissions")
     @RequiresPermissions("roles:permissions:list")
-    public ResponseEntity permissions(@PathVariable Long roleId){
+    public ResponseEntity permissions(@PathVariable Long roleId) {
         return ResponseEntity.ok(sysRoleService.permissions(roleId));
     }
 }
