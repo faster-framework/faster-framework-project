@@ -2,7 +2,6 @@ package cn.org.faster.framework.shiro.spring.boot.autoconfigure;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,7 +12,6 @@ import java.util.Map;
  */
 @Data
 @ConfigurationProperties(prefix = "app.shiro")
-@Component
 public class ShiroProperties {
     /**
      * 是否开启shiro配置

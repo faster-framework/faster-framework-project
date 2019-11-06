@@ -3,7 +3,6 @@ package cn.org.faster.framework.redis.spring.boot.autoconfigure;
 import cn.org.faster.framework.redis.processor.RedisListenerProcessor;
 import cn.org.faster.framework.redis.utils.RedisHelper;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

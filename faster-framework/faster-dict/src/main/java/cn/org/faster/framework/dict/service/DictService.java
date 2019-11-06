@@ -5,6 +5,7 @@ import cn.org.faster.framework.dict.mapper.DictMapper;
 import cn.org.faster.framework.mybatis.entity.BaseEntity;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
@@ -15,6 +16,7 @@ import java.util.List;
  * 字典Service
  */
 @Transactional
+@Service
 public class DictService extends ServiceImpl<DictMapper, SysDict> {
 
     /**

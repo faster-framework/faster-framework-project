@@ -1,7 +1,5 @@
 package cn.org.faster.framework.sms.spring.boot.autoconfigure;
 
-import cn.org.faster.framework.sms.modules.sms.service.ISmsService;
-import cn.org.faster.framework.sms.modules.sms.service.ali.AliSmsService;
 import cn.org.faster.framework.sms.modules.smsCode.service.ISmsCaptchaService;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;

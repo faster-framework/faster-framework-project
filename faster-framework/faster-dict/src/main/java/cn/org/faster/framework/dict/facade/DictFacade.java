@@ -14,16 +14,17 @@ import java.util.stream.Collectors;
  * @since 2019-11-05
  */
 public class DictFacade {
-    
-    public DictFacade(boolean cache, DictService dictService) {
-        DictFacade.cache = false;
+
+    public DictFacade(boolean cache, long cacheTime, DictService dictService) {
+        DictFacade.cache = cache;
         DictFacade.dictService = dictService;
+        DictFacade.CACHE_TIME = cacheTime;
     }
 
-    public static boolean cache = false;
-    public static DictService dictService;
+    private static boolean cache = false;
+    private static DictService dictService;
     private static final String CACHE_DICT_KEY = "dict:";
-    private static final long CACHE_TIME = 60 * 60 * 24;
+    private static long CACHE_TIME;
 
 
     /**
@@ -35,7 +36,9 @@ public class DictFacade {
             });
             if (CollectionUtils.isEmpty(list)) {
                 list = dictService.listAll(new SysDict());
-                CacheFacade.set(CACHE_DICT_KEY, list, CACHE_TIME);
+                if (!CollectionUtils.isEmpty(list)) {
+                    CacheFacade.set(CACHE_DICT_KEY, list, CACHE_TIME);
+                }
             }
             return list;
         }

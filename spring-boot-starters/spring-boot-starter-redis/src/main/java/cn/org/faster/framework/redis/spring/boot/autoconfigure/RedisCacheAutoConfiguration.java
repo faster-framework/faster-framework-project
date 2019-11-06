@@ -4,7 +4,6 @@ import cn.org.faster.framework.core.cache.service.ICacheService;
 import cn.org.faster.framework.redis.cache.RedisCacheService;
 import cn.org.faster.framework.redis.cache.RedisGenericCacheManager;
 import cn.org.faster.framework.redis.cache.RedisGenericCacheProcessor;
-import cn.org.faster.framework.redis.utils.RedisHelper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.cache.CacheManagerCustomizer;

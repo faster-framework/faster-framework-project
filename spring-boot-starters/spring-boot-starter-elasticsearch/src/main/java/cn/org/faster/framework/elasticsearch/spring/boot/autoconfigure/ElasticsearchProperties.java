@@ -2,14 +2,12 @@ package cn.org.faster.framework.elasticsearch.spring.boot.autoconfigure;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
 
 /**
  * @author zhangbowen
  * @since 2019-07-27
  */
 @Data
-@Component
 @ConfigurationProperties(
         prefix = "app.elasticsearch"
 )
