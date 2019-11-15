@@ -2,6 +2,7 @@ package cn.org.faster.framework.grpc.client.proxy;
 
 import cn.org.faster.framework.core.utils.Utils;
 import cn.org.faster.framework.grpc.client.model.ChannelProperty;
+import cn.org.faster.framework.grpc.core.annotation.GRpcMethod;
 import cn.org.faster.framework.grpc.core.factory.MarshallerFactory;
 import cn.org.faster.framework.grpc.core.model.MethodCallProperty;
 import com.google.common.util.concurrent.ListenableFuture;
@@ -9,6 +10,7 @@ import io.grpc.*;
 import io.grpc.stub.ClientCalls;
 import io.grpc.stub.StreamObserver;
 import org.springframework.cglib.proxy.InvocationHandler;
+import org.springframework.util.StringUtils;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -58,7 +60,8 @@ public class ManageChannelProxy implements InvocationHandler {
             Object another = Utils.safeElement(args, 0);
             return proxy == another;
         }
-        MethodCallProperty methodCallProperty = callDefinitions.get(methodName);
+        String annotationMethodName = method.getAnnotation(GRpcMethod.class).value();
+        MethodCallProperty methodCallProperty = callDefinitions.get(StringUtils.isEmpty(annotationMethodName) ? methodName : annotationMethodName);
         ClientCall<Object, Object> clientCall = buildCall(methodCallProperty);
         switch (methodCallProperty.getMethodType()) {
             case UNARY:
