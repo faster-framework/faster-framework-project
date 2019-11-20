@@ -14,7 +14,6 @@
     <modules>
         <module>faster-core</module>
         <module>faster-web</module>
-        <module>faster-admin</module>
         <module>faster-redis</module>
         <module>faster-sms</module>
         <module>faster-mybatis</module>
@@ -23,5 +22,6 @@
         <module>faster-grpc</module>
         <module>faster-elasticsearch</module>
         <module>faster-dict</module>
+        <module>faster-auth-app</module>
     </modules>
 </project>

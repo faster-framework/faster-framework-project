@@ -90,11 +90,6 @@
             </dependency>
             <dependency>
                 <groupId>cn.org.faster</groupId>
-                <artifactId>faster-admin</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <groupId>cn.org.faster</groupId>
                 <artifactId>faster-redis</artifactId>
                 <version>${revision}</version>
             </dependency>
@@ -128,16 +123,16 @@
                 <artifactId>faster-dict</artifactId>
                 <version>${revision}</version>
             </dependency>
+            <dependency>
+                <groupId>cn.org.faster</groupId>
+                <artifactId>faster-auth-app</artifactId>
+                <version>${revision}</version>
+            </dependency>
             <!--基础包结束-->
             <!--starter 开始-->
             <dependency>
                 <groupId>cn.org.faster</groupId>
                 <artifactId>spring-boot-starter-web</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <groupId>cn.org.faster</groupId>
-                <artifactId>spring-boot-starter-admin</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>
@@ -178,6 +173,11 @@
             <dependency>
                 <groupId>cn.org.faster</groupId>
                 <artifactId>spring-boot-starter-dict</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.org.faster</groupId>
+                <artifactId>spring-boot-starter-auth-app</artifactId>
                 <version>${revision}</version>
             </dependency>
             <!--starter 结束-->
