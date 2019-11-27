@@ -50,28 +50,31 @@ public class RedisCacheAutoConfiguration extends CachingConfigurerSupport {
             return sb.toString();
         };
     }
+
     @Bean
     public RedisGenericCacheProcessor redisGenericCacheProcessor() {
         return new RedisGenericCacheProcessor();
     }
+
     @Bean
     @ConditionalOnMissingBean
     public CacheManagerCustomizers cacheManagerCustomizers(
             ObjectProvider<List<CacheManagerCustomizer<?>>> customizers) {
         return new CacheManagerCustomizers(customizers.getIfAvailable());
     }
+
     /**
      * 管理缓存
      *
      * @return
      */
     @Bean
-    public CacheManager cacheManager(RedisConnectionFactory redisConnectionFactory,
-                                     RedisGenericCacheProcessor redisGenericCacheProcessor,
-                                     ObjectMapper objectMapper,
-                                     CacheProperties cacheProperties,
-                                     CacheManagerCustomizers customizerInvoker,
-                                     ResourceLoader resourceLoader
+    public CacheManager redisCacheManager(RedisConnectionFactory redisConnectionFactory,
+                                          RedisGenericCacheProcessor redisGenericCacheProcessor,
+                                          ObjectMapper objectMapper,
+                                          CacheProperties cacheProperties,
+                                          CacheManagerCustomizers customizerInvoker,
+                                          ResourceLoader resourceLoader
     ) {
 
         RedisGenericCacheManager redisGenericCacheManager = new RedisGenericCacheManager(RedisCacheWriter.nonLockingRedisCacheWriter(redisConnectionFactory),
@@ -81,6 +84,7 @@ public class RedisCacheAutoConfiguration extends CachingConfigurerSupport {
         redisGenericCacheManager.setObjectMapper(objectMapper);
         return customizerInvoker.customize(redisGenericCacheManager);
     }
+
     private org.springframework.data.redis.cache.RedisCacheConfiguration determineConfiguration(
             ClassLoader classLoader,
             CacheProperties cacheProperties

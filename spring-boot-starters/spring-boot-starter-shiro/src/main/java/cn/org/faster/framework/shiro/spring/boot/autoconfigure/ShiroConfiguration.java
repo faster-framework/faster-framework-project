@@ -48,7 +48,7 @@ public class ShiroConfiguration {
      */
     @Bean
     @ConditionalOnMissingBean
-    public CacheManager cacheManager() {
+    public CacheManager shiroCacheManager() {
         return new ShiroCacheManager();
     }
 
@@ -59,11 +59,11 @@ public class ShiroConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public SecurityManager securityManager(AuthorizingRealm authorizingRealm) {
-        authorizingRealm.setCacheManager(cacheManager());
+        authorizingRealm.setCacheManager(shiroCacheManager());
         authorizingRealm.setAuthorizationCachingEnabled(true);
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         securityManager.setRealm(authorizingRealm);
-        securityManager.setCacheManager(cacheManager());
+        securityManager.setCacheManager(shiroCacheManager());
         DefaultSubjectDAO subjectDAO = new DefaultSubjectDAO();
         DefaultSessionStorageEvaluator defaultSessionStorageEvaluator = new DefaultSessionStorageEvaluator();
         defaultSessionStorageEvaluator.setSessionStorageEnabled(false);
