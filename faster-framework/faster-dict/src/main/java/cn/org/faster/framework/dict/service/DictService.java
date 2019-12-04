@@ -73,6 +73,7 @@ public class DictService extends ServiceImpl<DictMapper, SysDict> {
         if (sysDict.getShowStatus() != null) {
             queryWrapper.eq(SysDict::getShowStatus, sysDict.getShowStatus());
         }
+        queryWrapper.last("limit 1");
         return this.getOne(queryWrapper);
     }
 }
