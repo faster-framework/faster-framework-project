@@ -47,7 +47,7 @@ import java.time.LocalDateTime;
 @EnableTransactionManagement
 @EnableScheduling
 public class WebAutoConfiguration implements WebMvcConfigurer, WebMvcRegistrations {
-    @Value("${spring.profiles.active}")
+    @Value("${spring.profiles.active:dev}")
     private String env;
     @Autowired
     private VersionProperties versionProperties;
@@ -82,8 +82,8 @@ public class WebAutoConfiguration implements WebMvcConfigurer, WebMvcRegistratio
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new LogInterceptor()).addPathPatterns("/**");
-        registry.addInterceptor(new ContextInterceptor()).addPathPatterns("/**");
+        registry.addInterceptor(new LogInterceptor()).addPathPatterns("/**").order(-100);
+        registry.addInterceptor(new ContextInterceptor()).addPathPatterns("/**").order(-99);
     }
 
     @Bean
