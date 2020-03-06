@@ -22,6 +22,10 @@ spring:
     expose-request-attributes: true
     expose-session-attributes: true
     request-context-attribute: request
+    settings:
+      classic_compatible: true
+      number_format: 0.##
+    suffix: ""
 management:
   endpoints:
     web:
