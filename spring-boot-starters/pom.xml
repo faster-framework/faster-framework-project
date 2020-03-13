@@ -21,7 +21,7 @@
         <module>spring-boot-starter-grpc</module>
         <module>spring-boot-starter-elasticsearch</module>
         <module>spring-boot-starter-dict</module>
-        <module>spring-boot-starter-auth-app</module>
+        <module>spring-boot-starter-auth</module>
     </modules>
 
 </project>

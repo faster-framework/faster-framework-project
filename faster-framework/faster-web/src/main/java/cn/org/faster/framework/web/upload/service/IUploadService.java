@@ -1,5 +1,6 @@
 package cn.org.faster.framework.web.upload.service;
 
+import cn.org.faster.framework.core.utils.Utils;
 import cn.org.faster.framework.web.upload.model.UploadRequest;
 import cn.org.faster.framework.web.upload.model.UploadSuccess;
 import cn.org.faster.framework.web.upload.model.UploadToken;
@@ -104,8 +105,9 @@ public abstract class IUploadService {
      * @param uploadRequest 上传参数
      * @return 文件名
      */
-    protected String getFileName(UploadRequest uploadRequest) {
-        String fileName = StringUtils.isEmpty(uploadRequest.getFileName()) ? LocalDateTime.now().format(FILE_NAME_FORMATTER) : uploadRequest.getFileName();
+    protected String getFileName(UploadRequest uploadRequest, MultipartFile multipartFile) {
+        String suffix = multipartFile != null ? Utils.fileSuffixWithPoint(multipartFile.getOriginalFilename()) : "";
+        String fileName = StringUtils.isEmpty(uploadRequest.getFileName()) ? LocalDateTime.now().format(FILE_NAME_FORMATTER) + suffix : uploadRequest.getFileName();
         //如果不覆盖,在文件后增加时间后缀
         if (uploadRequest.getIsCover() == 0) {
             fileName = fileName.concat(LocalDateTime.now().format(FILE_NAME_FORMATTER));

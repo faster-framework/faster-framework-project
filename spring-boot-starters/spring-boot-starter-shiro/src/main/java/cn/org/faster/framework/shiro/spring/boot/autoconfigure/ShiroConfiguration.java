@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.Filter;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -97,11 +98,14 @@ public class ShiroConfiguration {
     public ShiroFilterFactoryBean shiroFilter(SecurityManager securityManager, ShiroProperties shiroProperties) {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(securityManager);
-        Map<String, String> filterChainDefinitionMap = shiroProperties.getFilterChainDefinitionMap();
+
+        Map<String, String> filterChainDefinitionMap = new HashMap<>();
         filterChainDefinitionMap.put("/login", "anon");
         filterChainDefinitionMap.put("/media/**", "anon");
         filterChainDefinitionMap.put("/captcha/**", "anon");
         filterChainDefinitionMap.put("/**", "jwt");
+        filterChainDefinitionMap.putAll(shiroProperties.getFilterChainDefinitionMap());
+
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         Map<String, Filter> filters = new LinkedHashMap<>();
         filters.put("jwt", new ShiroFilter());

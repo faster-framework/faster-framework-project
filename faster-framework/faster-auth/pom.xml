@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>faster-auth-app</artifactId>
+    <artifactId>faster-auth</artifactId>
 
     <dependencies>
         <dependency>

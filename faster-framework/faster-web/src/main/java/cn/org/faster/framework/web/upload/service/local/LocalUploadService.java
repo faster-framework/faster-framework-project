@@ -81,7 +81,7 @@ public class LocalUploadService extends IUploadService {
     public UploadSuccess upload(MultipartFile multipartFile, UploadRequest uploadRequest, String token) throws IOException {
         //验证签名
         signValid(uploadRequest, token);
-        String fileName = getFileName(uploadRequest) + Utils.fileSuffixWithPoint(multipartFile.getOriginalFilename());
+        String fileName = getFileName(uploadRequest, multipartFile);
         File file = new File(fileDir, fileName);
         //验证父目录是否存在
         if (!parentDirValid(file)) {
@@ -97,7 +97,7 @@ public class LocalUploadService extends IUploadService {
     public UploadSuccess upload(InputStream uploadStream, UploadRequest uploadRequest, String token) throws IOException {
         //验证签名
         signValid(uploadRequest, token);
-        String fileName = getFileName(uploadRequest);
+        String fileName = getFileName(uploadRequest, null);
         File file = new File(fileDir, fileName);
         //验证父目录是否存在
         if (!parentDirValid(file)) {
@@ -113,7 +113,7 @@ public class LocalUploadService extends IUploadService {
     public UploadSuccess upload(byte[] uploadByte, UploadRequest uploadRequest, String token) throws IOException {
         //验证签名
         signValid(uploadRequest, token);
-        String fileName = getFileName(uploadRequest);
+        String fileName = getFileName(uploadRequest, null);
         File file = new File(fileDir, fileName);
         //验证父目录是否存在
         if (!parentDirValid(file)) {

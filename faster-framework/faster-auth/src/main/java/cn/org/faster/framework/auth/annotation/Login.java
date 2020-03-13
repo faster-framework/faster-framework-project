@@ -1,4 +1,4 @@
-package cn.org.faster.framework.app.auth.annotation;
+package cn.org.faster.framework.auth.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

@@ -27,7 +27,7 @@ public class ShiroFilter extends AuthenticatingFilter {
         HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
         String jwtToken = httpServletRequest.getHeader(HeaderConstants.AUTH_TOKEN);
         if (StringUtils.isEmpty(jwtToken)) {
-            Cookie cookie = ServletUtil.getCookie((HttpServletRequest) servletRequest, HeaderConstants.AUTH_TOKEN);
+            Cookie cookie = ServletUtil.getCookie((HttpServletRequest) servletRequest, HeaderConstants.AUTH_TOKEN.toLowerCase());
             if (cookie != null) {
                 jwtToken = cookie.getValue();
             }

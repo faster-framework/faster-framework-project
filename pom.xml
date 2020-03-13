@@ -125,7 +125,7 @@
             </dependency>
             <dependency>
                 <groupId>cn.org.faster</groupId>
-                <artifactId>faster-auth-app</artifactId>
+                <artifactId>faster-auth</artifactId>
                 <version>${revision}</version>
             </dependency>
             <!--基础包结束-->
@@ -177,7 +177,7 @@
             </dependency>
             <dependency>
                 <groupId>cn.org.faster</groupId>
-                <artifactId>spring-boot-starter-auth-app</artifactId>
+                <artifactId>spring-boot-starter-auth</artifactId>
                 <version>${revision}</version>
             </dependency>
             <!--starter 结束-->

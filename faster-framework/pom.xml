@@ -22,6 +22,6 @@
         <module>faster-grpc</module>
         <module>faster-elasticsearch</module>
         <module>faster-dict</module>
-        <module>faster-auth-app</module>
+        <module>faster-auth</module>
     </modules>
 </project>
