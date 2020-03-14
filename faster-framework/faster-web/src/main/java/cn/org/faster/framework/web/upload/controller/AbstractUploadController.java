@@ -5,10 +5,7 @@ import cn.org.faster.framework.web.exception.model.ResponseErrorEntity;
 import cn.org.faster.framework.web.upload.model.UploadRequest;
 import cn.org.faster.framework.web.upload.service.IUploadService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 
 /**
  * @author zhangbowen
@@ -59,10 +57,12 @@ public abstract class AbstractUploadController {
      * @param fileName 文件名称
      * @return 文件流
      */
-    @GetMapping("/media/{fileName}")
+    @GetMapping("/media/{fileName}/_download")
     public ResponseEntity preview(@PathVariable String fileName) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+        Charset charset = Charset.defaultCharset();
+        headers.setContentDisposition(ContentDisposition.builder("attachment").filename(fileName, charset).build());
         return new ResponseEntity<>(uploadService.files(fileName), headers, HttpStatus.OK);
     }
 }
