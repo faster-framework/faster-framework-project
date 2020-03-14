@@ -104,8 +104,10 @@ public class ShiroConfiguration {
         filterChainDefinitionMap.put("/media/**", "anon");
         filterChainDefinitionMap.put("/captcha/**", "anon");
         filterChainDefinitionMap.put("/**", "jwt");
+        if(shiroProperties.isCovered()){
+            filterChainDefinitionMap.clear();
+        }
         filterChainDefinitionMap.putAll(shiroProperties.getFilterChainDefinitionMap());
-
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         Map<String, Filter> filters = new LinkedHashMap<>();
         filters.put("jwt", new ShiroFilter());

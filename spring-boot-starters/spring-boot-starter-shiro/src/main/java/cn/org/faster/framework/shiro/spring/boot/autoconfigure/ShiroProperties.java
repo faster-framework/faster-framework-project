@@ -21,4 +21,8 @@ public class ShiroProperties {
      * 过滤
      */
     private Map<String, String> filterChainDefinitionMap = new HashMap<>();
+    /**
+     * 是否覆盖过滤
+     */
+    private boolean covered;
 }
