@@ -2,6 +2,8 @@ package cn.org.faster.framework.shiro.spring.boot.autoconfigure;
 
 import cn.org.faster.framework.shiro.ShiroFilter;
 import cn.org.faster.framework.shiro.cache.ShiroCacheManager;
+import cn.org.faster.framework.web.exception.handler.ExceptionExecutorHandler;
+import cn.org.faster.framework.web.exception.handler.ResponseErrorEntityExecutor;
 import cn.org.faster.framework.web.exception.model.BasicErrorCode;
 import cn.org.faster.framework.web.exception.model.ResponseErrorEntity;
 import org.apache.shiro.authz.AuthorizationException;
@@ -14,6 +16,7 @@ import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -22,7 +25,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.Filter;
 import java.util.HashMap;
@@ -104,7 +106,7 @@ public class ShiroConfiguration {
         filterChainDefinitionMap.put("/media/**", "anon");
         filterChainDefinitionMap.put("/captcha/**", "anon");
         filterChainDefinitionMap.put("/**", "jwt");
-        if(shiroProperties.isCovered()){
+        if (shiroProperties.isCovered()) {
             filterChainDefinitionMap.clear();
         }
         filterChainDefinitionMap.putAll(shiroProperties.getFilterChainDefinitionMap());
@@ -117,11 +119,21 @@ public class ShiroConfiguration {
 
     @ControllerAdvice
     @Configuration
-    public static class ShiroExceptionHandler {
-        @ResponseBody
+    public static class ShiroExceptionHandler implements ResponseErrorEntityExecutor {
+        @Autowired
+        private ExceptionExecutorHandler exceptionExecutorHandler;
+
         @ExceptionHandler(value = AuthorizationException.class)
         public Object handleException(AuthorizationException exception) {
-            return ResponseErrorEntity.error(BasicErrorCode.PERMISSION_ERROR, HttpStatus.UNAUTHORIZED);
+            return exceptionExecutorHandler.exception(exception, this);
+        }
+
+        @Override
+        public ResponseErrorEntity execute(Exception exception) {
+            if (exception instanceof AuthorizationException) {
+                return ResponseErrorEntity.error(BasicErrorCode.PERMISSION_ERROR, HttpStatus.UNAUTHORIZED);
+            }
+            return ResponseErrorEntity.error(BasicErrorCode.SERVER_ERROR, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }
