@@ -6,6 +6,7 @@ import cn.org.faster.framework.web.context.ContextInterceptor;
 import cn.org.faster.framework.web.context.LogInterceptor;
 import cn.org.faster.framework.web.context.model.SpringAppContextFacade;
 import cn.org.faster.framework.web.context.processor.RequestContextBeanFactoryPostProcessor;
+import cn.org.faster.framework.web.exception.handler.ExceptionExecutorHandler;
 import cn.org.faster.framework.web.jwt.service.JwtService;
 import cn.org.faster.framework.web.spring.boot.autoconfigure.exception.GlobalExceptionHandler;
 import cn.org.faster.framework.web.spring.boot.autoconfigure.version.VersionProperties;
@@ -152,5 +153,11 @@ public class WebAutoConfiguration implements WebMvcConfigurer, WebMvcRegistratio
         };
         restTemplate.setErrorHandler(responseErrorHandler);
         return restTemplate;
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public ExceptionExecutorHandler exceptionExecutorHandler(){
+        return new ExceptionExecutorHandler();
     }
 }
