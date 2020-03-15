@@ -1,5 +1,6 @@
 package cn.org.faster.framework.web.exception.handler;
 
+import cn.org.faster.framework.core.utils.Utils;
 import cn.org.faster.framework.web.context.model.RequestContext;
 import cn.org.faster.framework.web.exception.model.ResponseErrorEntity;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -30,7 +31,7 @@ public class ExceptionExecutorHandler {
             ModelAndView modelAndView = new ModelAndView(new MappingJackson2JsonView(objectMapper));
             ResponseErrorEntity responseErrorEntity = executor.execute(exception);
             modelAndView.setStatus(responseErrorEntity.getStatusCode());
-            modelAndView.addObject(Objects.requireNonNull(responseErrorEntity.getBody()));
+            modelAndView.addAllObjects(Utils.beanToMap(responseErrorEntity.getBody()));
             return modelAndView;
         }
         return new ModelAndView("redirect:/error");
