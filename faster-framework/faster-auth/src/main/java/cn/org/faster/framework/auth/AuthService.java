@@ -1,4 +1,4 @@
-package cn.org.faster.framework.web.auth;
+package cn.org.faster.framework.auth;
 
 import cn.org.faster.framework.core.cache.context.CacheFacade;
 import cn.org.faster.framework.web.jwt.service.JwtService;
@@ -40,5 +40,15 @@ public class AuthService {
             CacheFacade.set(AUTH_TOKEN_PREFIX + audience, token, expSecond);
         }
         return token;
+    }
+
+    /**
+     * 注销token
+     */
+    public void deleteToken(String audience) {
+        //如果不允许多端登录，设置token到缓存中
+        if (!multipartTerminal) {
+            CacheFacade.delete(AUTH_TOKEN_PREFIX + audience);
+        }
     }
 }

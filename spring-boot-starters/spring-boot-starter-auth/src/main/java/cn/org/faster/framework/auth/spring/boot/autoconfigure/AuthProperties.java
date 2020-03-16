@@ -1,4 +1,4 @@
-package cn.org.faster.framework.web.spring.boot.autoconfigure.auth;
+package cn.org.faster.framework.auth.spring.boot.autoconfigure;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

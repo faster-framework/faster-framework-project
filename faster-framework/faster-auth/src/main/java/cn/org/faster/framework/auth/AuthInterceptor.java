@@ -4,7 +4,6 @@ import cn.hutool.extra.servlet.ServletUtil;
 import cn.org.faster.framework.auth.annotation.Login;
 import cn.org.faster.framework.core.cache.context.CacheFacade;
 import cn.org.faster.framework.core.constants.HeaderConstants;
-import cn.org.faster.framework.web.auth.AuthService;
 import cn.org.faster.framework.web.context.model.WebContextFacade;
 import cn.org.faster.framework.web.exception.TokenValidException;
 import cn.org.faster.framework.web.exception.model.BasicErrorCode;
