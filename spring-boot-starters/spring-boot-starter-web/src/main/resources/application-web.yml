@@ -37,9 +37,3 @@ management:
   health:
     elasticsearch:
       enabled: false
----
-spring:
-  profiles: prod
-server:
-  undertow:
-    worker-threads: 200
