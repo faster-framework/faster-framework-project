@@ -23,5 +23,6 @@
         <module>faster-elasticsearch</module>
         <module>faster-dict</module>
         <module>faster-auth</module>
+        <module>faster-xxl-job-client</module>
     </modules>
 </project>

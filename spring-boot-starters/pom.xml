@@ -22,6 +22,7 @@
         <module>spring-boot-starter-elasticsearch</module>
         <module>spring-boot-starter-dict</module>
         <module>spring-boot-starter-auth</module>
+        <module>spring-boot-starter-xxl-job-client</module>
     </modules>
 
 </project>
