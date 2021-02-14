@@ -134,6 +134,11 @@
                 <artifactId>faster-xxl-job-client</artifactId>
                 <version>${revision}</version>
             </dependency>
+            <dependency>
+                <groupId>cn.org.faster</groupId>
+                <artifactId>faster-xxl-job-server</artifactId>
+                <version>${revision}</version>
+            </dependency>
             <!--基础包结束-->
             <!--starter 开始-->
             <dependency>
@@ -189,6 +194,11 @@
             <dependency>
                 <groupId>cn.org.faster</groupId>
                 <artifactId>spring-boot-starter-xxl-job-client</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.org.faster</groupId>
+                <artifactId>spring-boot-starter-xxl-job-server</artifactId>
                 <version>${revision}</version>
             </dependency>
             <!--starter 结束-->

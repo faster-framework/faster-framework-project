@@ -24,5 +24,6 @@
         <module>faster-dict</module>
         <module>faster-auth</module>
         <module>faster-xxl-job-client</module>
+        <module>faster-xxl-job-server</module>
     </modules>
 </project>

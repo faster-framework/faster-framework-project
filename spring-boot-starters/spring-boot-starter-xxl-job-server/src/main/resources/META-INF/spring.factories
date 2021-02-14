@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+cn.org.faster.framework.xxl.job.server.spring.boot.autoconfigure.XxlJobServerAutoConfiguration

@@ -23,6 +23,7 @@
         <module>spring-boot-starter-dict</module>
         <module>spring-boot-starter-auth</module>
         <module>spring-boot-starter-xxl-job-client</module>
+        <module>spring-boot-starter-xxl-job-server</module>
     </modules>
 
 </project>
