@@ -1,4 +1,4 @@
-package cn.org.faster.framework.xxl.job.server.dao;
+package cn.org.faster.framework.xxl.job.server.mapper;
 
 import cn.org.faster.framework.xxl.job.server.core.model.XxlJobGroup;
 import org.apache.ibatis.annotations.Mapper;
@@ -10,7 +10,7 @@ import java.util.List;
  * Created by xuxueli on 16/9/30.
  */
 @Mapper
-public interface XxlJobGroupDao {
+public interface XxlJobGroupMapper {
 
     public List<XxlJobGroup> findAll();
 

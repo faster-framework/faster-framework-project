@@ -4,6 +4,7 @@ import cn.org.faster.framework.xxl.job.server.controller.annotation.PermissionLi
 import cn.org.faster.framework.xxl.job.server.service.LoginService;
 import cn.org.faster.framework.xxl.job.server.service.XxlJobService;
 import com.xxl.job.core.biz.model.ReturnT;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,9 +30,9 @@ import java.util.Map;
 @Controller
 public class IndexController {
 
-	@Resource
+	@Autowired
 	private XxlJobService xxlJobService;
-	@Resource
+	@Autowired
 	private LoginService loginService;
 
 
@@ -41,7 +42,7 @@ public class IndexController {
 		Map<String, Object> dashboardMap = xxlJobService.dashboardInfo();
 		model.addAllAttributes(dashboardMap);
 
-		return "index";
+		return "index.ftl";
 	}
 
     @RequestMapping("/chartInfo")
@@ -58,7 +59,7 @@ public class IndexController {
 			modelAndView.setView(new RedirectView("/",true,false));
 			return modelAndView;
 		}
-		return new ModelAndView("login");
+		return new ModelAndView("login.ftl");
 	}
 	
 	@RequestMapping(value="login", method=RequestMethod.POST)
@@ -83,7 +84,7 @@ public class IndexController {
 			return "redirect:/toLogin";
 		}*/
 
-		return "help";
+		return "help.ftl";
 	}
 
 	@InitBinder

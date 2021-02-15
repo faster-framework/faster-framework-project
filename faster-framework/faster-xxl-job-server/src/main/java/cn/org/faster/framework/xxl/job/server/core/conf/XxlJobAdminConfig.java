@@ -2,14 +2,13 @@ package cn.org.faster.framework.xxl.job.server.core.conf;
 
 import cn.org.faster.framework.xxl.job.server.core.alarm.JobAlarmer;
 import cn.org.faster.framework.xxl.job.server.core.scheduler.XxlJobScheduler;
-import cn.org.faster.framework.xxl.job.server.dao.*;
+import cn.org.faster.framework.xxl.job.server.mapper.*;
+import lombok.Data;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
 import javax.sql.DataSource;
 import java.util.Arrays;
 
@@ -19,10 +18,11 @@ import java.util.Arrays;
  * @author xuxueli 2017-04-28
  */
 
-@Component
+@Data
 public class XxlJobAdminConfig implements InitializingBean, DisposableBean {
 
     private static XxlJobAdminConfig adminConfig = null;
+
     public static XxlJobAdminConfig getAdminConfig() {
         return adminConfig;
     }
@@ -49,41 +49,34 @@ public class XxlJobAdminConfig implements InitializingBean, DisposableBean {
     // ---------------------- XxlJobScheduler ----------------------
 
     // conf
-    @Value("${xxl.job.i18n}")
     private String i18n;
 
-    @Value("${xxl.job.accessToken}")
     private String accessToken;
 
-    @Value("${spring.mail.from}")
     private String emailFrom;
 
-    @Value("${xxl.job.triggerpool.fast.max}")
     private int triggerPoolFastMax;
 
-    @Value("${xxl.job.triggerpool.slow.max}")
     private int triggerPoolSlowMax;
 
-    @Value("${xxl.job.logretentiondays}")
     private int logretentiondays;
 
     // dao, service
 
-    @Resource
-    private XxlJobLogDao xxlJobLogDao;
-    @Resource
-    private XxlJobInfoDao xxlJobInfoDao;
-    @Resource
-    private XxlJobRegistryDao xxlJobRegistryDao;
-    @Resource
-    private XxlJobGroupDao xxlJobGroupDao;
-    @Resource
-    private XxlJobLogReportDao xxlJobLogReportDao;
-    @Resource
+    @Autowired
+    private XxlJobLogMapper xxlJobLogMapper;
+    @Autowired
+    private XxlJobInfoMapper xxlJobInfoMapper;
+    @Autowired
+    private XxlJobRegistryMapper xxlJobRegistryMapper;
+    @Autowired
+    private XxlJobGroupMapper xxlJobGroupMapper;
+    @Autowired
+    private XxlJobLogReportMapper xxlJobLogReportMapper;
     private JavaMailSender mailSender;
-    @Resource
+    @Autowired
     private DataSource dataSource;
-    @Resource
+    @Autowired
     private JobAlarmer jobAlarmer;
 
 
@@ -123,24 +116,24 @@ public class XxlJobAdminConfig implements InitializingBean, DisposableBean {
         return logretentiondays;
     }
 
-    public XxlJobLogDao getXxlJobLogDao() {
-        return xxlJobLogDao;
+    public XxlJobLogMapper getXxlJobLogMapper() {
+        return xxlJobLogMapper;
     }
 
-    public XxlJobInfoDao getXxlJobInfoDao() {
-        return xxlJobInfoDao;
+    public XxlJobInfoMapper getXxlJobInfoMapper() {
+        return xxlJobInfoMapper;
     }
 
-    public XxlJobRegistryDao getXxlJobRegistryDao() {
-        return xxlJobRegistryDao;
+    public XxlJobRegistryMapper getXxlJobRegistryMapper() {
+        return xxlJobRegistryMapper;
     }
 
-    public XxlJobGroupDao getXxlJobGroupDao() {
-        return xxlJobGroupDao;
+    public XxlJobGroupMapper getXxlJobGroupMapper() {
+        return xxlJobGroupMapper;
     }
 
-    public XxlJobLogReportDao getXxlJobLogReportDao() {
-        return xxlJobLogReportDao;
+    public XxlJobLogReportMapper getXxlJobLogReportMapper() {
+        return xxlJobLogReportMapper;
     }
 
     public JavaMailSender getMailSender() {

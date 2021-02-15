@@ -1,6 +1,5 @@
 package cn.org.faster.framework.xxl.job.server.controller;
 
-import cn.org.faster.framework.xxl.job.server.core.cron.CronExpression;
 import cn.org.faster.framework.xxl.job.server.core.exception.XxlJobException;
 import cn.org.faster.framework.xxl.job.server.core.model.XxlJobGroup;
 import cn.org.faster.framework.xxl.job.server.core.model.XxlJobInfo;
@@ -12,7 +11,7 @@ import cn.org.faster.framework.xxl.job.server.core.thread.JobScheduleHelper;
 import cn.org.faster.framework.xxl.job.server.core.thread.JobTriggerPoolHelper;
 import cn.org.faster.framework.xxl.job.server.core.trigger.TriggerTypeEnum;
 import cn.org.faster.framework.xxl.job.server.core.util.I18nUtil;
-import cn.org.faster.framework.xxl.job.server.dao.XxlJobGroupDao;
+import cn.org.faster.framework.xxl.job.server.mapper.XxlJobGroupMapper;
 import cn.org.faster.framework.xxl.job.server.service.LoginService;
 import cn.org.faster.framework.xxl.job.server.service.XxlJobService;
 import com.xxl.job.core.biz.model.ReturnT;
@@ -21,15 +20,14 @@ import com.xxl.job.core.glue.GlueTypeEnum;
 import com.xxl.job.core.util.DateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.text.ParseException;
 import java.util.*;
 
 /**
@@ -41,9 +39,9 @@ import java.util.*;
 public class JobInfoController {
 	private static Logger logger = LoggerFactory.getLogger(JobInfoController.class);
 
-	@Resource
-	private XxlJobGroupDao xxlJobGroupDao;
-	@Resource
+	@Autowired
+	private XxlJobGroupMapper xxlJobGroupMapper;
+	@Autowired
 	private XxlJobService xxlJobService;
 	
 	@RequestMapping
@@ -57,7 +55,7 @@ public class JobInfoController {
 		model.addAttribute("MisfireStrategyEnum", MisfireStrategyEnum.values());	    			// 调度过期策略
 
 		// 执行器列表
-		List<XxlJobGroup> jobGroupList_all =  xxlJobGroupDao.findAll();
+		List<XxlJobGroup> jobGroupList_all =  xxlJobGroupMapper.findAll();
 
 		// filter group
 		List<XxlJobGroup> jobGroupList = filterJobGroupByRole(request, jobGroupList_all);
@@ -68,7 +66,7 @@ public class JobInfoController {
 		model.addAttribute("JobGroupList", jobGroupList);
 		model.addAttribute("jobGroup", jobGroup);
 
-		return "jobinfo/jobinfo.index";
+		return "jobinfo/jobinfo.index.ftl";
 	}
 
 	public static List<XxlJobGroup> filterJobGroupByRole(HttpServletRequest request, List<XxlJobGroup> jobGroupList_all){

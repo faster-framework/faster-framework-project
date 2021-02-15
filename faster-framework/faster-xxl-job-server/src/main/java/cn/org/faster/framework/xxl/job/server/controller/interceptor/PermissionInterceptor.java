@@ -4,6 +4,7 @@ import cn.org.faster.framework.xxl.job.server.controller.annotation.PermissionLi
 import cn.org.faster.framework.xxl.job.server.core.model.XxlJobUser;
 import cn.org.faster.framework.xxl.job.server.core.util.I18nUtil;
 import cn.org.faster.framework.xxl.job.server.service.LoginService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
@@ -20,7 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 @Component
 public class PermissionInterceptor extends HandlerInterceptorAdapter {
 
-	@Resource
+	@Autowired
 	private LoginService loginService;
 
 	@Override

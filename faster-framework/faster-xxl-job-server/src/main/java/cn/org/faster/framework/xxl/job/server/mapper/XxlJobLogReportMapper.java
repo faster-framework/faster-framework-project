@@ -1,6 +1,7 @@
-package cn.org.faster.framework.xxl.job.server.dao;
+package cn.org.faster.framework.xxl.job.server.mapper;
 
 import cn.org.faster.framework.xxl.job.server.core.model.XxlJobLogReport;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -12,7 +13,7 @@ import java.util.List;
  * @author xuxueli 2019-11-22
  */
 @Mapper
-public interface XxlJobLogReportDao {
+public interface XxlJobLogReportMapper {
 
 	public int save(XxlJobLogReport xxlJobLogReport);
 

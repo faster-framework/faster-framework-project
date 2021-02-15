@@ -3,16 +3,16 @@ package cn.org.faster.framework.xxl.job.server.controller;
 import cn.org.faster.framework.xxl.job.server.core.model.XxlJobInfo;
 import cn.org.faster.framework.xxl.job.server.core.model.XxlJobLogGlue;
 import cn.org.faster.framework.xxl.job.server.core.util.I18nUtil;
-import cn.org.faster.framework.xxl.job.server.dao.XxlJobInfoDao;
-import cn.org.faster.framework.xxl.job.server.dao.XxlJobLogGlueDao;
+import cn.org.faster.framework.xxl.job.server.mapper.XxlJobInfoMapper;
+import cn.org.faster.framework.xxl.job.server.mapper.XxlJobLogGlueMapper;
 import com.xxl.job.core.biz.model.ReturnT;
 import com.xxl.job.core.glue.GlueTypeEnum;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.List;
@@ -25,15 +25,15 @@ import java.util.List;
 @RequestMapping("/jobcode")
 public class JobCodeController {
 	
-	@Resource
-	private XxlJobInfoDao xxlJobInfoDao;
-	@Resource
-	private XxlJobLogGlueDao xxlJobLogGlueDao;
+	@Autowired
+	private XxlJobInfoMapper xxlJobInfoMapper;
+	@Autowired
+	private XxlJobLogGlueMapper xxlJobLogGlueMapper;
 
 	@RequestMapping
 	public String index(HttpServletRequest request, Model model, int jobId) {
-		XxlJobInfo jobInfo = xxlJobInfoDao.loadById(jobId);
-		List<XxlJobLogGlue> jobLogGlues = xxlJobLogGlueDao.findByJobId(jobId);
+		XxlJobInfo jobInfo = xxlJobInfoMapper.loadById(jobId);
+		List<XxlJobLogGlue> jobLogGlues = xxlJobLogGlueMapper.findByJobId(jobId);
 
 		if (jobInfo == null) {
 			throw new RuntimeException(I18nUtil.getString("jobinfo_glue_jobid_unvalid"));
@@ -50,7 +50,7 @@ public class JobCodeController {
 
 		model.addAttribute("jobInfo", jobInfo);
 		model.addAttribute("jobLogGlues", jobLogGlues);
-		return "jobcode/jobcode.index";
+		return "jobcode/jobcode.index.ftl";
 	}
 	
 	@RequestMapping("/save")
@@ -63,7 +63,7 @@ public class JobCodeController {
 		if (glueRemark.length()<4 || glueRemark.length()>100) {
 			return new ReturnT<String>(500, I18nUtil.getString("jobinfo_glue_remark_limit"));
 		}
-		XxlJobInfo exists_jobInfo = xxlJobInfoDao.loadById(id);
+		XxlJobInfo exists_jobInfo = xxlJobInfoMapper.loadById(id);
 		if (exists_jobInfo == null) {
 			return new ReturnT<String>(500, I18nUtil.getString("jobinfo_glue_jobid_unvalid"));
 		}
@@ -74,7 +74,7 @@ public class JobCodeController {
 		exists_jobInfo.setGlueUpdatetime(new Date());
 
 		exists_jobInfo.setUpdateTime(new Date());
-		xxlJobInfoDao.update(exists_jobInfo);
+		xxlJobInfoMapper.update(exists_jobInfo);
 
 		// log old code
 		XxlJobLogGlue xxlJobLogGlue = new XxlJobLogGlue();
@@ -85,10 +85,10 @@ public class JobCodeController {
 
 		xxlJobLogGlue.setAddTime(new Date());
 		xxlJobLogGlue.setUpdateTime(new Date());
-		xxlJobLogGlueDao.save(xxlJobLogGlue);
+		xxlJobLogGlueMapper.save(xxlJobLogGlue);
 
 		// remove code backup more than 30
-		xxlJobLogGlueDao.removeOld(exists_jobInfo.getId(), 30);
+		xxlJobLogGlueMapper.removeOld(exists_jobInfo.getId(), 30);
 
 		return ReturnT.SUCCESS;
 	}

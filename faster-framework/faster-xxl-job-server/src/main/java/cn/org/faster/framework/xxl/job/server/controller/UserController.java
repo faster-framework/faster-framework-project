@@ -4,10 +4,11 @@ import cn.org.faster.framework.xxl.job.server.controller.annotation.PermissionLi
 import cn.org.faster.framework.xxl.job.server.core.model.XxlJobGroup;
 import cn.org.faster.framework.xxl.job.server.core.model.XxlJobUser;
 import cn.org.faster.framework.xxl.job.server.core.util.I18nUtil;
-import cn.org.faster.framework.xxl.job.server.dao.XxlJobGroupDao;
-import cn.org.faster.framework.xxl.job.server.dao.XxlJobUserDao;
+import cn.org.faster.framework.xxl.job.server.mapper.XxlJobGroupMapper;
+import cn.org.faster.framework.xxl.job.server.mapper.XxlJobUserMapper;
 import cn.org.faster.framework.xxl.job.server.service.LoginService;
 import com.xxl.job.core.biz.model.ReturnT;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.DigestUtils;
@@ -16,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
@@ -29,20 +29,20 @@ import java.util.Map;
 @RequestMapping("/user")
 public class UserController {
 
-    @Resource
-    private XxlJobUserDao xxlJobUserDao;
-    @Resource
-    private XxlJobGroupDao xxlJobGroupDao;
+    @Autowired
+    private XxlJobUserMapper xxlJobUserMapper;
+    @Autowired
+    private XxlJobGroupMapper xxlJobGroupMapper;
 
     @RequestMapping
     @PermissionLimit(adminuser = true)
     public String index(Model model) {
 
         // 执行器列表
-        List<XxlJobGroup> groupList = xxlJobGroupDao.findAll();
+        List<XxlJobGroup> groupList = xxlJobGroupMapper.findAll();
         model.addAttribute("groupList", groupList);
 
-        return "user/user.index";
+        return "user/user.index.ftl";
     }
 
     @RequestMapping("/pageList")
@@ -53,8 +53,8 @@ public class UserController {
                                         String username, int role) {
 
         // page list
-        List<XxlJobUser> list = xxlJobUserDao.pageList(start, length, username, role);
-        int list_count = xxlJobUserDao.pageListCount(start, length, username, role);
+        List<XxlJobUser> list = xxlJobUserMapper.pageList(start, length, username, role);
+        int list_count = xxlJobUserMapper.pageListCount(start, length, username, role);
 
         // filter
         if (list!=null && list.size()>0) {
@@ -96,13 +96,13 @@ public class UserController {
         xxlJobUser.setPassword(DigestUtils.md5DigestAsHex(xxlJobUser.getPassword().getBytes()));
 
         // check repeat
-        XxlJobUser existUser = xxlJobUserDao.loadByUserName(xxlJobUser.getUsername());
+        XxlJobUser existUser = xxlJobUserMapper.loadByUserName(xxlJobUser.getUsername());
         if (existUser != null) {
             return new ReturnT<String>(ReturnT.FAIL_CODE, I18nUtil.getString("user_username_repeat") );
         }
 
         // write
-        xxlJobUserDao.save(xxlJobUser);
+        xxlJobUserMapper.save(xxlJobUser);
         return ReturnT.SUCCESS;
     }
 
@@ -130,7 +130,7 @@ public class UserController {
         }
 
         // write
-        xxlJobUserDao.update(xxlJobUser);
+        xxlJobUserMapper.update(xxlJobUser);
         return ReturnT.SUCCESS;
     }
 
@@ -145,7 +145,7 @@ public class UserController {
             return new ReturnT<String>(ReturnT.FAIL.getCode(), I18nUtil.getString("user_update_loginuser_limit"));
         }
 
-        xxlJobUserDao.delete(id);
+        xxlJobUserMapper.delete(id);
         return ReturnT.SUCCESS;
     }
 
@@ -169,9 +169,9 @@ public class UserController {
         XxlJobUser loginUser = (XxlJobUser) request.getAttribute(LoginService.LOGIN_IDENTITY_KEY);
 
         // do write
-        XxlJobUser existUser = xxlJobUserDao.loadByUserName(loginUser.getUsername());
+        XxlJobUser existUser = xxlJobUserMapper.loadByUserName(loginUser.getUsername());
         existUser.setPassword(md5Password);
-        xxlJobUserDao.update(existUser);
+        xxlJobUserMapper.update(existUser);
 
         return ReturnT.SUCCESS;
     }

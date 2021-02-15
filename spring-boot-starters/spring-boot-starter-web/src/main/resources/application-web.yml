@@ -22,6 +22,7 @@ spring:
     expose-request-attributes: true
     expose-session-attributes: true
     request-context-attribute: request
+    prefer-file-system-access: false
     settings:
       classic_compatible: true
       number_format: 0.##

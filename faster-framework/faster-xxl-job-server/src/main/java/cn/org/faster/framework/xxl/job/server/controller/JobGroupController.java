@@ -3,18 +3,18 @@ package cn.org.faster.framework.xxl.job.server.controller;
 import cn.org.faster.framework.xxl.job.server.core.model.XxlJobGroup;
 import cn.org.faster.framework.xxl.job.server.core.model.XxlJobRegistry;
 import cn.org.faster.framework.xxl.job.server.core.util.I18nUtil;
-import cn.org.faster.framework.xxl.job.server.dao.XxlJobGroupDao;
-import cn.org.faster.framework.xxl.job.server.dao.XxlJobInfoDao;
-import cn.org.faster.framework.xxl.job.server.dao.XxlJobRegistryDao;
+import cn.org.faster.framework.xxl.job.server.mapper.XxlJobGroupMapper;
+import cn.org.faster.framework.xxl.job.server.mapper.XxlJobInfoMapper;
+import cn.org.faster.framework.xxl.job.server.mapper.XxlJobRegistryMapper;
 import com.xxl.job.core.biz.model.ReturnT;
 import com.xxl.job.core.enums.RegistryConfig;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
@@ -26,16 +26,16 @@ import java.util.*;
 @RequestMapping("/jobgroup")
 public class JobGroupController {
 
-	@Resource
-	public XxlJobInfoDao xxlJobInfoDao;
-	@Resource
-	public XxlJobGroupDao xxlJobGroupDao;
-	@Resource
-	private XxlJobRegistryDao xxlJobRegistryDao;
+	@Autowired
+	public XxlJobInfoMapper xxlJobInfoMapper;
+	@Autowired
+	public XxlJobGroupMapper xxlJobGroupMapper;
+	@Autowired
+	private XxlJobRegistryMapper xxlJobRegistryMapper;
 
 	@RequestMapping
 	public String index(Model model) {
-		return "jobgroup/jobgroup.index";
+		return "jobgroup/jobgroup.index.ftl";
 	}
 
 	@RequestMapping("/pageList")
@@ -46,8 +46,8 @@ public class JobGroupController {
 										String appname, String title) {
 
 		// page query
-		List<XxlJobGroup> list = xxlJobGroupDao.pageList(start, length, appname, title);
-		int list_count = xxlJobGroupDao.pageListCount(start, length, appname, title);
+		List<XxlJobGroup> list = xxlJobGroupMapper.pageList(start, length, appname, title);
+		int list_count = xxlJobGroupMapper.pageListCount(start, length, appname, title);
 
 		// package result
 		Map<String, Object> maps = new HashMap<String, Object>();
@@ -96,7 +96,7 @@ public class JobGroupController {
 		// process
 		xxlJobGroup.setUpdateTime(new Date());
 
-		int ret = xxlJobGroupDao.save(xxlJobGroup);
+		int ret = xxlJobGroupMapper.save(xxlJobGroup);
 		return (ret>0)?ReturnT.SUCCESS:ReturnT.FAIL;
 	}
 
@@ -142,13 +142,13 @@ public class JobGroupController {
 		// process
 		xxlJobGroup.setUpdateTime(new Date());
 
-		int ret = xxlJobGroupDao.update(xxlJobGroup);
+		int ret = xxlJobGroupMapper.update(xxlJobGroup);
 		return (ret>0)?ReturnT.SUCCESS:ReturnT.FAIL;
 	}
 
 	private List<String> findRegistryByAppName(String appnameParam){
 		HashMap<String, List<String>> appAddressMap = new HashMap<String, List<String>>();
-		List<XxlJobRegistry> list = xxlJobRegistryDao.findAll(RegistryConfig.DEAD_TIMEOUT, new Date());
+		List<XxlJobRegistry> list = xxlJobRegistryMapper.findAll(RegistryConfig.DEAD_TIMEOUT, new Date());
 		if (list != null) {
 			for (XxlJobRegistry item: list) {
 				if (RegistryConfig.RegistType.EXECUTOR.name().equals(item.getRegistryGroup())) {
@@ -173,24 +173,24 @@ public class JobGroupController {
 	public ReturnT<String> remove(int id){
 
 		// valid
-		int count = xxlJobInfoDao.pageListCount(0, 10, id, -1,  null, null, null);
+		int count = xxlJobInfoMapper.pageListCount(0, 10, id, -1,  null, null, null);
 		if (count > 0) {
 			return new ReturnT<String>(500, I18nUtil.getString("jobgroup_del_limit_0") );
 		}
 
-		List<XxlJobGroup> allList = xxlJobGroupDao.findAll();
+		List<XxlJobGroup> allList = xxlJobGroupMapper.findAll();
 		if (allList.size() == 1) {
 			return new ReturnT<String>(500, I18nUtil.getString("jobgroup_del_limit_1") );
 		}
 
-		int ret = xxlJobGroupDao.remove(id);
+		int ret = xxlJobGroupMapper.remove(id);
 		return (ret>0)?ReturnT.SUCCESS:ReturnT.FAIL;
 	}
 
 	@RequestMapping("/loadById")
 	@ResponseBody
 	public ReturnT<XxlJobGroup> loadById(int id){
-		XxlJobGroup jobGroup = xxlJobGroupDao.load(id);
+		XxlJobGroup jobGroup = xxlJobGroupMapper.load(id);
 		return jobGroup!=null?new ReturnT<XxlJobGroup>(jobGroup):new ReturnT<XxlJobGroup>(ReturnT.FAIL_CODE, null);
 	}
 
