@@ -83,18 +83,14 @@ public class JobApiExtraService {
         return (ret > 0) ? ReturnT.SUCCESS : ReturnT.FAIL;
     }
 
-    public ReturnT<String> jobGroupList(XxlJobGroup xxlJobGroup) {
+    public ReturnT<Object> jobGroupList(XxlJobGroup xxlJobGroup) {
         List<XxlJobGroup> list = xxlJobGroupMapper.list(xxlJobGroup.getAppname(), xxlJobGroup.getTitle());
-        ReturnT<String> returnT = ReturnT.SUCCESS;
-        returnT.setContent(GsonTool.toJson(list));
-        return returnT;
+        return new ReturnT<>(list);
     }
 
-    public ReturnT<String> jobInfoList(XxlJobInfo xxlJobInfo) {
+    public ReturnT<Object> jobInfoList(XxlJobInfo xxlJobInfo) {
         List<XxlJobInfo> list = xxlJobInfoMapper.list(xxlJobInfo);
-        ReturnT<String> returnT = ReturnT.SUCCESS;
-        returnT.setContent(GsonTool.toJson(list));
-        return returnT;
+        return new ReturnT<>(list);
     }
 
     public ReturnT<String> createJobInfo(XxlJobInfo xxlJobInfo) {

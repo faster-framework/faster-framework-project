@@ -4,30 +4,25 @@ import cn.org.faster.framework.xxl.job.server.controller.annotation.PermissionLi
 import cn.org.faster.framework.xxl.job.server.core.conf.XxlJobAdminConfig;
 import cn.org.faster.framework.xxl.job.server.core.model.XxlJobGroup;
 import cn.org.faster.framework.xxl.job.server.core.model.XxlJobInfo;
-import cn.org.faster.framework.xxl.job.server.core.util.I18nUtil;
 import cn.org.faster.framework.xxl.job.server.service.JobApiExtraService;
 import com.xxl.job.core.biz.AdminBiz;
 import com.xxl.job.core.biz.model.HandleCallbackParam;
 import com.xxl.job.core.biz.model.RegistryParam;
 import com.xxl.job.core.biz.model.ReturnT;
-import com.xxl.job.core.util.GsonTool;
 import com.xxl.job.core.util.XxlJobRemotingUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
 import java.util.List;
 
 /**
  * Created by xuxueli on 17/5/10.
  */
-@Controller
+@RestController
 @RequestMapping("/api")
 public class JobApiController {
 
@@ -35,70 +30,120 @@ public class JobApiController {
     private AdminBiz adminBiz;
     @Autowired
     private JobApiExtraService jobApiExtraService;
+    @Autowired
+    private HttpServletRequest request;
 
-    /**
-     * api
-     *
-     * @param uri
-     * @param data
-     * @return
-     */
-    @RequestMapping("/{uri}")
-    @ResponseBody
-    @PermissionLimit(limit=false)
-    public ReturnT<String> api(HttpServletRequest request, @PathVariable("uri") String uri, @RequestBody(required = false) String data) {
-
-        // valid
-        if (!"POST".equalsIgnoreCase(request.getMethod())) {
-            return new ReturnT<String>(ReturnT.FAIL_CODE, "invalid request, HttpMethod not support.");
-        }
-        if (uri==null || uri.trim().length()==0) {
-            return new ReturnT<String>(ReturnT.FAIL_CODE, "invalid request, uri-mapping empty.");
-        }
-        if (XxlJobAdminConfig.getAdminConfig().getAccessToken()!=null
-                && XxlJobAdminConfig.getAdminConfig().getAccessToken().trim().length()>0
-                && !XxlJobAdminConfig.getAdminConfig().getAccessToken().equals(request.getHeader(XxlJobRemotingUtil.XXL_JOB_ACCESS_TOKEN))) {
+    @PostMapping("/callback")
+    @PermissionLimit(limit = false)
+    public ReturnT<String> callback(@RequestBody List<HandleCallbackParam> callbackParamList) {
+        if (errorToken()) {
             return new ReturnT<String>(ReturnT.FAIL_CODE, "The access token is wrong.");
         }
-
-        // services mapping
-        if ("callback".equals(uri)) {
-            List<HandleCallbackParam> callbackParamList = GsonTool.fromJson(data, List.class, HandleCallbackParam.class);
-            return adminBiz.callback(callbackParamList);
-        } else if ("registry".equals(uri)) {
-            RegistryParam registryParam = GsonTool.fromJson(data, RegistryParam.class);
-            return adminBiz.registry(registryParam);
-        } else if ("registryRemove".equals(uri)) {
-            RegistryParam registryParam = GsonTool.fromJson(data, RegistryParam.class);
-            return adminBiz.registryRemove(registryParam);
-        }else if("jobGroupList".equals(uri)){
-            XxlJobGroup xxlJobGroup = GsonTool.fromJson(data, XxlJobGroup.class);
-            return jobApiExtraService.jobGroupList(xxlJobGroup);
-        }else if("createJobGroup".equals(uri)){
-            XxlJobGroup xxlJobGroup = GsonTool.fromJson(data, XxlJobGroup.class);
-            return jobApiExtraService.createJobGroup(xxlJobGroup);
-        }else if("removeJobGroup".equals(uri)){
-            XxlJobGroup xxlJobGroup = GsonTool.fromJson(data, XxlJobGroup.class);
-            return jobApiExtraService.removeJobGroup(xxlJobGroup.getId());
-        }else if("jobInfoList".equals(uri)){
-            XxlJobInfo xxlJobInfo = GsonTool.fromJson(data, XxlJobInfo.class);
-            return jobApiExtraService.jobInfoList(xxlJobInfo);
-        }else if("createJobInfo".equals(uri)){
-            XxlJobInfo xxlJobInfo = GsonTool.fromJson(data, XxlJobInfo.class);
-            return jobApiExtraService.createJobInfo(xxlJobInfo);
-        }else if("removeJobInfo".equals(uri)){
-            XxlJobInfo xxlJobInfo = GsonTool.fromJson(data, XxlJobInfo.class);
-            return jobApiExtraService.removeJobInfo(xxlJobInfo);
-        }else if("startJobInfo".equals(uri)){
-            XxlJobInfo xxlJobInfo = GsonTool.fromJson(data, XxlJobInfo.class);
-            return jobApiExtraService.startJobInfo(xxlJobInfo);
-        } else if("stopJobInfo".equals(uri)){
-            XxlJobInfo xxlJobInfo = GsonTool.fromJson(data, XxlJobInfo.class);
-            return jobApiExtraService.stopJobInfo(xxlJobInfo);
-        } else {
-            return new ReturnT<String>(ReturnT.FAIL_CODE, "invalid request, uri-mapping("+ uri +") not found.");
-        }
-
+        return adminBiz.callback(callbackParamList);
     }
+
+    @PostMapping("/registry")
+    @PermissionLimit(limit = false)
+    public ReturnT<String> registry(@RequestBody RegistryParam registryParam) {
+        if (errorToken()) {
+            return new ReturnT<String>(ReturnT.FAIL_CODE, "The access token is wrong.");
+        }
+        return adminBiz.registry(registryParam);
+    }
+
+    @PostMapping("/registryRemove")
+    @PermissionLimit(limit = false)
+    public ReturnT<String> registryRemove(@RequestBody RegistryParam registryParam) {
+        if (errorToken()) {
+            return new ReturnT<String>(ReturnT.FAIL_CODE, "The access token is wrong.");
+        }
+        return adminBiz.registryRemove(registryParam);
+    }
+
+    @PostMapping("/jobGroupList")
+    @PermissionLimit(limit = false)
+    public ReturnT<Object> jobGroupList(@RequestBody XxlJobGroup xxlJobGroup) {
+        if (errorToken()) {
+            return new ReturnT<>(ReturnT.FAIL_CODE, "The access token is wrong.");
+        }
+        return jobApiExtraService.jobGroupList(xxlJobGroup);
+    }
+
+    @PostMapping("/createJobGroup")
+    @PermissionLimit(limit = false)
+    public ReturnT<String> createJobGroup(@RequestBody XxlJobGroup xxlJobGroup) {
+        if (errorToken()) {
+            return new ReturnT<>(ReturnT.FAIL_CODE, "The access token is wrong.");
+        }
+        return jobApiExtraService.createJobGroup(xxlJobGroup);
+    }
+
+    @PostMapping("/removeJobGroup")
+    @PermissionLimit(limit = false)
+    public ReturnT<String> removeJobGroup(@RequestBody XxlJobGroup xxlJobGroup) {
+        if (errorToken()) {
+            return new ReturnT<>(ReturnT.FAIL_CODE, "The access token is wrong.");
+        }
+        return jobApiExtraService.removeJobGroup(xxlJobGroup.getId());
+    }
+
+    @PostMapping("/jobInfoList")
+    @PermissionLimit(limit = false)
+    public ReturnT<Object> jobInfoList(@RequestBody XxlJobInfo xxlJobInfo) {
+        if (errorToken()) {
+            return new ReturnT<Object>(ReturnT.FAIL_CODE, "The access token is wrong.");
+        }
+        return jobApiExtraService.jobInfoList(xxlJobInfo);
+    }
+
+    @PostMapping("/createJobInfo")
+    @PermissionLimit(limit = false)
+    public ReturnT<String> createJobInfo(@RequestBody XxlJobInfo xxlJobInfo) {
+        if (errorToken()) {
+            return new ReturnT<>(ReturnT.FAIL_CODE, "The access token is wrong.");
+        }
+        return jobApiExtraService.createJobInfo(xxlJobInfo);
+    }
+
+    @PostMapping("/removeJobInfo")
+    @PermissionLimit(limit = false)
+    public ReturnT<String> removeJobInfo(@RequestBody XxlJobInfo xxlJobInfo) {
+        if (errorToken()) {
+            return new ReturnT<>(ReturnT.FAIL_CODE, "The access token is wrong.");
+        }
+        return jobApiExtraService.removeJobInfo(xxlJobInfo);
+    }
+
+    @PostMapping("/startJobInfo")
+    @PermissionLimit(limit = false)
+    public ReturnT<String> startJobInfo(@RequestBody XxlJobInfo xxlJobInfo) {
+        if (errorToken()) {
+            return new ReturnT<>(ReturnT.FAIL_CODE, "The access token is wrong.");
+        }
+        return jobApiExtraService.startJobInfo(xxlJobInfo);
+    }
+
+
+    @PostMapping("/stopJobInfo")
+    @PermissionLimit(limit = false)
+    public ReturnT<String> stopJobInfo(@RequestBody XxlJobInfo xxlJobInfo) {
+        if (errorToken()) {
+            return new ReturnT<>(ReturnT.FAIL_CODE, "The access token is wrong.");
+        }
+        return jobApiExtraService.stopJobInfo(xxlJobInfo);
+    }
+
+
+    /**
+     * 检验token
+     *
+     * @return true：成功 false：失败
+     */
+    private boolean errorToken() {
+        return XxlJobAdminConfig.getAdminConfig().getAccessToken() != null
+                && XxlJobAdminConfig.getAdminConfig().getAccessToken().trim().length() > 0
+                && !XxlJobAdminConfig.getAdminConfig().getAccessToken().equals(request.getHeader(XxlJobRemotingUtil.XXL_JOB_ACCESS_TOKEN));
+    }
+
 
 }
