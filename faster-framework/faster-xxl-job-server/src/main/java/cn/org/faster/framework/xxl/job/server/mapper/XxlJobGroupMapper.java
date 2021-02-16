@@ -28,6 +28,9 @@ public interface XxlJobGroupMapper {
                                       @Param("pagesize") int pagesize,
                                       @Param("appname") String appname,
                                       @Param("title") String title);
+    public List<XxlJobGroup> list(
+                                      @Param("appname") String appname,
+                                      @Param("title") String title);
 
     public int pageListCount(@Param("offset") int offset,
                              @Param("pagesize") int pagesize,

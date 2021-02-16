@@ -48,4 +48,5 @@ public interface XxlJobInfoMapper {
     public int scheduleUpdate(XxlJobInfo xxlJobInfo);
 
 
+    List<XxlJobInfo> list(XxlJobInfo xxlJobInfo);
 }

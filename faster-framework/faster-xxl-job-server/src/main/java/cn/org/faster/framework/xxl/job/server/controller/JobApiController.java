@@ -2,6 +2,10 @@ package cn.org.faster.framework.xxl.job.server.controller;
 
 import cn.org.faster.framework.xxl.job.server.controller.annotation.PermissionLimit;
 import cn.org.faster.framework.xxl.job.server.core.conf.XxlJobAdminConfig;
+import cn.org.faster.framework.xxl.job.server.core.model.XxlJobGroup;
+import cn.org.faster.framework.xxl.job.server.core.model.XxlJobInfo;
+import cn.org.faster.framework.xxl.job.server.core.util.I18nUtil;
+import cn.org.faster.framework.xxl.job.server.service.JobApiExtraService;
 import com.xxl.job.core.biz.AdminBiz;
 import com.xxl.job.core.biz.model.HandleCallbackParam;
 import com.xxl.job.core.biz.model.RegistryParam;
@@ -17,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -28,6 +33,8 @@ public class JobApiController {
 
     @Autowired
     private AdminBiz adminBiz;
+    @Autowired
+    private JobApiExtraService jobApiExtraService;
 
     /**
      * api
@@ -64,6 +71,30 @@ public class JobApiController {
         } else if ("registryRemove".equals(uri)) {
             RegistryParam registryParam = GsonTool.fromJson(data, RegistryParam.class);
             return adminBiz.registryRemove(registryParam);
+        }else if("jobGroupList".equals(uri)){
+            XxlJobGroup xxlJobGroup = GsonTool.fromJson(data, XxlJobGroup.class);
+            return jobApiExtraService.jobGroupList(xxlJobGroup);
+        }else if("createJobGroup".equals(uri)){
+            XxlJobGroup xxlJobGroup = GsonTool.fromJson(data, XxlJobGroup.class);
+            return jobApiExtraService.createJobGroup(xxlJobGroup);
+        }else if("removeJobGroup".equals(uri)){
+            XxlJobGroup xxlJobGroup = GsonTool.fromJson(data, XxlJobGroup.class);
+            return jobApiExtraService.removeJobGroup(xxlJobGroup.getId());
+        }else if("jobInfoList".equals(uri)){
+            XxlJobInfo xxlJobInfo = GsonTool.fromJson(data, XxlJobInfo.class);
+            return jobApiExtraService.jobInfoList(xxlJobInfo);
+        }else if("createJobInfo".equals(uri)){
+            XxlJobInfo xxlJobInfo = GsonTool.fromJson(data, XxlJobInfo.class);
+            return jobApiExtraService.createJobInfo(xxlJobInfo);
+        }else if("removeJobInfo".equals(uri)){
+            XxlJobInfo xxlJobInfo = GsonTool.fromJson(data, XxlJobInfo.class);
+            return jobApiExtraService.removeJobInfo(xxlJobInfo);
+        }else if("startJobInfo".equals(uri)){
+            XxlJobInfo xxlJobInfo = GsonTool.fromJson(data, XxlJobInfo.class);
+            return jobApiExtraService.startJobInfo(xxlJobInfo);
+        } else if("stopJobInfo".equals(uri)){
+            XxlJobInfo xxlJobInfo = GsonTool.fromJson(data, XxlJobInfo.class);
+            return jobApiExtraService.stopJobInfo(xxlJobInfo);
         } else {
             return new ReturnT<String>(ReturnT.FAIL_CODE, "invalid request, uri-mapping("+ uri +") not found.");
         }
