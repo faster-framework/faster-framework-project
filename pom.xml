@@ -55,7 +55,7 @@
         <aliyun-java-sdk-core.version>3.7.1</aliyun-java-sdk-core.version>
         <aliyun-java-sdk-dysmsapi.version>1.1.0</aliyun-java-sdk-dysmsapi.version>
         <grpc.version>1.17.1</grpc.version>
-        <guava.version>23.6-jre</guava.version>
+        <guava.version>24.1.1-jre</guava.version>
         <io-protostuff.version>1.6.0</io-protostuff.version>
         <hutool.version>4.5.14</hutool.version>
         <boot-admin.version>2.1.4</boot-admin.version>
