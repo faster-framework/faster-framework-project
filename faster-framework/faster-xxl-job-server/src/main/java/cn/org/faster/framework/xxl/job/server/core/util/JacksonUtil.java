@@ -27,32 +27,26 @@ public class JacksonUtil {
     }
 
     /**
-     * bean、array、List、Map --> json
+     * bean、array、List、Map 2 json
      * 
      * @param obj
      * @return json string
-     * @throws Exception
      */
     public static String writeValueAsString(Object obj) {
     	try {
 			return getInstance().writeValueAsString(obj);
-		} catch (JsonGenerationException e) {
-			logger.error(e.getMessage(), e);
-		} catch (JsonMappingException e) {
-			logger.error(e.getMessage(), e);
 		} catch (IOException e) {
 			logger.error(e.getMessage(), e);
 		}
-        return null;
+		return null;
     }
 
     /**
-     * string --> bean、Map、List(array)
+     * string 2 bean、Map、List(array)
      * 
      * @param jsonStr
      * @param clazz
      * @return obj
-     * @throws Exception
      */
     public static <T> T readValue(String jsonStr, Class<T> clazz) {
     	try {
@@ -68,7 +62,7 @@ public class JacksonUtil {
     }
 
 	/**
-	 * string --> List<Bean>...
+	 * string -> List<Bean>...
 	 *
 	 * @param jsonStr
 	 * @param parametrized
