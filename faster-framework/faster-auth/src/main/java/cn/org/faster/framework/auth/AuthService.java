@@ -43,7 +43,8 @@ public class AuthService {
     }
 
     /**
-     * 注销token
+     * 注销
+     * @param audience 观众
      */
     public void deleteToken(String audience) {
         //如果不允许多端登录，设置token到缓存中

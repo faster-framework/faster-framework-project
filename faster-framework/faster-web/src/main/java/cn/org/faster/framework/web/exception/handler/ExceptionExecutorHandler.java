@@ -24,6 +24,7 @@ public class ExceptionExecutorHandler {
      * 异常处理主逻辑
      *
      * @param exception 异常
+     * @param executor executor
      * @return 页面/json
      */
     public Object exception(Exception exception, ResponseErrorEntityExecutor executor) {

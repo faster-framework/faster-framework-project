@@ -30,7 +30,7 @@ public abstract class AbstractCaptchaController {
 
     /**
      * 验证图形验证码
-     *
+     * @param captchaValidReq captchaValidReq
      * @return httpResponse
      */
     @GetMapping("/captcha/valid")

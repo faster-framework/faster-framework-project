@@ -103,6 +103,7 @@ public abstract class IUploadService {
      * 根据上传参数获取文件名称
      *
      * @param uploadRequest 上传参数
+     * @param multipartFile multipartFile
      * @return 文件名
      */
     protected String getFileName(UploadRequest uploadRequest, MultipartFile multipartFile) {
