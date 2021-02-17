@@ -24,7 +24,7 @@ spring:
     request-context-attribute: request
     prefer-file-system-access: false
     settings:
-      classic_compatible: true
+      classic_compatible: false
       number_format: 0.##
     suffix: ""
 management:
