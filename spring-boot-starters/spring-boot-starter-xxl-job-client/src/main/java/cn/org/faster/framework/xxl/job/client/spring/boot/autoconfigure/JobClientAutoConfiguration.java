@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @EnableConfigurationProperties(JobClientProperties.class)
-@ConditionalOnProperty(prefix = "app.xxl-job-client", name = "enabled", havingValue = "true")
+@ConditionalOnProperty(prefix = "app.xxl-job-client", name = "enabled", havingValue = "true", matchIfMissing = true)
 public class JobClientAutoConfiguration {
     /**
      * 客户端启动
@@ -20,7 +20,7 @@ public class JobClientAutoConfiguration {
      * @param jobClientProperties
      * @return
      */
-    @Bean(initMethod = "start", destroyMethod = "destroy")
+    @Bean
     public XxlJobSpringExecutor xxlJobExecutor(JobClientProperties jobClientProperties) {
         XxlJobSpringExecutor xxlJobSpringExecutor = new XxlJobSpringExecutor();
         xxlJobSpringExecutor.setAdminAddresses(jobClientProperties.getAdminAddress());

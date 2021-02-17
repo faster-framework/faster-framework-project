@@ -1,6 +1,5 @@
 app:
   xxl-job-client:
-    enabled: true
     log-path: job-logs
     log-retention-days: 3
     port: 9999
