@@ -8,12 +8,13 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.FullyQualifiedAnnotationBeanNameGenerator;
 import org.springframework.context.annotation.Import;
 
 /**
  * @author zhangbowen
  */
-@MapperScan(markerInterface = BaseMapper.class, basePackages = "**.mapper")
+@MapperScan(markerInterface = BaseMapper.class, basePackages = "**.mapper", nameGenerator = FullyQualifiedAnnotationBeanNameGenerator.class)
 @Configuration
 @Import({MyBatisExceptionHandler.class})
 public class MybatisAutoConfiguration {
